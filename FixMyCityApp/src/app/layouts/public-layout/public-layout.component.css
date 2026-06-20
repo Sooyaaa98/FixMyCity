@@ -1,0 +1,11 @@
+/* src/app/layouts/public-layout/public-layout.component.css */
+
+.public-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+}

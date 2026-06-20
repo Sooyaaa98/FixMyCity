@@ -1,0 +1,47 @@
+<!-- src/app/shared/components/internal-notes/internal-notes.component.html
+     Phase 8 (§15) — Solver / SuperAdmin only. Silently renders nothing for
+     any other role so the parent page doesn't need a guard. -->
+
+<ng-container *ngIf="canAccess">
+  <div class="in-wrap">
+    <h4 class="in-title">
+      <i class="bi bi-lock-fill me-1 text-warning" aria-hidden="true"></i>
+      Internal Notes
+      <span class="badge bg-warning text-dark ms-1">Staff only</span>
+    </h4>
+    <p class="text-muted small mb-2">
+      Visible only to Solver and SuperAdmin accounts. Citizens never see these notes.
+    </p>
+
+    <div class="in-composer">
+      <textarea class="form-control"
+                rows="2"
+                maxlength="1500"
+                placeholder="Add an internal note (won't be visible to the citizen)…"
+                [(ngModel)]="draft"
+                [disabled]="posting"></textarea>
+      <div class="d-flex justify-content-end mt-2">
+        <button class="btn btn-warning btn-sm"
+                [disabled]="posting || !draft.trim() || draft.trim().length < 2"
+                (click)="add()">
+          {{ posting ? 'Saving…' : 'Save Note' }}
+        </button>
+      </div>
+    </div>
+
+    <p *ngIf="!loading && notes.length === 0" class="text-muted text-center mt-3 mb-0">
+      No internal notes yet.
+    </p>
+
+    <ul class="in-list" *ngIf="!loading && notes.length > 0">
+      <li *ngFor="let n of notes" class="in-item">
+        <div class="in-meta">
+          <strong>{{ n.authorName || 'User #' + n.complaintId }}</strong>
+          <span class="badge bg-secondary ms-1">{{ n.authorRole }}</span>
+          <span class="text-muted ms-2">{{ n.createdAt | date:'medium' }}</span>
+        </div>
+        <div class="in-text">{{ n.noteText }}</div>
+      </li>
+    </ul>
+  </div>
+</ng-container>

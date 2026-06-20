@@ -1,0 +1,97 @@
+/* src/app/citizen/interests/interests.component.css */
+
+.interests-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.interests-header h2 { margin: 0 0 6px; font-size: 20px; }
+.interests-header p  { margin: 0; font-size: 14px; color: var(--fmc-text-muted); max-width: 520px; }
+
+.interests-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.interest-count {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--fmc-primary);
+}
+
+/* ── Section ──────────────────────────────────────────────────────────────── */
+
+.interests-section { margin-bottom: 16px; }
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 6px;
+  font-size: 16px;
+}
+
+.section-hint {
+  font-size: 13px;
+  color: var(--fmc-text-muted);
+  margin: 0 0 16px;
+}
+
+/* ── Chips ────────────────────────────────────────────────────────────────── */
+
+.interest-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.interest-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border: 2px solid var(--fmc-border);
+  border-radius: 20px;
+  background: var(--fmc-surface);
+  color: var(--fmc-text-primary, #1e293b);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
+}
+
+.interest-chip:hover:not(:disabled) {
+  border-color: var(--fmc-primary);
+  color: var(--fmc-primary);
+}
+
+.interest-chip--active {
+  border-color: var(--fmc-primary);
+  background: #eff6ff;
+  color: var(--fmc-primary);
+}
+
+.interest-chip:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+@media (max-width: 600px) {
+  .interests-header {
+    flex-direction: column;
+  }
+  .interests-summary {
+    flex-direction: row;
+    text-align: left;
+  }
+}

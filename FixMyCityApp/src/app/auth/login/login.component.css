@@ -1,0 +1,218 @@
+/* src/app/auth/login/login.component.css */
+
+.login-wrapper {
+  min-height: 100vh;
+  display: block;
+  /* Phase 5: light-mode default uses the original soft blue gradient; dark
+     mode falls back to the body's themed surface (already a gradient via
+     styles.css :root rules) by using transparent here. */
+  background: linear-gradient(145deg, #e8f0fe 0%, #f1f5f9 50%, #e2e8f0 100%);
+  padding: 8vh 20px 40px;
+}
+
+:host-context([data-theme="dark"]) .login-wrapper {
+  background: transparent;   /* let body's themed gradient show through */
+}
+
+.login-card {
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
+  padding: 40px 40px;
+  border-radius: 20px;
+  box-shadow: var(--fmc-shadow-lg);
+  border: 1px solid var(--fmc-border) !important;
+}
+
+/* ── Logo ─────────────────────────────────────────────────────────────── */
+.login-logo {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.login-logo-icon {
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, var(--fmc-primary), var(--fmc-primary-dark));
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  color: #fff;
+  margin: 0 auto 16px;
+  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3);
+}
+
+.login-logo h2 {
+  font-size: 22px;
+  color: var(--fmc-primary);
+  margin: 0 0 4px;
+  font-weight: 700;
+}
+
+.login-tagline {
+  font-size: 12px;
+  color: var(--fmc-text-muted);
+  margin: 0;
+}
+
+/* ── Input with icon ──────────────────────────────────────────────────── */
+.login-input-wrap {
+  position: relative;
+}
+
+.login-input-icon {
+  position: absolute;
+  left: 11px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--fmc-text-muted);
+  font-size: 13px;
+  pointer-events: none;
+}
+
+.login-padded {
+  padding-left: 34px !important;
+}
+
+.login-padded-right {
+  padding-right: 40px !important;
+}
+
+.login-eye-btn {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--fmc-text-muted);
+  cursor: pointer;
+  padding: 4px;
+  font-size: 14px;
+  transition: color 0.15s;
+}
+
+  .login-eye-btn:hover {
+    color: var(--fmc-primary);
+  }
+
+/* ── API error ────────────────────────────────────────────────────────── */
+.login-api-error {
+  background: var(--fmc-danger-light);
+  border: 1px solid #fca5a5;
+  color: #991b1b;
+  border-radius: var(--fmc-radius);
+  padding: 9px 12px;
+  font-size: 13px;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ── Submit ───────────────────────────────────────────────────────────── */
+.login-btn {
+  width: 100%;
+  padding: 12px;
+  font-size: 15px;
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  letter-spacing: 0.01em;
+}
+
+/* ── SSO divider + button ─────────────────────────────────────────────── */
+.login-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 18px 0 12px;
+  color: var(--fmc-text-muted);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+  .login-divider::before,
+  .login-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--fmc-border);
+  }
+
+.login-sso-btn {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 11px 16px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+  .login-sso-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #fff;
+    color: #ea4335;
+    font-weight: 700;
+    font-family: 'Product Sans', 'Segoe UI', system-ui, sans-serif;
+    border: 1px solid var(--fmc-border);
+  }
+
+/* ── Register links ───────────────────────────────────────────────────── */
+.login-links {
+  margin-top: 22px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--fmc-text-muted);
+  border-top: 1px solid var(--fmc-border);
+  padding-top: 18px;
+}
+
+.login-register-links {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.login-reg-btn {
+  font-size: 12px;
+  padding: 5px 12px;
+  border-radius: 20px;
+  border: 1px solid var(--fmc-border);
+  color: var(--fmc-text);
+  text-decoration: none;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+  .login-reg-btn:hover {
+    border-color: var(--fmc-primary);
+    color: var(--fmc-primary);
+    background: rgba(26,107,189,0.05);
+    text-decoration: none;
+  }
+
+/* ── Back link ────────────────────────────────────────────────────────── */
+.login-back-link {
+  font-size: 12px;
+  color: var(--fmc-text-muted);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+  .login-back-link:hover {
+    color: var(--fmc-primary);
+    text-decoration: none;
+  }

@@ -1,0 +1,202 @@
+/* src/app/shared/components/navbar/navbar.component.css */
+
+/* ── Navbar Shell ─────────────────────────────────────────────────────── */
+.fmc-navbar {
+  height: var(--fmc-navbar-h);
+  background: var(--fmc-surface);
+  border-bottom: 1px solid var(--fmc-border);
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.06);
+  z-index: 1030;
+  transition:
+    background 0.3s ease,
+    backdrop-filter 0.3s ease,
+    box-shadow 0.3s ease,
+    border-bottom-color 0.3s ease;
+}
+
+/* Phase 6 §6 — frosted-glass appearance once the user scrolls. The
+   token-based `--fmc-glass-bg` already handles light/dark switching via
+   styles.css, so this rule stays theme-aware. */
+.fmc-navbar--scrolled {
+  background: var(--fmc-glass-bg, rgba(255, 255, 255, 0.72)) !important;
+  backdrop-filter: blur(16px) saturate(160%);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  box-shadow: 0 2px 24px rgba(0, 0, 0, 0.08) !important;
+  border-bottom-color: rgba(226, 232, 240, 0.6) !important;
+}
+[data-theme="dark"] .fmc-navbar--scrolled {
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.45) !important;
+  border-bottom-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* ── Brand ────────────────────────────────────────────────────────────── */
+.fmc-brand {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--fmc-primary) !important;
+  letter-spacing: -0.4px;
+  text-decoration: none !important;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: opacity 0.15s;
+}
+
+.fmc-brand:hover {
+  color: var(--fmc-primary-dark) !important;
+  text-decoration: none;
+  opacity: 0.9;
+}
+
+/* ── Mobile hamburger icon ────────────────────────────────────────────── */
+.navbar-toggler {
+  color: var(--fmc-text-muted);
+  font-size: 18px;
+  padding: 4px 8px;
+}
+
+/* ── Nav Links ────────────────────────────────────────────────────────── */
+.fmc-link {
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--fmc-text-muted) !important;
+  border-radius: var(--fmc-radius);
+  padding: 7px 11px !important;
+  transition: color 0.15s, background 0.15s;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.fmc-link:hover {
+  color: var(--fmc-primary) !important;
+  background: rgba(37, 99, 235, 0.07);
+  text-decoration: none;
+}
+
+.fmc-link.active {
+  color: var(--fmc-primary) !important;
+  background: rgba(37, 99, 235, 0.1);
+  font-weight: 600;
+}
+
+/* ── Role Badge ───────────────────────────────────────────────────────── */
+.fmc-role-badge {
+  font-size: 11px;
+  font-weight: 600;
+  background: rgba(37, 99, 235, 0.09);
+  color: var(--fmc-primary);
+  padding: 3px 10px;
+  border-radius: 20px;
+  letter-spacing: 0.2px;
+  border: 1px solid rgba(37, 99, 235, 0.15);
+}
+
+/* ── Profile Button ───────────────────────────────────────────────────── */
+.fmc-profile-btn {
+  background: transparent;
+  border: 1.5px solid var(--fmc-border);
+  border-radius: 24px;
+  padding: 5px 12px 5px 8px;
+  color: var(--fmc-text);
+  font-size: 13px;
+  font-weight: 500;
+  font-family: inherit;
+  transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.fmc-profile-btn:hover,
+.fmc-profile-btn:focus,
+.fmc-profile-btn.show {
+  background: var(--fmc-surface-2);
+  border-color: var(--fmc-primary);
+  color: var(--fmc-text);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* Remove Bootstrap's default dropdown caret gap */
+.fmc-profile-btn::after {
+  margin-left: 4px;
+  opacity: 0.45;
+}
+
+/* ── Avatar icon ──────────────────────────────────────────────────────── */
+.fmc-avatar {
+  font-size: 20px;
+  color: var(--fmc-primary);
+  line-height: 1;
+}
+
+/* ── User name truncation ─────────────────────────────────────────────── */
+.fmc-user-name {
+  max-width: 130px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+/* ── Dropdown Menu ────────────────────────────────────────────────────── */
+.fmc-dropdown {
+  min-width: 230px;
+  border: 1px solid var(--fmc-border);
+  border-radius: var(--fmc-radius-lg);
+  padding: 0;
+  overflow: hidden;
+  margin-top: 6px !important;
+  box-shadow: var(--fmc-shadow-md);
+  background: var(--fmc-surface);
+}
+
+.fmc-dropdown-item {
+  font-size: 14px;
+  font-family: inherit;
+  padding: 9px 16px;
+  color: var(--fmc-text);
+  transition: background 0.12s;
+  cursor: pointer;
+  background: transparent;
+}
+
+.fmc-dropdown-item:hover {
+  background: var(--fmc-surface-2);
+  color: var(--fmc-text);
+}
+
+.fmc-dropdown-item.text-danger {
+  color: var(--fmc-danger) !important;
+}
+
+.fmc-dropdown-item.text-danger:hover {
+  background: var(--fmc-danger-light);
+  color: var(--fmc-danger) !important;
+}
+
+/* ── Responsive adjustments ───────────────────────────────────────────── */
+@media (max-width: 991.98px) {
+  /* Give the collapsed nav panel space and style */
+  .navbar-collapse {
+    background: var(--fmc-surface);
+    border-top: 1px solid var(--fmc-border);
+    padding: 12px 4px;
+    margin: 0 -16px;
+    box-shadow: var(--fmc-shadow-md);
+  }
+
+  .fmc-link {
+    padding: 10px 14px !important;
+    border-radius: 8px;
+  }
+
+  /* Stack right-rail vertically on mobile */
+  .d-flex.align-items-center.gap-2 {
+    flex-wrap: wrap;
+    padding: 10px 10px 6px;
+    border-top: 1px solid var(--fmc-border);
+    margin-top: 8px;
+  }
+}

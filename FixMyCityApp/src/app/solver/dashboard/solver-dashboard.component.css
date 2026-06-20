@@ -1,0 +1,113 @@
+/* src/app/solver/dashboard/solver-dashboard.component.css */
+
+/* ── Header ─────────────────────────────────────────────────────────────── */
+.dash-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding: 18px 24px;
+}
+
+.dash-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 3px;
+  font-size: 21px;
+  color: var(--fmc-text);
+}
+
+.dash-subtitle {
+  margin: 0;
+  font-size: 13px;
+  color: var(--fmc-text-muted);
+}
+
+/* ── Section label ──────────────────────────────────────────────────────── */
+.section-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  color: var(--fmc-primary);
+  margin: 0 0 12px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--fmc-border);
+}
+
+/* ── Stats Row ──────────────────────────────────────────────────────────── */
+.stats-row {
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  text-align: center;
+  padding: 22px 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  border-radius: var(--fmc-radius-lg);
+}
+
+.stat-value {
+  font-size: 34px;
+  font-weight: 800;
+  color: var(--fmc-text);
+  line-height: 1;
+}
+
+.stat-value.pending    { color: var(--fmc-primary); }
+.stat-value.in-progress{ color: var(--fmc-warning); }
+.stat-value.resolved   { color: var(--fmc-success); }
+
+.stat-label {
+  font-size: 12px;
+  color: var(--fmc-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+/* ── Recent complaints section ──────────────────────────────────────────── */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.section-header h4 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.view-all {
+  font-size: 13px;
+  color: var(--fmc-primary);
+  font-weight: 600;
+}
+
+.view-all:hover {
+  text-decoration: underline;
+}
+
+.complaints-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.loading-msg,
+.error-msg {
+  color: var(--fmc-text-muted);
+  font-size: 14px;
+  padding: 24px;
+  text-align: center;
+}

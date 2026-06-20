@@ -1,0 +1,36 @@
+.not-found-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+  padding: 24px;
+}
+
+.not-found-card {
+  max-width: 540px;
+  text-align: center;
+  padding: 32px 28px;
+}
+
+.not-found-icon {
+  font-size: 64px;
+  margin-bottom: 8px;
+  line-height: 1;
+}
+
+.not-found-card code {
+  background: var(--fmc-bg-subtle, #f1f5f9);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.95em;
+  color: var(--fmc-fg, #1e293b);
+  word-break: break-all;
+}
+
+.not-found-card .form-actions {
+  margin-top: 24px;
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}

@@ -1,0 +1,92 @@
+/* src/app/shared/components/complaint-card/complaint-card.component.css */
+
+.complaint-card {
+  cursor: pointer;
+  transition: box-shadow 0.2s, transform 0.15s;
+  padding: 18px 20px;
+  border-radius: var(--fmc-radius-lg);
+  /* Left border set by crit-* class on host */
+}
+
+.complaint-card:hover {
+  box-shadow: var(--fmc-shadow-md);
+  transform: translateY(-2px);
+}
+
+.complaint-card:focus-visible {
+  outline: 2px solid var(--fmc-primary);
+  outline-offset: 2px;
+}
+
+/* ── Top row ─────────────────────────────────────────────────────────── */
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  gap: 8px;
+}
+
+.card-id {
+  font-size: 11.5px;
+  color: var(--fmc-text-light);
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+
+/* ── Title & description ─────────────────────────────────────────────── */
+.card-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--fmc-text);
+  margin: 0 0 6px;
+  line-height: 1.35;
+  transition: color 0.15s;
+}
+
+.complaint-card:hover .card-title {
+  color: var(--fmc-primary);
+}
+
+.card-desc {
+  font-size: 13px;
+  color: var(--fmc-text-muted);
+  margin: 0 0 12px;
+  line-height: 1.55;
+}
+
+/* ── Meta chips ──────────────────────────────────────────────────────── */
+.card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+/* Phase 6 §15 — icon+text chips. Tint the leading icon in the brand colour
+   (or accent for criticality) so the chip reads as a pill at a glance. */
+.meta-item {
+  font-size: 12px;
+  color: var(--fmc-text-muted);
+  background: var(--fmc-surface-2);
+  padding: 3px 9px;
+  border-radius: 20px;
+  border: 1px solid var(--fmc-border);
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.meta-item i {
+  font-size: 11px;
+  color: var(--fmc-primary);
+}
+
+.criticality-tag {
+  font-weight: 600;
+  color: var(--fmc-text);
+}
+.criticality-tag i {
+  color: var(--fmc-accent);
+}

@@ -1,0 +1,58 @@
+<!-- src/app/shared/components/complaint-card/complaint-card.component.html -->
+
+<!-- Phase 6 §15 — icon+text chips replace raw emoji; fmcReveal fades cards in. -->
+<div [class]="'fmc-card crit-' + complaint.criticality + ' complaint-card'"
+     fmcReveal
+     (click)="onCardClick()"
+     (keyup.enter)="onCardClick()"
+     role="button"
+     tabindex="0"
+     [attr.aria-label]="complaint.title">
+
+  <div class="card-top">
+    <span class="card-id">#{{ complaint.complaintId }}</span>
+    <app-status-badge [status]="complaint.status"></app-status-badge>
+    <!-- Phase 8 (§1) inline upvote — `click.stopPropagation()` inside the
+         component prevents bubbling to the card click. -->
+    <app-upvote-button class="ms-auto"
+                        [complaintId]="complaint.complaintId"
+                        variant="inline"></app-upvote-button>
+  </div>
+
+  <h4 class="card-title">{{ complaint.title }}</h4>
+
+  <p class="card-desc">{{ complaint.description | slice:0:100 }}{{ complaint.description.length > 100 ? '…' : '' }}</p>
+
+  <div class="card-meta">
+    <span class="meta-item" *ngIf="complaint.locality?.localityName">
+      <i class="bi bi-geo-alt-fill" aria-hidden="true"></i>
+      {{ complaint.locality!.localityName }}
+    </span>
+    <span class="meta-item" *ngIf="complaint.category">
+      <i class="bi bi-tag-fill" aria-hidden="true"></i>
+      {{ complaint.category.categoryName }}
+    </span>
+    <span class="meta-item">
+      <i class="bi bi-calendar3" aria-hidden="true"></i>
+      {{ complaint.submittedAt | date: 'dd MMM yyyy' }}
+    </span>
+    <span class="meta-item criticality-tag">
+      <i class="bi bi-lightning-charge-fill" aria-hidden="true"></i>
+      {{ complaint.criticality }}
+    </span>
+    <!-- Phase 8 (§14) — SLA chip; only renders on in-flight complaints
+         where an ETA is set. -->
+    <span class="meta-item"
+          *ngIf="complaint.estimatedResDate
+                 && complaint.status !== 'Resolved'
+                 && complaint.status !== 'Rejected'
+                 && complaint.status !== 'Linked'">
+      <span class="badge"
+            [class]="'badge ' + (complaint.estimatedResDate | slaBadgeClass:complaint.status)">
+        <i class="bi bi-clock-history me-1" aria-hidden="true"></i>
+        {{ complaint.estimatedResDate | sla:complaint.status }}
+      </span>
+    </span>
+  </div>
+
+</div>

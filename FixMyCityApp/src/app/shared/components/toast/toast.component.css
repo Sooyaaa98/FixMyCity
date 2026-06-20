@@ -1,0 +1,95 @@
+/* src/app/shared/components/toast/toast.component.css */
+
+.fmc-toast-container {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  max-width: 380px;
+  width: calc(100vw - 3rem);
+  pointer-events: none;
+}
+
+.fmc-toast {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+  border-radius: var(--fmc-radius);
+  background: var(--fmc-surface);
+  box-shadow: var(--fmc-shadow-md);
+  border-left: 4px solid transparent;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  pointer-events: all;
+  animation: fmc-toast-in 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* Phase 6 §13 — slide in from the right with a touch of overshoot. */
+@keyframes fmc-toast-in {
+  from { opacity: 0; transform: translateX(60px) scale(0.94); }
+  to   { opacity: 1; transform: translateX(0)    scale(1);    }
+}
+
+/* Phase 6 §13 — slide out to the right when dismissed. */
+.fmc-toast.leaving {
+  animation: fmc-toast-out 0.22s ease-in forwards;
+}
+@keyframes fmc-toast-out {
+  to {
+    opacity: 0;
+    transform: translateX(60px) scale(0.9);
+    max-height: 0;
+    padding: 0;
+    margin: 0;
+  }
+}
+
+.fmc-toast--success { border-left-color: var(--fmc-success); }
+.fmc-toast--error   { border-left-color: var(--fmc-danger); }
+.fmc-toast--warning { border-left-color: var(--fmc-warning); }
+.fmc-toast--info    { border-left-color: var(--fmc-primary); }
+
+.fmc-toast__icon {
+  margin-top: 0.1rem;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.fmc-toast--success .fmc-toast__icon { color: var(--fmc-success); }
+.fmc-toast--error   .fmc-toast__icon { color: var(--fmc-danger); }
+.fmc-toast--warning .fmc-toast__icon { color: var(--fmc-warning); }
+.fmc-toast--info    .fmc-toast__icon { color: var(--fmc-primary); }
+
+.fmc-toast__message {
+  flex: 1;
+  color: var(--fmc-text);
+  font-weight: 500;
+}
+
+.fmc-toast__close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  color: var(--fmc-text-muted);
+  font-size: 0.85rem;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.fmc-toast__close:hover {
+  color: var(--fmc-text);
+}
+
+@media (max-width: 480px) {
+  .fmc-toast-container {
+    right: 0.75rem;
+    left: 0.75rem;
+    max-width: 100%;
+    width: auto;
+  }
+}

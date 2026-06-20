@@ -1,0 +1,62 @@
+/* src/app/public/transparency/transparency.component.css */
+
+.tp-page { max-width: 1100px; margin: 0 auto; padding: 1.5rem; }
+
+.tp-hero {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.tp-title { font-weight: 800; color: var(--fmc-text, #0f172a); }
+.tp-subtitle { color: var(--fmc-text-muted, #64748b); font-size: 1rem; }
+
+.tp-filters { padding: 1.25rem; margin-bottom: 1.5rem; }
+
+.tp-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1rem;
+}
+
+.tp-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
+}
+
+.tp-card-head {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.tp-id {
+  font-weight: 700;
+  color: var(--fmc-text-muted, #475569);
+}
+
+.tp-card-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--fmc-text, #0f172a);
+}
+
+.tp-card-desc {
+  color: var(--fmc-text, #1f2937);
+  font-size: 0.93rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.tp-card-meta {
+  color: var(--fmc-text-muted, #64748b);
+  font-size: 0.85rem;
+}
+
+.tp-card-actions { margin-top: auto; }

@@ -1,0 +1,204 @@
+/* src/app/admin/dashboard/admin-dashboard.component.css */
+
+/* ── Header ───────────────────────────────────────────────────────────────── */
+
+.dash-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding: 18px 24px;
+}
+
+.dash-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 4px;
+  font-size: 21px;
+  color: var(--fmc-text);
+}
+
+.dash-subtitle {
+  margin: 0;
+  font-size: 13px;
+  color: var(--fmc-text-muted);
+}
+
+/* ── AI Health Widget ─────────────────────────────────────────────────────── */
+
+.ai-health-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding: 14px 20px;
+}
+
+.ai-health-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ai-health-indicator {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.ai-health-indicator--online  { background: var(--fmc-success-light); color: var(--fmc-success); }
+.ai-health-indicator--offline { background: var(--fmc-danger-light); color: var(--fmc-danger); }
+
+.ai-health-label {
+  display: block;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--fmc-text-muted);
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+
+.ai-health-status {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--fmc-danger);
+}
+
+.ai-health-status--online { color: var(--fmc-success); }
+
+.ai-health-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* ── Section Labels ───────────────────────────────────────────────────────── */
+
+.section-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  color: var(--fmc-primary);
+  margin: 24px 0 12px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--fmc-border);
+}
+
+.section-hint {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--fmc-text-muted);
+  text-transform: none;
+  letter-spacing: 0;
+  margin-left: 4px;
+}
+
+/* ── Stat Cards ───────────────────────────────────────────────────────────── */
+
+.stats-grid { margin-bottom: 4px; }
+
+.stat-card {
+  text-align: center;
+  padding: 22px 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  border: 2px solid transparent;
+  transition: border-color 0.15s, transform 0.18s, box-shadow 0.18s;
+  cursor: pointer;
+  border-radius: var(--fmc-radius-lg);
+}
+
+a.stat-card:hover {
+  border-color: currentColor;
+  transform: translateY(-2px);
+  box-shadow: var(--fmc-shadow-md);
+}
+
+.stat-icon {
+  font-size: 1.5rem;
+  opacity: 0.6;
+}
+
+.stat-value {
+  font-size: 32px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: var(--fmc-text-muted);
+  font-weight: 500;
+}
+
+.stat-cta {
+  font-size: 11px;
+  font-weight: 600;
+  opacity: 0.7;
+  margin-top: 2px;
+}
+
+/* Colour variants */
+.stat--primary { color: var(--fmc-primary); }
+.stat--success { color: var(--fmc-success); }
+.stat--warning { color: var(--fmc-warning); }
+.stat--danger  { color: var(--fmc-danger); }
+.stat--info    { color: var(--fmc-info); }
+.stat--neutral { color: var(--fmc-text-muted); }
+
+/* Non-link stat card */
+div.stat-card { cursor: default; }
+div.stat-card .stat-value { color: var(--fmc-text); }
+
+/* ── Quick Links ──────────────────────────────────────────────────────────── */
+
+.quick-links { margin-top: 4px; }
+
+.quick-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 24px 16px;
+  text-decoration: none;
+  text-align: center;
+  border: 2px solid transparent;
+  transition: border-color 0.15s, transform 0.15s;
+  cursor: pointer;
+}
+
+.quick-card:hover {
+  border-color: var(--fmc-primary);
+  transform: translateY(-2px);
+}
+
+.quick-icon { color: var(--fmc-primary); }
+
+.quick-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--fmc-text);
+}
+
+/* ── Utilities ────────────────────────────────────────────────────────────── */
+.btn--sm { padding: 6px 12px; font-size: 13px; }

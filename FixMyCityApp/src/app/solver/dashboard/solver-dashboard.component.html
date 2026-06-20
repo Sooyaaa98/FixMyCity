@@ -1,0 +1,74 @@
+<!-- src/app/solver/dashboard/solver-dashboard.component.html -->
+
+<div class="fmc-page">
+
+  <!-- ── Header ───────────────────────────────────────────────────────── -->
+  <div class="dash-header fmc-card">
+    <div>
+      <h2 class="dash-title">
+        <i class="bi bi-speedometer2" aria-hidden="true"></i>
+        Solver Dashboard
+      </h2>
+      <p class="dash-subtitle">Your assigned complaints at a glance</p>
+    </div>
+    <a routerLink="/solver/complaints" class="btn-secondary btn--sm">
+      <i class="bi bi-card-list" aria-hidden="true"></i> View All
+    </a>
+  </div>
+
+  <!-- ── Stats Row ─────────────────────────────────────────────────────── -->
+  <div class="section-label">
+    <i class="bi bi-bar-chart-fill" aria-hidden="true"></i>
+    Your Stats
+  </div>
+
+  <div class="fmc-grid-4 stats-row">
+    <div class="fmc-card stat-card">
+      <div class="stat-value">{{ totalCount }}</div>
+      <div class="stat-label">Total Assigned</div>
+    </div>
+    <div class="fmc-card stat-card">
+      <div class="stat-value pending">{{ pendingCount }}</div>
+      <div class="stat-label">Submitted</div>
+    </div>
+    <div class="fmc-card stat-card">
+      <div class="stat-value in-progress">{{ inProgressCount }}</div>
+      <div class="stat-label">In Progress</div>
+    </div>
+    <div class="fmc-card stat-card">
+      <div class="stat-value resolved">{{ resolvedCount }}</div>
+      <div class="stat-label">Resolved</div>
+    </div>
+  </div>
+
+  <!-- ── Recent Complaints ─────────────────────────────────────────────── -->
+  <div class="section-label">
+    <i class="bi bi-clock-fill-o" aria-hidden="true"></i>
+    Recent Complaints
+  </div>
+
+  <div class="section-header">
+    <h4>Latest 5</h4>
+    <a routerLink="/solver/complaints" class="view-all">View all →</a>
+  </div>
+
+  <div *ngIf="isLoading" class="loading-msg">
+    <i class="bi bi-arrow-repeat" aria-hidden="true"></i> Loading...
+  </div>
+  <div *ngIf="errorMessage" class="fmc-error-msg">{{ errorMessage }}</div>
+
+  <div class="complaints-list" *ngIf="!isLoading">
+    <app-complaint-card *ngFor="let c of complaints | slice:0:5"
+                        [complaint]="c"
+                        (cardClicked)="onCardClicked($event)">
+    </app-complaint-card>
+
+    <app-empty-state
+      *ngIf="!isLoading && complaints.length === 0 && !errorMessage"
+      icon="bi bi-inbox"
+      title="No complaints assigned"
+      subtitle="You have no complaints assigned to you yet."
+    ></app-empty-state>
+  </div>
+
+</div>

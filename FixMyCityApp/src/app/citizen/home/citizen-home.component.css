@@ -1,0 +1,147 @@
+/* src/app/citizen/home/citizen-home.component.css */
+
+/* ── Hero ──────────────────────────────────────────────────────────────────── */
+.home-hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 20px 24px;
+}
+
+.hero-text h2 {
+  margin: 0 0 4px;
+  font-size: 21px;
+  font-weight: 700;
+}
+
+.hero-text p {
+  margin: 0;
+  color: var(--fmc-text-muted);
+  font-size: 14px;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* ── Tabs ──────────────────────────────────────────────────────────────────── */
+.home-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 20px;
+  border-bottom: 2px solid var(--fmc-border);
+}
+
+.home-tab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: inherit;
+  color: var(--fmc-text-muted);
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.home-tab:hover {
+  color: var(--fmc-primary);
+}
+
+.home-tab--active {
+  color: var(--fmc-primary);
+  border-bottom-color: var(--fmc-primary);
+  font-weight: 600;
+}
+
+.home-tab__badge {
+  background: var(--fmc-primary);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 1px 7px;
+  border-radius: 10px;
+  line-height: 1.5;
+}
+
+/* ── Feed header ──────────────────────────────────────────────────────────── */
+.feed-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.feed-header h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* ── Feed list ────────────────────────────────────────────────────────────── */
+.feed-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* ── AI notice ─────────────────────────────────────────────────────────────── */
+.ai-notice {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--fmc-primary);
+  background: var(--fmc-primary-light);
+  border: 1px solid #bfdbfe;
+  padding: 11px 16px;
+  border-radius: var(--fmc-radius);
+  margin-bottom: 16px;
+}
+
+.ai-notice i {
+  flex-shrink: 0;
+  font-size: 16px;
+}
+
+.ai-notice a {
+  margin-left: auto;
+  color: var(--fmc-primary);
+  font-weight: 600;
+  text-decoration: underline;
+  white-space: nowrap;
+}
+
+/* ── Responsive ────────────────────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .home-hero {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 16px;
+  }
+
+  .hero-actions {
+    width: 100%;
+  }
+
+  .hero-actions .btn-primary,
+  .hero-actions .btn-secondary {
+    flex: 1;
+    justify-content: center;
+  }
+
+  .home-tab {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+}

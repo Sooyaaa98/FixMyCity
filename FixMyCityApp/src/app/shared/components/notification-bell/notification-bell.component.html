@@ -1,0 +1,78 @@
+<!-- src/app/shared/components/notification-bell/notification-bell.component.html -->
+
+<div class="bell-wrapper">
+
+  <!-- ── Bell Button ──────────────────────────────────────────────────── -->
+  <button class="bell-btn"
+          (click)="toggleDropdown()"
+          aria-label="Notifications"
+          [class.bell-active]="isOpen">
+    <i class="bi bi-bell-fill bell-icon"></i>
+    <span class="bell-badge" *ngIf="unreadCount > 0">
+      {{ unreadCount > 99 ? '99+' : unreadCount }}
+    </span>
+  </button>
+
+  <!-- ── Dropdown Panel ───────────────────────────────────────────────── -->
+  <div class="bell-dropdown card shadow-lg" *ngIf="isOpen" role="dialog" aria-label="Notifications panel">
+
+    <!-- Header -->
+    <div class="card-header bg-white border-bottom d-flex justify-content-between align-items-center py-3">
+      <h6 class="mb-0 fw-bold">
+        <i class="bi bi-bell-fill me-2 text-primary"></i>Notifications
+      </h6>
+      <span class="badge bg-primary rounded-pill" *ngIf="unreadCount > 0">
+        {{ unreadCount }} New
+      </span>
+    </div>
+
+    <!-- Body -->
+    <div class="card-body p-0 bell-list-container">
+      <!-- Empty State -->
+      <div class="text-center py-5" *ngIf="notifications.length === 0">
+        <i class="bi bi-check-circle-fill bi-3x text-success mb-3 d-block opacity-75"></i>
+        <p class="text-muted mb-0 fw-medium">You're all caught up!</p>
+      </div>
+
+      <!-- Notification Items -->
+      <div class="list-group list-group-flush" *ngIf="notifications.length > 0">
+        <div *ngFor="let n of notifications | slice:0:6"
+             class="list-group-item list-group-item-action d-flex align-items-start gap-3 py-3"
+             role="button"
+             tabindex="0"
+             (click)="goToComplaint(n)"
+             (keyup.enter)="goToComplaint(n)">
+
+          <div class="mt-1 position-relative">
+             <i class="bi" [ngClass]="n.complaintId ? 'bi-file-earmark-text text-primary' : 'bi-info-circle-fill text-info'"></i>
+          </div>
+
+          <div class="flex-grow-1">
+            <p class="mb-1 text-dark fw-medium" style="font-size: 14px; line-height: 1.4;">{{ n.message }}</p>
+            <div class="d-flex align-items-center text-muted mt-1" style="font-size: 12px;">
+              <i class="bi bi-clock-fill-o me-1"></i>{{ n.createdAt | date:'dd MMM, h:mm a' }}
+              <span *ngIf="n.complaintId" class="ms-2 border-start ps-2">
+                <i class="bi bi-link-45deg me-1"></i>#{{ n.complaintId }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="card-footer bg-light border-top p-3 d-flex justify-content-between align-items-center gap-2">
+      <button class="btn btn-outline-secondary btn-sm flex-grow-1"
+              (click)="markAllReadFromBell()"
+              [disabled]="isMarking || unreadCount === 0">
+        <i class="bi bi-check-lg me-1"></i>
+        {{ isMarking ? 'Marking…' : 'Mark All Read' }}
+      </button>
+      <button class="btn btn-primary btn-sm flex-grow-1" (click)="viewAll()">
+        View All
+      </button>
+    </div>
+
+  </div>
+
+</div>

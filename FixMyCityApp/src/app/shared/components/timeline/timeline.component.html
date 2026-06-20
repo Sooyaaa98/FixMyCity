@@ -1,0 +1,39 @@
+<!-- src/app/shared/components/timeline/timeline.component.html -->
+
+<div class="timeline-wrapper">
+  <h4 class="timeline-heading">Complaint History</h4>
+
+  <div *ngIf="entries.length === 0" class="timeline-empty">
+    No history available yet.
+  </div>
+
+  <div class="timeline-list">
+    <div class="timeline-entry" #timelineEntry *ngFor="let entry of entries">
+
+      <div class="timeline-marker">
+        <span class="timeline-dot"></span>
+        <span class="timeline-line"></span>
+      </div>
+
+      <div class="timeline-body">
+        <div class="timeline-header">
+          <span class="timeline-status">
+            <span *ngIf="entry.oldStatus" class="old-status">{{ entry.oldStatus }}</span>
+            <span *ngIf="entry.oldStatus" class="arrow">→</span>
+            <strong>{{ entry.newStatus }}</strong>
+          </span>
+          <span class="timeline-date">{{ entry.createdAt | date: 'dd MMM yyyy, h:mm a' }}</span>
+        </div>
+
+        <div class="timeline-actor" *ngIf="entry.actor">
+          By: {{ entry.actor.fullName }}<span *ngIf="entry.actor.role?.roleName as roleName"> ({{ roleName }})</span>
+        </div>
+
+        <div class="timeline-remark" *ngIf="entry.remark">
+          {{ entry.remark }}
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

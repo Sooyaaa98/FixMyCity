@@ -1,0 +1,70 @@
+<!-- src/app/admin/complaint-list/admin-complaint-list.component.html -->
+
+<div class="fmc-page">
+
+  <!-- ── Page Header ──────────────────────────────────────────────────── -->
+  <div class="page-header">
+    <div class="page-header__left">
+      <a routerLink="/admin/dashboard" class="btn-secondary btn--sm">
+        <i class="bi bi-arrow-left" aria-hidden="true"></i> Dashboard
+      </a>
+      <h4 class="page-header__title">
+        {{ pageTitle }}
+        <span class="count-badge" *ngIf="!isLoading">{{ complaints.length }}</span>
+      </h4>
+    </div>
+    <button class="btn-secondary btn--sm" (click)="loadComplaints()" [disabled]="isLoading">
+      <i class="bi bi-arrow-clockwise" [class.bi-spin]="isLoading" aria-hidden="true"></i>
+      Refresh
+    </button>
+  </div>
+
+  <!-- ── Filter Bar ────────────────────────────────────────────────────── -->
+  <div class="fmc-card filter-panel">
+    <div class="filter-row">
+      <div class="fmc-form-group filter-group">
+        <label class="fmc-label">
+          <i class="bi bi-funnel-fill" aria-hidden="true"></i> Filter by Status
+        </label>
+        <select class="fmc-input"
+                [(ngModel)]="filterStatus"
+                (ngModelChange)="onStatusChange()">
+          <option value="">All Statuses</option>
+          <option *ngFor="let s of statusOptions.slice(1)" [value]="s">{{ s }}</option>
+        </select>
+      </div>
+      <div class="filter-actions">
+        <button class="btn-secondary btn--sm"
+                (click)="clearFilter()"
+                *ngIf="filterStatus">
+          <i class="bi bi-x-lg" aria-hidden="true"></i> Clear
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Loading ───────────────────────────────────────────────────────── -->
+  <app-loading-spinner *ngIf="isLoading" message="Loading complaints…"></app-loading-spinner>
+
+  <!-- ── Error ─────────────────────────────────────────────────────────── -->
+  <div *ngIf="errorMessage && !isLoading" class="fmc-alert fmc-alert--danger">
+    <i class="bi bi-exclamation-circle-fill" aria-hidden="true"></i>
+    {{ errorMessage }}
+  </div>
+
+  <app-empty-state
+    *ngIf="!isLoading && !errorMessage && complaints.length === 0"
+    icon="bi bi-inbox"
+    title="No complaints found"
+    subtitle="No complaints match the current filter."
+  ></app-empty-state>
+
+  <!-- ── Complaint Cards ────────────────────────────────────────────────── -->
+  <div class="complaints-list" *ngIf="!isLoading && complaints.length > 0">
+    <app-complaint-card *ngFor="let c of complaints"
+                        [complaint]="c"
+                        (cardClicked)="onCardClicked($event)">
+    </app-complaint-card>
+  </div>
+
+</div>

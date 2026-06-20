@@ -1,0 +1,21 @@
+<!-- src/app/shared/components/empty-state/empty-state.component.html
+     Phase 6 — accepts Bootstrap Icons class strings via [class]="icon".
+     Optional <ng-content> projection lets consumers add bespoke actions. -->
+<div class="fmc-empty-state" role="status">
+  <div class="fmc-empty-icon" aria-hidden="true">
+    <i [class]="icon"></i>
+  </div>
+  <h5 class="fmc-empty-title">{{ title }}</h5>
+  <p class="fmc-empty-desc" *ngIf="subtitle">{{ subtitle }}</p>
+
+  <button
+    *ngIf="actionLabel"
+    class="btn-primary"
+    type="button"
+    (click)="onAction()"
+  >
+    {{ actionLabel }}
+  </button>
+
+  <ng-content></ng-content>
+</div>

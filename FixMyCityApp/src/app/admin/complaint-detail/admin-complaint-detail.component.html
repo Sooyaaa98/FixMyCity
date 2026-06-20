@@ -1,0 +1,111 @@
+<!-- src/app/admin/complaint-detail/admin-complaint-detail.component.html -->
+
+<div class="fmc-page">
+
+  <!-- ── Loading ──────────────────────────────────────────────────────── -->
+  <app-loading-spinner *ngIf="isLoading" message="Loading complaint…"></app-loading-spinner>
+
+  <!-- ── Error ─────────────────────────────────────────────────────────── -->
+  <div *ngIf="errorMessage && !isLoading" class="fmc-alert fmc-alert--danger">
+    <i class="bi bi-exclamation-circle-fill" aria-hidden="true"></i>
+    {{ errorMessage }}
+  </div>
+
+  <ng-container *ngIf="!isLoading && complaint">
+
+    <!-- ── Header ────────────────────────────────────────────────────────── -->
+    <div class="detail-header">
+      <div class="detail-header__left">
+        <button class="btn-secondary btn--sm" (click)="goBack()">
+          <i class="bi bi-arrow-left" aria-hidden="true"></i> Back
+        </button>
+        <h4 class="detail-header__title">
+          Complaint #{{ complaint.complaintId }}
+        </h4>
+        <app-status-badge [status]="complaint.status"></app-status-badge>
+      </div>
+    </div>
+
+    <!-- ── Two-column layout ─────────────────────────────────────────────── -->
+    <div class="detail-grid">
+
+      <!-- ── Main Info ────────────────────────────────────────────────────── -->
+      <div class="detail-main">
+
+        <!-- Description card -->
+        <div class="fmc-card detail-desc-card">
+          <h5 class="detail-title">{{ complaint.title }}</h5>
+          <p class="detail-location">
+            <i class="bi bi-geo-alt-fill" aria-hidden="true"></i>
+            {{ complaint.locality?.localityName }} — {{ complaint.address }}
+          </p>
+          <p class="detail-body">{{ complaint.description }}</p>
+        </div>
+
+        <!-- Timeline card -->
+        <div class="fmc-card" *ngIf="timeline.length > 0">
+          <h6 class="detail-section-title">
+            <i class="bi bi-clock-history text-primary" aria-hidden="true"></i>
+            Activity Timeline
+          </h6>
+          <app-timeline [entries]="timeline"></app-timeline>
+        </div>
+
+      </div>
+
+      <!-- ── Sidebar ────────────────────────────────────────────────────── -->
+      <div class="detail-sidebar">
+        <div class="fmc-card">
+          <h6 class="detail-section-title">
+            <i class="bi bi-info-circle-fill" aria-hidden="true"></i>
+            Complaint Details
+          </h6>
+
+          <div class="meta-list">
+            <div class="meta-item-row">
+              <span class="meta-key">Category</span>
+              <span class="meta-val">{{ complaint.category?.categoryName ?? '—' }}</span>
+            </div>
+            <div class="meta-item-row">
+              <span class="meta-key">Criticality</span>
+              <span class="meta-val">
+                <span class="badge-status"
+                      [class.badge-Escalated]="complaint.criticality === 'High'"
+                      [class.badge-Pending]="complaint.criticality === 'Medium'"
+                      [class.badge-Resolved]="complaint.criticality === 'Low'">
+                  {{ complaint.criticality }}
+                </span>
+              </span>
+            </div>
+            <div class="meta-item-row">
+              <span class="meta-key">Citizen</span>
+              <span class="meta-val">{{ complaint.citizen?.fullName ?? '—' }}</span>
+            </div>
+            <div class="meta-item-row">
+              <span class="meta-key">Department</span>
+              <span class="meta-val">{{ complaint.department?.deptName ?? 'Unassigned' }}</span>
+            </div>
+            <div class="meta-item-row">
+              <span class="meta-key">Submitted</span>
+              <span class="meta-val">{{ complaint.submittedAt | date:'dd MMM yyyy' }}</span>
+            </div>
+            <div class="meta-item-row">
+              <span class="meta-key">Last Updated</span>
+              <span class="meta-val">{{ complaint.updatedAt | date:'dd MMM yyyy' }}</span>
+            </div>
+            <ng-container *ngIf="complaint.estimatedResDate">
+              <div class="meta-item-row">
+                <span class="meta-key">Est. Resolution</span>
+                <span class="meta-val">{{ complaint.estimatedResDate | date:'dd MMM yyyy' }}</span>
+              </div>
+            </ng-container>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+  </ng-container>
+
+</div>

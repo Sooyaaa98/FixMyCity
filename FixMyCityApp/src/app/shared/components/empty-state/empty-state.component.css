@@ -1,0 +1,46 @@
+/* src/app/shared/components/empty-state/empty-state.component.css
+   Phase 6 — circle-on-tint icon, fmc-* tokens, fmc-fade-up entry.
+   The legacy .fmc-empty-state__icon / __title / __subtitle classes are
+   kept as aliases so any external consumers that targeted them by name
+   continue to render correctly. */
+
+.fmc-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 56px 24px;
+  text-align: center;
+  animation: fmc-fade-up 0.4s ease forwards;
+}
+
+.fmc-empty-icon,
+.fmc-empty-state__icon {
+  width: 72px;
+  height: 72px;
+  background: var(--fmc-primary-light);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  font-size: 30px;
+  color: var(--fmc-primary);
+}
+
+.fmc-empty-title,
+.fmc-empty-state__title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--fmc-text);
+  margin: 0 0 8px;
+}
+
+.fmc-empty-desc,
+.fmc-empty-state__subtitle {
+  font-size: 14px;
+  color: var(--fmc-text-muted);
+  max-width: 360px;
+  line-height: 1.6;
+  margin: 0 0 20px;
+}

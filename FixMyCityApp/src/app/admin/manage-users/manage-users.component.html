@@ -1,0 +1,183 @@
+<!-- src/app/admin/manage-users/manage-users.component.html -->
+
+<div class="fmc-page">
+
+  <!-- ── Header + Tabs + Search ──────────────────────────────────────────── -->
+  <div class="page-header fmc-card">
+    <div>
+      <h2>👥 Manage Users</h2>
+      <p class="page-subtitle">Browse, search, and manage platform users by role.</p>
+    </div>
+    <div class="header-controls">
+      <!-- Role tabs -->
+      <div class="role-tabs" role="tablist">
+        <button *ngFor="let tab of roleTabs" class="role-tab"
+                [class.role-tab--active]="activeRole === tab"
+                (click)="setRole(tab)" role="tab"
+                [attr.aria-selected]="activeRole === tab">
+          {{ tab }}
+        </button>
+      </div>
+      <!-- Search bar -->
+      <div class="search-bar">
+        <i class="bi bi-search search-icon" aria-hidden="true"></i>
+        <input
+          class="fmc-input search-input"
+          type="text"
+          placeholder="Search by ID, name or email…"
+          [(ngModel)]="searchQuery"
+          aria-label="Search users"
+        />
+        <button *ngIf="searchQuery" class="search-clear" type="button"
+                (click)="searchQuery = ''" aria-label="Clear search">
+          <i class="bi bi-x" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <app-loading-spinner *ngIf="isLoading" message="Loading users…"></app-loading-spinner>
+
+  <app-empty-state *ngIf="!isLoading && filteredUsers.length === 0"
+    icon="bi bi-people-fill"
+    [title]="searchQuery ? 'No users match your search' : 'No ' + activeRole + ' users found'"
+    [subtitle]="searchQuery ? 'Try a different ID, name, or email.' : ''"
+  ></app-empty-state>
+
+  <!-- ── Users Table ──────────────────────────────────────────────────────── -->
+  <div class="fmc-card users-table" *ngIf="!isLoading && filteredUsers.length > 0">
+    <div class="table-meta">
+      Showing <strong>{{ filteredUsers.length }}</strong> of <strong>{{ users.length }}</strong> {{ activeRole }} users
+      <span *ngIf="searchQuery"> matching "<em>{{ searchQuery }}</em>"</span>
+    </div>
+    <div class="table-wrap">
+      <table class="fmc-table" aria-label="User list">
+        <thead>
+          <tr>
+            <th class="col-id">ID ↑</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Locality</th>
+            <th>Status</th>
+            <th class="col-actions">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let u of filteredUsers">
+            <td class="col-id mono">{{ u.userId }}</td>
+            <td class="user-name">{{ u.fullName }}</td>
+            <td class="user-email">{{ u.email }}</td>
+            <td>{{ u.localityName ?? '—' }}</td>
+            <td>
+              <span class="badge-status" [ngClass]="userStatusClass(u)">
+                {{ userStatusLabel(u) }}
+              </span>
+            </td>
+            <td class="col-actions">
+              <!-- Deactivate — only for active, non-banned users -->
+              <button
+                class="btn-secondary btn--sm"
+                (click)="openDeactivate(u)"
+                [disabled]="!u.isActive || u.isBanned"
+                title="Deactivate user (reversible)"
+              >
+                <i class="bi bi-person-dash" aria-hidden="true"></i>
+                Deactivate
+              </button>
+              <!-- Ban — for anyone not already banned -->
+              <button
+                class="btn-danger btn--sm"
+                (click)="openBan(u)"
+                [disabled]="!!u.isBanned"
+                title="Permanently ban this user"
+              >
+                <i class="bi bi-slash-circle" aria-hidden="true"></i>
+                Ban
+              </button>
+              <!-- Reactivate — only for inactive or banned users -->
+              <button
+                *ngIf="!u.isActive || u.isBanned"
+                class="btn-primary btn--sm"
+                (click)="openReactivate(u)"
+                title="Restore account access"
+              >
+                <i class="bi bi-person-check" aria-hidden="true"></i>
+                Reactivate
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── Action Confirmation Modal ─────────────────────────────────────────── -->
+<div class="modal-overlay" *ngIf="showModal" role="dialog" aria-modal="true"
+     [attr.aria-label]="modalTitle" (click)="closeModal()">
+  <div class="modal-panel fmc-card" (click)="$event.stopPropagation()">
+
+    <div class="modal-header">
+      <h3 class="modal-title">
+        <i class="bi"
+           [class.bi-person-dash]="modalMode === 'deactivate'"
+           [class.bi-slash-circle]="modalMode === 'ban'"
+           [class.bi-person-check]="modalMode === 'reactivate'"
+           aria-hidden="true"></i>
+        {{ modalTitle }}
+      </h3>
+      <button class="modal-close" type="button" (click)="closeModal()" aria-label="Close">
+        <i class="bi bi-x-lg" aria-hidden="true"></i>
+      </button>
+    </div>
+
+    <div class="modal-body" *ngIf="modalUser">
+      <!-- User info strip -->
+      <div class="modal-user-info">
+        <span class="modal-user-id">ID #{{ modalUser.userId }}</span>
+        <span class="modal-user-name">{{ modalUser.fullName }}</span>
+        <span class="modal-user-email">{{ modalUser.email }}</span>
+      </div>
+
+      <!-- Warning description -->
+      <div class="modal-warning"
+           [class.modal-warning--danger]="modalMode === 'ban'"
+           [class.modal-warning--info]="modalMode === 'reactivate'">
+        <i class="bi"
+           [class.bi-exclamation-triangle-fill]="modalMode !== 'reactivate'"
+           [class.bi-info-circle-fill]="modalMode === 'reactivate'"
+           aria-hidden="true"></i>
+        {{ modalDescription }}
+      </div>
+
+      <!-- Reason field -->
+      <div class="fmc-form-group">
+        <label class="fmc-label required" for="modalReason">Reason</label>
+        <textarea
+          id="modalReason"
+          class="fmc-input"
+          [(ngModel)]="modalReason"
+          rows="3"
+          placeholder="Briefly explain the reason for this action…"
+        ></textarea>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-secondary" type="button" (click)="closeModal()" [disabled]="modalBusy">
+        Cancel
+      </button>
+      <button
+        [ngClass]="modalConfirmClass"
+        type="button"
+        [disabled]="!modalReason.trim() || modalBusy"
+        (click)="confirmAction()"
+      >
+        <span *ngIf="modalBusy"><i class="bi bi-arrow-repeat bi-spin" aria-hidden="true"></i> Saving…</span>
+        <span *ngIf="!modalBusy">Confirm</span>
+      </button>
+    </div>
+
+  </div>
+</div>

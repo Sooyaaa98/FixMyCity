@@ -1,0 +1,22 @@
+<!-- src/app/layouts/public-layout/public-layout.component.html -->
+<div class="public-shell">
+  <nav class="navbar navbar-expand-lg fmc-navbar sticky-top">
+    <div class="container">
+      <a class="navbar-brand fmc-brand d-flex align-items-center" routerLink="/home">
+        <img src="assets/Logo.png" alt="FixMyCity Logo" class="fmc-logo-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';"><span style="display:none;"><i class="bi bi-geo-alt-fill"></i> FixMyCity</span>
+      </a>
+      <div class="d-flex align-items-center gap-3">
+        <app-theme-toggle></app-theme-toggle>
+        <a routerLink="/login" routerLinkActive="active" class="nav-link fmc-link">
+          <i class="bi bi-box-arrow-in-right me-1"></i>Login
+        </a>
+        <a routerLink="/register/citizen" class="btn btn-primary btn-sm px-3" style="border-radius: 20px;">
+          <i class="bi bi-person-plus-fill me-1"></i>Register
+        </a>
+      </div>
+    </div>
+  </nav>
+  <main>
+    <router-outlet></router-outlet>
+  </main>
+</div>

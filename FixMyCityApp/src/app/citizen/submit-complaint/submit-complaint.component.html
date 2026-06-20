@@ -1,0 +1,243 @@
+<!-- src/app/citizen/submit-complaint/submit-complaint.component.html
+     Phase 6 (2026-05-20) — restructure:
+       • Photo upload moved to the TOP of the form (per user request).
+       • Drag-and-drop ready dropzone (visual + dragover handlers).
+       • Preview tile with status messages and a Remove button.
+       • "(Optional)" affordance clear; error message UX consistent with the
+         rest of the form (.fmc-error-msg).
+       • AI hint panel sits directly under the photo so the citizen sees
+         category / description / dedup signals before they even start typing. -->
+
+<div class="fmc-page">
+  <div class="fmc-card submit-card">
+
+    <div class="submit-header">
+      <h3 class="page-title">📝 Report an Issue</h3>
+      <p class="page-subtitle">Help us improve your city by reporting civic issues.</p>
+    </div>
+
+    <!-- Phase 8 (§2) — restore-draft banner. Shown only when a previous
+         in-progress draft was found in localStorage. -->
+    <div *ngIf="hasDraft" class="alert alert-info d-flex align-items-center justify-content-between"
+         role="alert" style="border-radius: 12px;">
+      <div>
+        <i class="bi bi-clock-history me-2" aria-hidden="true"></i>
+        <strong>Resume your previous draft?</strong>
+        <small *ngIf="draftSavedAt" class="d-block text-muted">
+          Last saved: {{ draftSavedAt | date:'short' }}
+        </small>
+      </div>
+      <div class="d-flex gap-2">
+        <button type="button" class="btn btn-sm btn-primary" (click)="restoreDraft()">
+          Restore
+        </button>
+        <button type="button" class="btn btn-sm btn-outline-secondary" (click)="discardDraft()">
+          Discard
+        </button>
+      </div>
+    </div>
+
+    <form [formGroup]="submitForm" (ngSubmit)="onSubmit()" novalidate>
+
+      <!-- ───────────── Photo Upload (TOP — Phase 6) ───────────── -->
+      <div class="fmc-form-group photo-upload-block">
+        <label class="fmc-label" for="photoInput">
+          Add a photo
+          <span class="optional-tag">Optional</span>
+          <span class="ai-tag">✨ AI auto-fills category, description &amp; location</span>
+        </label>
+
+        <div *ngIf="!photoPreviewUrl"
+             class="photo-dropzone"
+             [class.is-dragging]="isDragging"
+             (dragenter)="onDragEnter($event)"
+             (dragover)="onDragOver($event)"
+             (dragleave)="onDragLeave($event)"
+             (drop)="onDrop($event)">
+          <input id="photoInput"
+                 type="file"
+                 accept="image/jpeg,image/png,image/webp"
+                 capture="environment"
+                 class="photo-input"
+                 (change)="onPhotoSelected($event)"
+                 [disabled]="photoUploading || photoAnalysing" />
+          <label for="photoInput" class="photo-dropzone-label">
+            <i class="bi bi-cloud-upload-fill photo-dropzone-icon" aria-hidden="true"></i>
+            <span class="photo-dropzone-primary">
+              <strong>Drop a photo</strong> here, or
+              <span class="photo-dropzone-cta">browse files</span>
+            </span>
+            <small>JPG / PNG / WEBP up to 10 MB</small>
+          </label>
+        </div>
+
+        <div *ngIf="photoPreviewUrl" class="photo-preview">
+          <img [src]="photoPreviewUrl" alt="Selected photo preview" />
+          <div class="photo-preview-meta">
+            <div class="photo-preview-name">{{ photoFileName || 'Selected image' }}</div>
+            <div class="photo-preview-status" *ngIf="photoUploading">
+              <i class="bi bi-arrow-clockwise bi-spin"></i> Uploading…
+            </div>
+            <div class="photo-preview-status" *ngIf="!photoUploading && photoAnalysing">
+              <i class="bi bi-cpu"></i> Analysing with AI…
+            </div>
+            <div class="photo-preview-status"
+                 *ngIf="photoMessage && !photoUploading && !photoAnalysing">
+              <i class="bi bi-check-circle-fill text-success"></i> {{ photoMessage }}
+            </div>
+            <button type="button" class="btn-link" (click)="clearPhoto()">
+              <i class="bi bi-x-lg"></i> Remove
+            </button>
+          </div>
+        </div>
+
+        <span class="fmc-error-msg" *ngIf="photoError">{{ photoError }}</span>
+      </div>
+
+      <!-- AI hint panel — surfaces under the photo so suggestions are visible early. -->
+      <div *ngIf="aiVisible" class="ai-hint-mount">
+        <app-ai-hint-panel
+          [visible]="aiVisible"
+          [loading]="aiLoading"
+          [suggestions]="aiSuggestions"
+          [duplicateResult]="duplicateResult"
+          (categoryAccepted)="onCategoryAccepted($event)"
+          (submitAnyway)="onSubmitAnyway()"
+        ></app-ai-hint-panel>
+      </div>
+
+      <!-- ───────────── Rest of the form ───────────── -->
+      <div class="fmc-grid-2">
+
+        <!-- Title -->
+        <div class="fmc-form-group">
+          <label class="fmc-label required" for="title">Issue Title</label>
+          <input
+            id="title"
+            type="text"
+            formControlName="title"
+            class="fmc-input"
+            [class.error]="isInvalid('title')"
+            placeholder="e.g. Broken streetlight on MG Road"
+            (blur)="suggestCategory()"
+          />
+          <span class="fmc-error-msg" *ngIf="isInvalid('title')">{{ fieldError('title') }}</span>
+        </div>
+
+        <!-- Category -->
+        <div class="fmc-form-group">
+          <label class="fmc-label required" for="categoryId">
+            Category
+            <span class="ai-tag" *ngIf="aiSuggestions.length">✨ AI suggests below</span>
+          </label>
+          <select
+            id="categoryId"
+            formControlName="categoryId"
+            class="fmc-input"
+            [class.error]="isInvalid('categoryId')"
+          >
+            <option [value]="null">-- Select Category --</option>
+            <option *ngFor="let cat of categories" [value]="cat.categoryId">
+              {{ cat.categoryName }}
+            </option>
+          </select>
+          <span class="fmc-error-msg" *ngIf="isInvalid('categoryId')">{{ fieldError('categoryId') }}</span>
+        </div>
+
+        <!-- Description (full width) -->
+        <div class="fmc-form-group span-2">
+          <label class="fmc-label required" for="description">
+            Description
+            <span class="ai-tag" *ngIf="aiSuggestedDescription">✨ AI draft available</span>
+          </label>
+          <textarea
+            id="description"
+            formControlName="description"
+            class="fmc-input description-area"
+            [class.error]="isInvalid('description')"
+            placeholder="Describe the issue in detail (min 10 characters)…"
+          ></textarea>
+          <div class="description-actions" *ngIf="aiSuggestedDescription">
+            <button type="button" class="btn-link" (click)="useAiDescription()">
+              <i class="bi bi-magic"></i> Use AI description
+            </button>
+            <button type="button" class="btn-link" (click)="suggestCategory()" [disabled]="aiLoading">
+              <i class="bi bi-arrow-clockwise" [class.bi-spin]="aiLoading"></i>
+              Regenerate
+            </button>
+          </div>
+          <span class="fmc-error-msg" *ngIf="isInvalid('description')">{{ fieldError('description') }}</span>
+        </div>
+
+        <!-- Locality -->
+        <div class="fmc-form-group">
+          <label class="fmc-label required" for="localityId">Locality</label>
+          <select
+            id="localityId"
+            formControlName="localityId"
+            class="fmc-input"
+            [class.error]="isInvalid('localityId')"
+          >
+            <option [value]="null">-- Select Locality --</option>
+            <option *ngFor="let loc of localities" [value]="loc.localityId">
+              {{ loc.localityName }}{{ loc.city ? ', ' + loc.city : '' }}
+            </option>
+          </select>
+          <span class="fmc-error-msg" *ngIf="isInvalid('localityId')">{{ fieldError('localityId') }}</span>
+        </div>
+
+        <!-- Address -->
+        <div class="fmc-form-group">
+          <label class="fmc-label required" for="address">
+            Address
+            <span class="ai-tag" *ngIf="hasGps">📍 GPS captured</span>
+          </label>
+          <input
+            id="address"
+            type="text"
+            formControlName="address"
+            class="fmc-input"
+            [class.error]="isInvalid('address')"
+            placeholder="Exact location / landmark"
+          />
+          <div class="description-actions">
+            <button type="button" class="btn-link" (click)="useMyLocation()" [disabled]="geoLoading">
+              <i class="bi" [class.bi-arrow-clockwise]="geoLoading" [class.bi-spin]="geoLoading" [class.bi-crosshair]="!geoLoading"></i>
+              {{ geoLoading ? 'Reading location…' : 'Use my current location' }}
+            </button>
+          </div>
+          <span class="fmc-error-msg" *ngIf="isInvalid('address')">{{ fieldError('address') }}</span>
+        </div>
+
+        <!-- Criticality -->
+        <div class="fmc-form-group">
+          <label class="fmc-label required" for="criticality">Criticality</label>
+          <select id="criticality" formControlName="criticality" class="fmc-input">
+            <option *ngFor="let c of criticalityOptions" [value]="c">{{ c }}</option>
+          </select>
+        </div>
+
+      </div><!-- /fmc-grid-2 -->
+
+      <!-- Success -->
+      <div class="success-msg" *ngIf="successMessage">✅ {{ successMessage }}</div>
+
+      <!-- Actions -->
+      <div class="form-actions">
+        <button type="button" class="btn-secondary" routerLink="/citizen/complaints">
+          Cancel
+        </button>
+        <button
+          type="submit"
+          class="btn-primary"
+          [disabled]="isLoading"
+          fmcRipple
+        >
+          <span *ngIf="isLoading"><i class="bi bi-arrow-repeat bi-spin"></i> Submitting…</span>
+          <span *ngIf="!isLoading">Submit Complaint</span>
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>

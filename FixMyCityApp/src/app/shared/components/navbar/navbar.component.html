@@ -1,0 +1,181 @@
+<!-- src/app/shared/components/navbar/navbar.component.html -->
+
+<nav class="navbar navbar-expand-lg fmc-navbar sticky-top"
+     [class.fmc-navbar--scrolled]="scrolled">
+  <div class="container-fluid px-3 px-lg-4">
+
+    <!-- ── Brand ─────────────────────────────────────────────────── -->
+    <a class="navbar-brand fmc-brand d-flex align-items-center" [routerLink]="brandRoute">
+      <img src="assets/Logo.png" alt="FixMyCity Logo" class="fmc-logo-img"
+        onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';"><span
+        style="display:none;"><i class="bi bi-geo-alt-fill"></i> FixMyCity</span>
+    </a>
+
+    <!-- ── Mobile Toggle ─────────────────────────────────────────── -->
+    <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse"
+      data-bs-target="#fmcNavContent" aria-controls="fmcNavContent" aria-expanded="false"
+      aria-label="Toggle navigation">
+      <i class="bi bi-list"></i>
+    </button>
+
+    <!-- ── Collapsible Content ───────────────────────────────────── -->
+    <div class="collapse navbar-collapse" id="fmcNavContent">
+
+      <!-- Role-based nav links -->
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+        <!-- Citizen -->
+        <ng-container *ngIf="userRole === 'Citizen'">
+          <li class="nav-item">
+            <a class="nav-link fmc-link" routerLink="/citizen/home" routerLinkActive="active">
+              <i class="bi bi-house-door-fill me-1"></i>Home
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link fmc-link" routerLink="/citizen/complaints" routerLinkActive="active">
+              <i class="bi bi-card-list me-1"></i>My Complaints
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link fmc-link" routerLink="/citizen/scoreboard" routerLinkActive="active">
+              <i class="bi bi-trophy-fill me-1"></i>Scoreboard
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link fmc-link" routerLink="/citizen/points" routerLinkActive="active">
+              <i class="bi bi-star-fill me-1"></i>Points
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link fmc-link" routerLink="/citizen/certificates" routerLinkActive="active">
+              <i class="bi bi-patch-check-fill me-1"></i>Certificates
+            </a>
+          </li>
+        </ng-container>
+
+        <!-- Solver -->
+        <ng-container *ngIf="userRole === 'Solver'">
+          <li class="nav-item">
+            <a class="nav-link fmc-link" routerLink="/solver/dashboard" routerLinkActive="active">
+              <i class="bi bi-speedometer2 me-1"></i>Dashboard
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link fmc-link" routerLink="/solver/complaints" routerLinkActive="active">
+              <i class="bi bi-card-list me-1"></i>Complaints
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link fmc-link" routerLink="/solver/pwg-requests" routerLinkActive="active">
+              <i class="bi bi-handshake me-1"></i>PWG Requests
+            </a>
+          </li>
+        </ng-container>
+
+        <!-- PWG -->
+        <ng-container *ngIf="userRole === 'PWG'">
+          <li class="nav-item">
+            <a class="nav-link fmc-link" routerLink="/pwg/complaints" routerLinkActive="active">
+              <i class="bi bi-folder2-open me-1"></i>Open Complaints
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link fmc-link" routerLink="/pwg/requests" routerLinkActive="active">
+              <i class="bi bi-send-fill me-1"></i>My Requests
+            </a>
+          </li>
+        </ng-container>
+
+        <!-- Admin -->
+        <ng-container *ngIf="userRole === 'SuperAdmin'">
+          <li class="nav-item">
+            <a class="nav-link fmc-link" routerLink="/admin/dashboard" routerLinkActive="active">
+              <i class="bi bi-speedometer2 me-1"></i>Dashboard
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link fmc-link" routerLink="/admin/approvals" routerLinkActive="active">
+              <i class="bi bi-clipboard2-check me-1"></i>Approvals
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link fmc-link" routerLink="/admin/users" routerLinkActive="active">
+              <i class="bi bi-people-fill me-1"></i>Users
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link fmc-link" routerLink="/admin/escalated" routerLinkActive="active">
+              <i class="bi bi-exclamation-triangle-fill me-1"></i>Escalated
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link fmc-link" routerLink="/admin/complaints" routerLinkActive="active">
+              <i class="bi bi-list-ul me-1"></i>All Complaints
+            </a>
+          </li>
+        </ng-container>
+
+      </ul>
+
+      <!-- ── Right Rail (authenticated only) ─────────────────────── -->
+      <div class="d-flex align-items-center gap-2" *ngIf="userRole">
+
+        <!-- Theme Toggle (light / dark) — Phase 5 -->
+        <app-theme-toggle></app-theme-toggle>
+
+        <!-- Notification Bell -->
+        <app-notification-bell [userId]="userId"></app-notification-bell>
+
+        <!-- Role Badge -->
+        <span class="fmc-role-badge badge">{{ userRole }}</span>
+
+        <!-- Profile Dropdown ─ THE FIX for missing profile icon -->
+        <div class="dropdown">
+
+          <button class="btn fmc-profile-btn dropdown-toggle d-flex align-items-center gap-2" type="button"
+            data-bs-toggle="dropdown" aria-expanded="false">
+            <span class="fmc-avatar">
+              <i class="bi bi-person-circle"></i>
+            </span>
+            <span class="fmc-user-name d-none d-md-inline">{{ fullName }}</span>
+          </button>
+
+          <ul class="dropdown-menu dropdown-menu-end fmc-dropdown shadow">
+
+            <!-- User info header -->
+            <li class="px-3 py-2 border-bottom">
+              <div class="fw-semibold small" style="color: var(--fmc-text);">{{ fullName }}</div>
+              <div style="font-size: 12px; color: var(--fmc-text-muted);">{{ email }}</div>
+              <span class="fmc-role-badge badge mt-1">{{ userRole }}</span>
+            </li>
+
+            <!-- My Profile (only for roles that have a profile page) -->
+            <li *ngIf="profileRoute">
+              <a class="dropdown-item fmc-dropdown-item" [routerLink]="profileRoute">
+                <i class="bi bi-person-fill me-2 text-primary"></i>My Profile
+              </a>
+            </li>
+
+            <li *ngIf="profileRoute">
+              <hr class="dropdown-divider my-1">
+            </li>
+
+            <!-- Sign Out -->
+            <li>
+              <button class="dropdown-item fmc-dropdown-item text-danger" (click)="onLogout()">
+                <i class="bi bi-box-arrow-right me-2"></i>Sign Out
+              </button>
+            </li>
+
+          </ul>
+        </div>
+        <!-- /Profile Dropdown -->
+
+      </div>
+      <!-- /Right Rail -->
+
+    </div>
+    <!-- /Collapse -->
+
+  </div>
+</nav>

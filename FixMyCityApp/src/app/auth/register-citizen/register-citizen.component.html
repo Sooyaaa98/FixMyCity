@@ -1,0 +1,117 @@
+<!-- src/app/auth/register-citizen/register-citizen.component.html -->
+
+<div class="register-wrapper">
+  <div class="fmc-card register-card">
+
+    <div class="register-header">
+      <h2>🏙️ FixMyCity</h2>
+      <h3>Citizen Registration</h3>
+      <p class="register-subtitle">Create your civic profile to report and track local issues.</p>
+    </div>
+
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" novalidate>
+      <div class="fmc-grid-2">
+
+        <div class="fmc-form-group">
+          <label class="fmc-label required" for="reg-fullName">Full Name</label>
+          <input id="reg-fullName" type="text" formControlName="fullName" class="fmc-input"
+                 [class.error]="registerForm.get('fullName')?.invalid && registerForm.get('fullName')?.touched"
+                 placeholder="e.g. Asha Verma"
+                 autocomplete="name" />
+          <span class="fmc-error-msg" *ngIf="registerForm.get('fullName')?.errors?.['required'] && registerForm.get('fullName')?.touched">Full name is required.</span>
+          <span class="fmc-error-msg" *ngIf="registerForm.get('fullName')?.errors?.['minlength'] && registerForm.get('fullName')?.touched">At least 2 characters.</span>
+        </div>
+
+        <div class="fmc-form-group">
+          <label class="fmc-label required" for="reg-email">Email</label>
+          <input id="reg-email" type="email" formControlName="email" class="fmc-input"
+                 [class.error]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched"
+                 placeholder="you@example.com"
+                 autocomplete="email" />
+          <span class="fmc-error-msg" *ngIf="registerForm.get('email')?.errors?.['required'] && registerForm.get('email')?.touched">Email is required.</span>
+          <span class="fmc-error-msg" *ngIf="registerForm.get('email')?.errors?.['email'] && registerForm.get('email')?.touched">Enter a valid email address.</span>
+        </div>
+
+        <div class="fmc-form-group">
+          <label class="fmc-label required" for="reg-password">Password</label>
+          <input id="reg-password" type="password" formControlName="password" class="fmc-input"
+                 [class.error]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"
+                 placeholder="Minimum 6 characters"
+                 autocomplete="new-password" />
+          <span class="fmc-error-msg" *ngIf="registerForm.get('password')?.errors?.['required'] && registerForm.get('password')?.touched">Password is required.</span>
+          <span class="fmc-error-msg" *ngIf="registerForm.get('password')?.errors?.['minlength'] && registerForm.get('password')?.touched">At least 6 characters.</span>
+        </div>
+
+        <div class="fmc-form-group">
+          <label class="fmc-label required" for="reg-phone">Phone</label>
+          <input id="reg-phone" type="tel" formControlName="phone" class="fmc-input"
+                 [class.error]="registerForm.get('phone')?.invalid && registerForm.get('phone')?.touched"
+                 placeholder="10-digit mobile (e.g. 9811234567)"
+                 inputmode="numeric"
+                 maxlength="15"
+                 autocomplete="tel" />
+          <span class="fmc-error-msg" *ngIf="registerForm.get('phone')?.errors?.['required'] && registerForm.get('phone')?.touched">Phone is required.</span>
+          <span class="fmc-error-msg" *ngIf="registerForm.get('phone')?.errors?.['pattern'] && registerForm.get('phone')?.touched">Phone must be 10–15 digits (numbers only).</span>
+        </div>
+
+        <div class="fmc-form-group span-2">
+          <label class="fmc-label required" for="reg-address">Address</label>
+          <input id="reg-address" type="text" formControlName="address" class="fmc-input"
+                 [class.error]="registerForm.get('address')?.invalid && registerForm.get('address')?.touched"
+                 placeholder="House / street / area"
+                 autocomplete="street-address" />
+          <span class="fmc-error-msg" *ngIf="registerForm.get('address')?.errors?.['required'] && registerForm.get('address')?.touched">Address is required.</span>
+          <span class="fmc-error-msg" *ngIf="registerForm.get('address')?.errors?.['minlength'] && registerForm.get('address')?.touched">At least 5 characters.</span>
+        </div>
+
+        <div class="fmc-form-group">
+          <label class="fmc-label required" for="reg-locality">Locality</label>
+          <select id="reg-locality" formControlName="localityId" class="fmc-input"
+                  [class.error]="registerForm.get('localityId')?.invalid && registerForm.get('localityId')?.touched">
+            <option [ngValue]="null">— Select your locality —</option>
+            <option *ngFor="let l of localities" [ngValue]="l.localityId">{{ l.localityName }}{{ l.city ? ', ' + l.city : '' }}</option>
+          </select>
+          <span class="fmc-error-msg" *ngIf="registerForm.get('localityId')?.invalid && registerForm.get('localityId')?.touched">Please select your locality.</span>
+        </div>
+
+        <div class="fmc-form-group">
+          <label class="fmc-label required" for="reg-aadhaar">Aadhaar Number</label>
+          <input id="reg-aadhaar" type="text" formControlName="aadhaarNo" class="fmc-input"
+                 [class.error]="registerForm.get('aadhaarNo')?.invalid && registerForm.get('aadhaarNo')?.touched"
+                 placeholder="12-digit Aadhaar"
+                 inputmode="numeric"
+                 maxlength="12" />
+          <span class="fmc-error-msg" *ngIf="registerForm.get('aadhaarNo')?.errors?.['required'] && registerForm.get('aadhaarNo')?.touched">Aadhaar is required.</span>
+          <span class="fmc-error-msg" *ngIf="registerForm.get('aadhaarNo')?.errors?.['pattern'] && registerForm.get('aadhaarNo')?.touched">Aadhaar must be exactly 12 digits.</span>
+        </div>
+
+      </div>
+
+      <div class="fmc-error-msg api-error" *ngIf="errorMessage">{{ errorMessage }}</div>
+      <div class="success-msg" *ngIf="successMessage">✅ {{ successMessage }}</div>
+
+      <div class="form-actions">
+        <button type="button" class="btn-secondary" routerLink="/login">Back to Login</button>
+        <button type="submit" class="btn-primary" [disabled]="isLoading || registerForm.invalid" fmcRipple>
+          {{ isLoading ? 'Registering…' : 'Create Account' }}
+        </button>
+      </div>
+
+      <div class="register-divider">
+        <span>or</span>
+      </div>
+
+      <button type="button"
+              class="btn-secondary btn-sso"
+              (click)="signUpWithGoogle()"
+              [disabled]="isLoading"
+              aria-label="Sign up with Google demo SSO">
+        <span class="sso-icon" aria-hidden="true">G</span>
+        Continue with Google (demo)
+      </button>
+      <p class="sso-note">Demo SSO creates a placeholder citizen account — wire a real OAuth provider in production.</p>
+
+      <p class="login-link">Already have an account? <a routerLink="/login">Sign in</a></p>
+    </form>
+  </div>
+</div>

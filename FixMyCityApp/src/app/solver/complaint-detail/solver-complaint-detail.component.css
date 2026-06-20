@@ -1,0 +1,140 @@
+/* src/app/solver/complaint-detail/solver-complaint-detail.component.css */
+
+.back-btn    { margin-bottom: 16px; }
+.detail-card { margin-bottom: 16px; }
+.action-card { margin-bottom: 16px; }
+.action-card h4 { margin: 0 0 16px; font-size: 15px; }
+
+.detail-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.detail-id    { font-size: 11px; color: var(--fmc-text-muted); display: block; margin-bottom: 4px; }
+.detail-title { margin: 0; font-size: 20px; }
+.detail-desc  { font-size: 14px; color: var(--fmc-text-muted); line-height: 1.6; margin-bottom: 16px; }
+.detail-meta  { margin-top: 8px; }
+
+.meta-block { display: flex; flex-direction: column; gap: 2px; }
+.meta-label { font-size: 11px; color: var(--fmc-text-muted); text-transform: uppercase; letter-spacing: 0.4px; }
+.meta-value { font-size: 14px; font-weight: 500; }
+.funding-amount { color: var(--fmc-success); }
+
+/* ── AI Scores ────────────────────────────────────────────────────────────── */
+
+.ai-scores-card { margin-bottom: 16px; }
+
+.ai-scores-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  color: var(--fmc-primary);
+}
+
+.ai-scores-header h4 { margin: 0; font-size: 15px; }
+
+.ai-model-badge {
+  margin-left: auto;
+  font-size: 11px;
+  background: #eff6ff;
+  color: var(--fmc-primary);
+  border: 1px solid #bfdbfe;
+  border-radius: 10px;
+  padding: 2px 8px;
+  font-weight: 600;
+}
+
+.scores-grid { gap: 20px; }
+
+.score-block {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.score-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: var(--fmc-text-muted);
+  font-weight: 600;
+}
+
+.score-bar-wrap {
+  height: 6px;
+  background: var(--fmc-border);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.score-bar {
+  height: 100%;
+  border-radius: 3px;
+  background: var(--fmc-warning);
+  transition: width 0.5s ease;
+}
+
+.score-bar--blue { background: var(--fmc-primary); }
+
+.score-value { font-size: 14px; font-weight: 700; }
+.score-value.priority--high   { color: var(--fmc-danger); }
+.score-value.priority--medium { color: var(--fmc-warning); }
+.score-value.priority--low    { color: var(--fmc-success); }
+.score-value--blue  { color: var(--fmc-primary); }
+.score-value--green { color: var(--fmc-success); }
+
+.ai-no-scores {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--fmc-text-muted);
+  font-size: 13px;
+  margin-bottom: 16px;
+}
+
+/* ── Tags ─────────────────────────────────────────────────────────────────── */
+
+.tag-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.tag-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  color: #166534;
+  border-radius: 12px;
+  padding: 3px 10px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.tag-score {
+  background: rgba(22,101,52,0.12);
+  border-radius: 8px;
+  padding: 0 5px;
+  font-size: 11px;
+}
+
+/* ── Forms ────────────────────────────────────────────────────────────────── */
+
+.span-2 { grid-column: 1 / -1; }
+
+.date-form {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.date-form .fmc-form-group { flex: 1; min-width: 200px; margin: 0; }

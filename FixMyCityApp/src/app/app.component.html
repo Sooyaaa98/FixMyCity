@@ -1,0 +1,8 @@
+<!-- src/app/app.component.html
+     Phase 6: wraps router-outlet in an animated container so every route
+     change fades+slides via the @routeAnimations trigger defined in
+     core/route-animations.ts. min-height: 100vh prevents layout collapse
+     during the cross-fade. -->
+<div [@routeAnimations]="prepareRoute(outlet)" style="min-height: 100vh;">
+  <router-outlet #outlet="outlet"></router-outlet>
+</div>

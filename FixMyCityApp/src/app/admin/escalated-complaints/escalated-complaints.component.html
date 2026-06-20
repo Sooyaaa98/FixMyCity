@@ -1,0 +1,185 @@
+<!-- src/app/admin/escalated-complaints/escalated-complaints.component.html -->
+
+<div class="fmc-page">
+
+  <div class="page-header fmc-card">
+    <div>
+      <h2>🚨 Escalated Complaints</h2>
+      <p class="page-subtitle">Click any complaint to open the admin action panel.</p>
+    </div>
+    <button class="btn-secondary" (click)="loadEscalated()" [disabled]="isLoading">
+      <i class="bi bi-arrow-clockwise" [class.bi-spin]="isLoading" aria-hidden="true"></i>
+      Refresh
+    </button>
+  </div>
+
+  <app-loading-spinner *ngIf="isLoading" message="Loading escalated complaints…"></app-loading-spinner>
+
+  <div *ngIf="errorMessage" class="fmc-alert fmc-alert--danger">
+    <i class="bi bi-exclamation-circle-fill" aria-hidden="true"></i>
+    {{ errorMessage }}
+  </div>
+
+  <app-empty-state
+    *ngIf="!isLoading && complaints.length === 0 && !errorMessage"
+    icon="bi bi-check-circle"
+    title="No escalated complaints"
+    subtitle="All complaints are within normal SLA. Great job!"
+  ></app-empty-state>
+
+  <div class="escalated-count fmc-card" *ngIf="!isLoading && complaints.length > 0">
+    <i class="bi bi-exclamation-triangle-fill text-warning" aria-hidden="true"></i>
+    <strong>{{ complaints.length }}</strong> complaint{{ complaints.length === 1 ? '' : 's' }} need admin attention
+  </div>
+
+  <!-- Two-column layout: list | action panel -->
+  <div class="escalated-layout" *ngIf="!isLoading && complaints.length > 0">
+
+    <!-- ── Complaint List ──────────────────────────────────────────────────── -->
+    <div class="complaint-list">
+      <div
+        *ngFor="let c of complaints"
+        class="esc-card fmc-card"
+        [class.esc-card--selected]="selectedComplaint?.complaintId === c.complaintId"
+        (click)="selectComplaint(c)"
+        role="button"
+        tabindex="0"
+        (keydown.enter)="selectComplaint(c)"
+        [attr.aria-expanded]="selectedComplaint?.complaintId === c.complaintId"
+      >
+        <div class="esc-card__top">
+          <span class="esc-id">#{{ c.complaintId }}</span>
+          <span class="badge-status badge-Escalated">Escalated</span>
+          <span class="esc-criticality badge-status"
+                [class.badge-Rejected]="c.criticality === 'Critical' || c.criticality === 'High'"
+                [class.badge-Pending]="c.criticality === 'Medium'"
+                [class.badge-Resolved]="c.criticality === 'Low'">
+            {{ c.criticality }}
+          </span>
+        </div>
+        <div class="esc-title">{{ c.title }}</div>
+        <div class="esc-meta">
+          <span><i class="bi bi-geo-alt" aria-hidden="true"></i> {{ c.locality?.localityName ?? '—' }}</span>
+          <span><i class="bi bi-building" aria-hidden="true"></i> {{ c.department?.deptName ?? 'Unassigned' }}</span>
+          <span><i class="bi bi-calendar3" aria-hidden="true"></i> {{ c.submittedAt | date:'dd MMM yyyy' }}</span>
+        </div>
+        <div class="esc-card__footer">
+          <button class="btn-secondary btn--xs" (click)="viewDetail(c.complaintId); $event.stopPropagation()" title="Full complaint detail">
+            <i class="bi bi-box-arrow-up-right" aria-hidden="true"></i> View Detail
+          </button>
+          <span class="esc-select-hint" *ngIf="selectedComplaint?.complaintId !== c.complaintId">
+            <i class="bi bi-hand-index" aria-hidden="true"></i> Click to manage
+          </span>
+          <span class="esc-select-hint esc-select-hint--active" *ngIf="selectedComplaint?.complaintId === c.complaintId">
+            <i class="bi bi-check-circle-fill" aria-hidden="true"></i> Selected
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Action Panel ────────────────────────────────────────────────────── -->
+    <div class="action-panel" *ngIf="selectedComplaint; else noSelection">
+
+      <div class="action-panel__title">
+        <i class="bi bi-tools" aria-hidden="true"></i>
+        Admin Actions — Complaint #{{ selectedComplaint.complaintId }}
+      </div>
+
+      <!-- ── 1. Reassign Department ──────────────────────────────────────── -->
+      <div class="fmc-card action-section">
+        <h6 class="action-section__title">
+          <i class="bi bi-building-gear" aria-hidden="true"></i>
+          Reassign Department
+        </h6>
+        <p class="action-section__desc">
+          Route this complaint to a different department. Current:
+          <strong>{{ selectedComplaint.department?.deptName ?? 'Unassigned' }}</strong>
+        </p>
+        <div class="fmc-form-group">
+          <label class="fmc-label" for="reassignDept">New Department</label>
+          <select id="reassignDept" class="fmc-input" [(ngModel)]="reassignDeptId">
+            <option [ngValue]="null">— Select department —</option>
+            <option *ngFor="let d of departments" [ngValue]="d.deptId">{{ d.deptName }}</option>
+          </select>
+        </div>
+        <div class="fmc-form-group">
+          <label class="fmc-label" for="reassignReason">Reason</label>
+          <input id="reassignReason" class="fmc-input" type="text"
+                 [(ngModel)]="reassignReason" placeholder="Briefly explain the reassignment…" />
+        </div>
+        <button class="btn-primary btn--sm" (click)="doReassign()"
+                [disabled]="!reassignDeptId || !reassignReason.trim() || reassigning">
+          <span *ngIf="reassigning"><i class="bi bi-arrow-repeat bi-spin" aria-hidden="true"></i> Reassigning…</span>
+          <span *ngIf="!reassigning"><i class="bi bi-send" aria-hidden="true"></i> Reassign</span>
+        </button>
+      </div>
+
+      <!-- ── 2. Force Status ─────────────────────────────────────────────── -->
+      <div class="fmc-card action-section">
+        <h6 class="action-section__title">
+          <i class="bi bi-lightning-charge-fill" aria-hidden="true"></i>
+          Force Status Change
+        </h6>
+        <p class="action-section__desc">Override the complaint status as a superadmin decision.</p>
+        <div class="fmc-form-group">
+          <label class="fmc-label" for="forceStatus">Target Status</label>
+          <div class="status-options" role="radiogroup">
+            <label *ngFor="let s of forceStatusOptions"
+                   class="status-option"
+                   [class.status-option--selected]="forceStatus === s">
+              <input type="radio" [(ngModel)]="forceStatus" [value]="s" hidden />
+              <span class="badge-status"
+                    [class.badge-Resolved]="s === 'Resolved'"
+                    [class.badge-Rejected]="s === 'Rejected'"
+                    [class.badge-Pending]="s === 'Closed'">{{ s }}</span>
+            </label>
+          </div>
+        </div>
+        <div class="fmc-form-group">
+          <label class="fmc-label" for="forceRemark">Remark (optional)</label>
+          <input id="forceRemark" class="fmc-input" type="text"
+                 [(ngModel)]="forceRemark" placeholder="Optional admin note…" />
+        </div>
+        <button class="btn-danger btn--sm" (click)="doForceStatus()"
+                [disabled]="!forceStatus || forcingStatus">
+          <span *ngIf="forcingStatus"><i class="bi bi-arrow-repeat bi-spin" aria-hidden="true"></i> Updating…</span>
+          <span *ngIf="!forcingStatus"><i class="bi bi-check2-circle" aria-hidden="true"></i> Apply Status</span>
+        </button>
+      </div>
+
+      <!-- ── 3. Escalation Log ───────────────────────────────────────────── -->
+      <div class="fmc-card action-section">
+        <h6 class="action-section__title">
+          <i class="bi bi-clock-history" aria-hidden="true"></i>
+          Escalation History
+        </h6>
+        <div *ngIf="logLoading" class="log-loading">Loading…</div>
+        <div *ngIf="!logLoading && escalationLog.length === 0" class="log-empty">
+          No escalation events recorded for this complaint.
+        </div>
+        <div class="log-list" *ngIf="!logLoading && escalationLog.length > 0">
+          <div *ngFor="let e of escalationLog" class="log-entry">
+            <div class="log-entry__date">{{ e.escalatedAt | date:'dd MMM yyyy, HH:mm' }}</div>
+            <div class="log-entry__body">
+              <strong>{{ e.actor?.fullName ?? 'System' }}</strong>
+              escalated from <em>{{ e.originalDept?.deptName ?? '—' }}</em>
+              <span *ngIf="e.reassignedToDept"> → <em>{{ e.reassignedToDept.deptName }}</em></span>
+            </div>
+            <div class="log-entry__reason" *ngIf="e.reason">{{ e.reason }}</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ── No selection placeholder ──────────────────────────────────────── -->
+    <ng-template #noSelection>
+      <div class="action-panel action-panel--empty">
+        <i class="bi bi-hand-index-thumb" aria-hidden="true"></i>
+        <p>Select a complaint from the list to see admin actions.</p>
+      </div>
+    </ng-template>
+
+  </div>
+
+</div>

@@ -1,0 +1,166 @@
+<!-- src/app/auth/register-department/register-department.component.html -->
+
+<div class="register-wrapper">
+  <div class="fmc-card register-card">
+
+    <div class="register-header">
+      <h2>🏙️ FixMyCity</h2>
+      <h3>Department (Solver) Registration</h3>
+      <p class="approval-note">⚠️ Account requires Admin approval before access is granted.</p>
+    </div>
+
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+
+      <!-- Section 1: User Account -->
+      <div class="section-label">Account Details</div>
+      <div class="fmc-grid-2">
+
+        <div class="fmc-form-group">
+          <label class="fmc-label required">Officer Name</label>
+          <input type="text" formControlName="fullName" class="fmc-input"
+                 [class.error]="registerForm.get('fullName')?.invalid && registerForm.get('fullName')?.touched"
+                 placeholder="Full name of officer" />
+          <span class="fmc-error-msg"
+                *ngIf="registerForm.get('fullName')?.invalid && registerForm.get('fullName')?.touched">
+            Name is required.
+          </span>
+        </div>
+
+        <div class="fmc-form-group">
+          <label class="fmc-label required">Login Email</label>
+          <input type="email" formControlName="email" class="fmc-input"
+                 [class.error]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched"
+                 placeholder="you@example.com" />
+          <span class="fmc-error-msg"
+                *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
+            A valid email is required.
+          </span>
+        </div>
+
+        <div class="fmc-form-group">
+          <label class="fmc-label required">Password</label>
+          <input type="password" formControlName="password" class="fmc-input"
+                 [class.error]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"
+                 placeholder="Min. 6 characters" />
+          <span class="fmc-error-msg"
+                *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
+            Password must be at least 6 characters.
+          </span>
+        </div>
+
+        <div class="fmc-form-group">
+          <label class="fmc-label required">Phone</label>
+          <input type="text" formControlName="phone" class="fmc-input"
+                 [class.error]="registerForm.get('phone')?.invalid && registerForm.get('phone')?.touched"
+                 placeholder="10-digit mobile number" />
+          <span class="fmc-error-msg"
+                *ngIf="registerForm.get('phone')?.invalid && registerForm.get('phone')?.touched">
+            Phone is required.
+          </span>
+        </div>
+
+        <div class="fmc-form-group">
+          <label class="fmc-label required">Locality Served</label>
+          <input type="text" formControlName="localityId" class="fmc-input"
+                 [class.error]="registerForm.get('localityId')?.invalid && registerForm.get('localityId')?.touched"
+                 placeholder="e.g. Andheri West" />
+          <span class="fmc-error-msg"
+                *ngIf="registerForm.get('localityId')?.invalid && registerForm.get('localityId')?.touched">
+            Locality is required.
+          </span>
+        </div>
+
+        <div class="fmc-form-group">
+          <label class="fmc-label required">Office Address</label>
+          <input type="text" formControlName="address" class="fmc-input"
+                 [class.error]="registerForm.get('address')?.invalid && registerForm.get('address')?.touched"
+                 placeholder="Dept office address" />
+          <span class="fmc-error-msg"
+                *ngIf="registerForm.get('address')?.invalid && registerForm.get('address')?.touched">
+            Address is required.
+          </span>
+        </div>
+
+      </div>
+
+      <!-- Section 2: Department Details -->
+      <div class="section-label">Department Details</div>
+      <div class="fmc-grid-2">
+
+        <div class="fmc-form-group">
+          <label class="fmc-label required">Department Name</label>
+          <input type="text" formControlName="deptName" class="fmc-input"
+                 [class.error]="registerForm.get('deptName')?.invalid && registerForm.get('deptName')?.touched"
+                 placeholder="e.g. Mumbai Water Authority" />
+          <span class="fmc-error-msg"
+                *ngIf="registerForm.get('deptName')?.invalid && registerForm.get('deptName')?.touched">
+            Department name is required.
+          </span>
+        </div>
+
+        <div class="fmc-form-group">
+          <label class="fmc-label required">Ministry / Parent Body</label>
+          <input type="text" formControlName="ministry" class="fmc-input"
+                 [class.error]="registerForm.get('ministry')?.invalid && registerForm.get('ministry')?.touched"
+                 placeholder="e.g. Ministry of Jal Shakti" />
+          <span class="fmc-error-msg"
+                *ngIf="registerForm.get('ministry')?.invalid && registerForm.get('ministry')?.touched">
+            Ministry is required.
+          </span>
+        </div>
+
+        <div class="fmc-form-group">
+          <label class="fmc-label required">Issue Category</label>
+          <select formControlName="categoryId" class="fmc-input"
+                  [class.error]="registerForm.get('categoryId')?.invalid && registerForm.get('categoryId')?.touched">
+            <option [value]="null">-- Select Category --</option>
+            <option *ngFor="let cat of categories" [value]="cat.categoryId">
+              {{ cat.categoryName }}
+            </option>
+          </select>
+          <span class="fmc-error-msg"
+                *ngIf="registerForm.get('categoryId')?.invalid && registerForm.get('categoryId')?.touched">
+            Category is required.
+          </span>
+        </div>
+
+        <div class="fmc-form-group">
+          <label class="fmc-label required">Contact Phone</label>
+          <input type="text" formControlName="contactPhone" class="fmc-input"
+                 [class.error]="registerForm.get('contactPhone')?.invalid && registerForm.get('contactPhone')?.touched"
+                 placeholder="Official helpline number" />
+          <span class="fmc-error-msg"
+                *ngIf="registerForm.get('contactPhone')?.invalid && registerForm.get('contactPhone')?.touched">
+            Contact phone is required.
+          </span>
+        </div>
+
+        <div class="fmc-form-group span-2">
+          <label class="fmc-label required">Contact Email</label>
+          <input type="email" formControlName="contactEmail" class="fmc-input"
+                 [class.error]="registerForm.get('contactEmail')?.invalid && registerForm.get('contactEmail')?.touched"
+                 placeholder="Official dept contact email" />
+          <span class="fmc-error-msg"
+                *ngIf="registerForm.get('contactEmail')?.invalid && registerForm.get('contactEmail')?.touched">
+            A valid contact email is required.
+          </span>
+        </div>
+
+      </div>
+
+      <div class="fmc-error-msg api-error" *ngIf="errorMessage">{{ errorMessage }}</div>
+      <div class="success-msg" *ngIf="successMessage">✅ {{ successMessage }}</div>
+
+      <button type="submit" class="btn-primary submit-btn"
+              [disabled]="isLoading || registerForm.invalid">
+        {{ isLoading ? 'Submitting...' : 'Submit Registration' }}
+      </button>
+
+    </form>
+
+    <div class="bottom-link">
+      Already registered? <a routerLink="/login">Sign in</a>
+    </div>
+
+  </div>
+</div>

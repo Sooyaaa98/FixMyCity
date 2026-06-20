@@ -1,0 +1,57 @@
+# FixMyCity AI Microservice — Python 3.11
+# Install: pip install -r requirements.txt
+# Tested on Python 3.11.x, CPU-only (no CUDA required for demo)
+
+# ── Web framework ──────────────────────────────────────────────────────────────
+fastapi==0.111.0
+uvicorn[standard]==0.29.0
+pydantic==2.7.1
+python-multipart==0.0.9    # for file upload endpoints
+python-dotenv==1.0.1        # loads ml_service/.env at startup so HF_API_TOKEN, AI_SERVICE_KEY etc. take effect
+
+# ── Database ───────────────────────────────────────────────────────────────────
+pyodbc==5.1.0
+pandas==2.2.2
+
+# ── Core ML ───────────────────────────────────────────────────────────────────
+scikit-learn==1.4.2
+lightgbm==4.3.0
+numpy==1.26.4
+joblib==1.4.2
+scipy==1.13.0
+
+# ── NLP / Text Embeddings ─────────────────────────────────────────────────────
+sentence-transformers==2.7.0     # all-MiniLM-L6-v2 for embeddings (80 MB)
+transformers==4.41.0             # CLIP for image classification
+torch==2.3.0                     # CPU-only; install torch+cpu if GPU not available
+tokenizers==0.19.1
+huggingface_hub>=0.22,<0.24      # InferenceClient used by hf_inference.py (transitive of transformers/sentence-transformers; pinned explicitly)
+
+# ── Image ─────────────────────────────────────────────────────────────────────
+Pillow==10.3.0                   # image loading for CLIP
+pytesseract==0.3.10              # OCR (requires Tesseract 5 binary installed)
+
+# ── Keyword extraction ────────────────────────────────────────────────────────
+keybert==0.8.3
+
+# ── Recommendations ───────────────────────────────────────────────────────────
+implicit==0.7.2                  # ALS collaborative filtering
+
+# ── Geo clustering ────────────────────────────────────────────────────────────
+# scikit-learn DBSCAN is used — already included above
+
+# ── Trend forecasting ─────────────────────────────────────────────────────────
+prophet==1.1.5
+matplotlib==3.8.4                # Prophet plotting
+
+# ── HTTP (callbacks to .NET API) ──────────────────────────────────────────────
+httpx==0.27.0                    # async HTTP client for posting results back
+
+# ── Chatbot (Ollama integration) ──────────────────────────────────────────────
+# Ollama is a separate binary — install from https://ollama.ai
+# This SDK wraps its REST API
+ollama==0.2.1
+
+# ── Toxicity / content safety ─────────────────────────────────────────────────
+better-profanity==0.7.0          # rule-based profanity check (fast)
+# unitary/toxic-bert loaded via transformers pipeline when USE_ML_TOXICITY=true

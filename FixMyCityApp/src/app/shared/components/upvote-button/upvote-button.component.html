@@ -1,0 +1,18 @@
+<!-- src/app/shared/components/upvote-button/upvote-button.component.html -->
+<button type="button"
+        class="uv-btn"
+        [class.uv-btn--block]="variant === 'block'"
+        [class.uv-btn--voted]="hasUpvoted"
+        [disabled]="busy"
+        (click)="$event.stopPropagation(); toggle()"
+        [attr.aria-label]="hasUpvoted ? 'Remove your upvote' : 'Upvote this complaint'"
+        [attr.aria-pressed]="hasUpvoted">
+  <i class="bi"
+     [class.bi-hand-thumbs-up-fill]="hasUpvoted"
+     [class.bi-hand-thumbs-up]="!hasUpvoted"
+     aria-hidden="true"></i>
+  <span class="uv-count">{{ count }}</span>
+  <span *ngIf="variant === 'block'" class="uv-label">
+    {{ hasUpvoted ? 'Voted' : 'Upvote' }}
+  </span>
+</button>

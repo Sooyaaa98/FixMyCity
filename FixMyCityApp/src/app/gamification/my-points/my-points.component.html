@@ -1,0 +1,94 @@
+<!-- src/app/gamification/my-points/my-points.component.html -->
+
+<div class="fmc-page">
+
+  <h3 class="page-title">⭐ My Points</h3>
+
+  <div *ngIf="isLoading" class="loading-msg">Loading points...</div>
+
+  <!-- Zero state — no points record yet -->
+  <div *ngIf="!isLoading && !userPoints" class="fmc-card zero-card">
+    <div class="zero-icon">🌱</div>
+    <h4>No points yet</h4>
+    <p>Start submitting and rating complaints to earn your first points!</p>
+  </div>
+
+  <!-- Points Card -->
+  <ng-container *ngIf="!isLoading && userPoints">
+
+    <div class="fmc-card points-hero">
+      <div class="points-label">Total Points</div>
+      <div class="points-value">{{ userPoints.points }}</div>
+      <div class="points-milestone">{{ getMilestoneLabel(userPoints.points) }}</div>
+      <div class="points-updated">
+        Last updated: {{ userPoints.lastUpdated | date: 'dd MMM yyyy' }}
+      </div>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="fmc-card progress-card" *ngIf="getNextMilestone(userPoints.points)">
+      <div class="progress-header">
+        <span class="progress-label">Progress to next milestone</span>
+        <span class="progress-target">{{ getNextMilestone(userPoints.points) }} pts</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill"
+             [style.width.%]="getProgressPercent(userPoints.points)">
+        </div>
+      </div>
+      <div class="progress-sub">
+        {{ userPoints.points }} / {{ getNextMilestone(userPoints.points) }} points
+      </div>
+    </div>
+
+    <!-- Milestones Reference -->
+    <div class="fmc-card milestones-card">
+      <h4 class="milestones-title">🏅 Milestones</h4>
+      <div class="milestones-list">
+
+        <div class="milestone-row" [class.achieved]="userPoints.points >= 50">
+          <span class="milestone-icon">🥉</span>
+          <div class="milestone-info">
+            <span class="milestone-name">Getting Started</span>
+            <span class="milestone-pts">50 points</span>
+          </div>
+          <span class="milestone-check" *ngIf="userPoints.points >= 50">✓</span>
+        </div>
+
+        <div class="milestone-row" [class.achieved]="userPoints.points >= 100">
+          <span class="milestone-icon">🥈</span>
+          <div class="milestone-info">
+            <span class="milestone-name">Contributor</span>
+            <span class="milestone-pts">100 points</span>
+          </div>
+          <span class="milestone-check" *ngIf="userPoints.points >= 100">✓</span>
+        </div>
+
+        <div class="milestone-row" [class.achieved]="userPoints.points >= 200">
+          <span class="milestone-icon">🥇</span>
+          <div class="milestone-info">
+            <span class="milestone-name">Active Reporter</span>
+            <span class="milestone-pts">200 points</span>
+          </div>
+          <span class="milestone-check" *ngIf="userPoints.points >= 200">✓</span>
+        </div>
+
+        <div class="milestone-row" [class.achieved]="userPoints.points >= 500">
+          <span class="milestone-icon">🏆</span>
+          <div class="milestone-info">
+            <span class="milestone-name">Champion Citizen</span>
+            <span class="milestone-pts">500 points</span>
+          </div>
+          <span class="milestone-check" *ngIf="userPoints.points >= 500">✓</span>
+        </div>
+
+      </div>
+    </div>
+
+    <button class="btn-secondary scoreboard-link" (click)="goToScoreboard()">
+      🏆 View Locality Scoreboard
+    </button>
+
+  </ng-container>
+
+</div>

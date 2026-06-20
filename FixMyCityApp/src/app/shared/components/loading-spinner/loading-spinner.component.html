@@ -1,0 +1,11 @@
+<!-- src/app/shared/components/loading-spinner/loading-spinner.component.html -->
+<div
+  [class]="mode === 'page' ? 'fmc-spinner-page' : 'fmc-spinner-inline'"
+  role="status"
+  [attr.aria-label]="message"
+>
+  <div class="fmc-spinner__ring" aria-hidden="true">
+    <div></div><div></div><div></div><div></div>
+  </div>
+  <p class="fmc-spinner__msg" *ngIf="message">{{ message }}</p>
+</div>

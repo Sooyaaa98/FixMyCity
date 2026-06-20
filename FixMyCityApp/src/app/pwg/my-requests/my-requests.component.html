@@ -1,0 +1,69 @@
+<!-- src/app/pwg/my-requests/my-requests.component.html -->
+
+<div class="fmc-page">
+
+  <div class="page-header">
+    <h3>My Participation Requests</h3>
+    <button class="btn-secondary" (click)="loadRequests()">Refresh</button>
+  </div>
+
+  <div *ngIf="isLoading" class="loading-msg">Loading requests...</div>
+  <div *ngIf="errorMessage" class="fmc-error-msg">{{ errorMessage }}</div>
+
+  <div *ngIf="!isLoading && requests.length === 0 && !errorMessage" class="empty-state">
+    Your organisation has not submitted any participation requests yet.
+    <br /><a routerLink="/pwg/complaints">Browse open complaints →</a>
+  </div>
+
+  <div class="requests-list" *ngIf="!isLoading && requests.length > 0">
+    <div class="fmc-card request-card" *ngFor="let req of requests">
+
+      <div class="request-header">
+        <div class="request-title-group">
+          <span class="request-id">Request #{{ req.requestId }}</span>
+          <h4 class="complaint-title">
+            {{ req.complaint?.title || 'Complaint #' + req.complaintId }}
+          </h4>
+        </div>
+        <span [class]="getStatusClass(req.status)">{{ req.status }}</span>
+      </div>
+
+      <div class="fmc-grid-2 request-meta">
+        <div class="meta-block">
+          <span class="meta-label">Locality</span>
+          <span>{{ req.complaint?.locality?.localityName || '—' }}</span>
+        </div>
+        <div class="meta-block">
+          <span class="meta-label">Category</span>
+          <span>{{ req.complaint?.category?.categoryName || '—' }}</span>
+        </div>
+        <div class="meta-block">
+          <span class="meta-label">Requested At</span>
+          <span>{{ req.requestedAt | date: 'dd MMM yyyy' }}</span>
+        </div>
+        <div class="meta-block" *ngIf="req.decidedAt">
+          <span class="meta-label">Decided At</span>
+          <span>{{ req.decidedAt | date: 'dd MMM yyyy' }}</span>
+        </div>
+      </div>
+
+      <div class="request-note" *ngIf="req.requestNote">
+        <span class="meta-label">Your Note:</span> {{ req.requestNote }}
+      </div>
+
+      <div class="decision-note" *ngIf="req.decisionNote">
+        <span class="meta-label">Solver Note:</span> {{ req.decisionNote }}
+      </div>
+
+      <!-- Post progress only if Approved -->
+      <div class="request-footer" *ngIf="req.status === 'Approved'">
+        <button class="btn-primary progress-btn"
+                (click)="goToProgress(req.complaintId)">
+          📝 Post Progress Update
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+</div>

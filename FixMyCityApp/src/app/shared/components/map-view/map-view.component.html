@@ -1,0 +1,23 @@
+<!-- src/app/shared/components/map-view/map-view.component.html -->
+<div
+  class="fmc-map-wrapper"
+  [style.height]="height"
+  role="application"
+  aria-label="Complaints map"
+>
+  <div #mapContainer class="fmc-map-container"></div>
+
+  <!-- Legend -->
+  <div class="fmc-map-legend" aria-label="Map legend">
+    <div class="legend-item" *ngFor="let entry of legendEntries">
+      <span class="legend-dot" [style.background]="entry.color"></span>
+      <span class="legend-label">{{ entry.label }}</span>
+    </div>
+  </div>
+
+  <!-- No-geo notice -->
+  <div class="fmc-map-notice" *ngIf="complaints.length > 0 && geoCount === 0">
+    <i class="bi bi-geo-alt-fill" aria-hidden="true"></i>
+    No geo-tagged complaints to display.
+  </div>
+</div>

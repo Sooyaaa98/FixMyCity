@@ -1,0 +1,45 @@
+<!-- src/app/solver/complaint-list/solver-complaint-list.component.html -->
+
+<div class="fmc-page">
+
+  <div class="page-header">
+    <h3>📋 Complaints</h3>
+    <button class="btn-secondary btn--sm" (click)="loadComplaints()" [disabled]="isLoading">
+      <i class="bi bi-arrow-clockwise" [class.bi-spin]="isLoading"></i> Refresh
+    </button>
+  </div>
+
+  <div class="filter-bar fmc-card">
+    <div class="fmc-form-group filter-group">
+      <label class="fmc-label">Status</label>
+      <select class="fmc-input" [(ngModel)]="filterStatus" (change)="loadComplaints()">
+        <option *ngFor="let s of statusOptions" [value]="s">{{ s || 'All Statuses' }}</option>
+      </select>
+    </div>
+    <div class="fmc-form-group filter-group">
+      <label class="fmc-label">Criticality</label>
+      <select class="fmc-input" [(ngModel)]="filterCriticality" (change)="loadComplaints()">
+        <option *ngFor="let c of criticalityOptions" [value]="c">{{ c || 'All' }}</option>
+      </select>
+    </div>
+    <button class="btn-secondary" (click)="clearFilter()">Clear</button>
+  </div>
+
+  <app-loading-spinner *ngIf="isLoading" message="Loading complaints…"></app-loading-spinner>
+  <div class="fmc-error-msg" *ngIf="errorMessage && !isLoading">{{ errorMessage }}</div>
+
+  <app-empty-state
+    *ngIf="!isLoading && complaints.length === 0 && !errorMessage"
+    icon="bi bi-inbox"
+    title="No complaints found"
+    subtitle="No complaints match the selected filters for your department."
+  ></app-empty-state>
+
+  <div class="list" *ngIf="!isLoading && complaints.length > 0">
+    <app-complaint-card
+      *ngFor="let c of complaints"
+      [complaint]="c"
+      (cardClicked)="onCardClicked($event)">
+    </app-complaint-card>
+  </div>
+</div>

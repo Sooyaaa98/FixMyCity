@@ -1,0 +1,72 @@
+version: "3.9"
+
+# ── FixMyCity — Docker Compose ─────────────────────────────────────────────────
+# FIXES applied:
+#   1. AI_SERVICE_KEY / DOTNET_API_KEY now match appsettings.json (was mismatched)
+#   2. DB_CONN_STR uses SQL login (Trusted_Connection=yes fails inside Linux containers)
+#   3. DOTNET_API_BASE aligned to correct port (5065)
+#
+# Before running:
+#   cp .env.example .env   (and fill in real values)
+#   docker-compose up -d
+#   docker exec fixmycity-ollama ollama pull llama3.2:3b   (first time only, ~2 GB)
+
+services:
+
+  # ── Python AI Microservice ──────────────────────────────────────────────────
+  ai:
+    build:
+      context: ./ml_service
+    container_name: fixmycity-ai
+    ports:
+      - "8001:8001"
+    env_file:
+      - ./ml_service/.env          # single source of truth for secrets
+    environment:
+      # DB: SQL login (Trusted_Connection=yes doesn't work inside Linux Docker)
+      - DB_CONN_STR=DRIVER={ODBC Driver 17 for SQL Server};SERVER=host.docker.internal;DATABASE=FixMyCityDB;UID=${SQL_USER};PWD=${SQL_PASSWORD};TrustServerCertificate=yes;
+      # .NET API callback URL
+      - DOTNET_API_BASE=http://host.docker.internal:5065
+      # Keys must match AIService:ServiceKey in appsettings.json
+      - AI_SERVICE_KEY=${AI_SERVICE_KEY}
+      - DOTNET_API_KEY=${AI_SERVICE_KEY}
+      # Ollama
+      - OLLAMA_HOST=http://ollama:11434
+      # Upload path (map to a volume below if running in Docker)
+      - IMAGE_BASE_PATH=/uploads
+      # CORS — allow Angular dev server and .NET API
+      - ALLOWED_ORIGINS=http://localhost:5065,http://localhost:4200,http://host.docker.internal:5065
+      # ML flags
+      - USE_ML_TOXICITY=false
+    volumes:
+      - ./ml_service/models:/app/models     # persist trained models across restarts
+      - uploads_data:/uploads               # shared upload volume
+    restart: unless-stopped
+    depends_on:
+      ollama:
+        condition: service_started
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # ── Ollama LLM Runtime (chatbot) ────────────────────────────────────────────
+  ollama:
+    image: ollama/ollama:latest
+    container_name: fixmycity-ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    restart: unless-stopped
+
+volumes:
+  ollama_data:
+  uploads_data:
+
+# ── .env.example (copy to .env, fill in real values) ──────────────────────────
+# AI_SERVICE_KEY=qYW+TWVf+/qFmwdk4VxgLUY/+sKYOF0/R8x2XusfRY8=
+# SQL_USER=sa
+# SQL_PASSWORD=YourSqlPassword123!
+# HF_API_TOKEN=hf_xxxxxxxxxxxx

@@ -1,0 +1,44 @@
+<!-- src/app/citizen/scoreboard/scoreboard.component.html -->
+
+<div class="fmc-page">
+  <h3 class="page-title">🏆 Locality Scoreboard</h3>
+
+  <app-loading-spinner *ngIf="isLoading" message="Loading scoreboard…"></app-loading-spinner>
+  <div class="fmc-error-msg" *ngIf="errorMessage && !isLoading">{{ errorMessage }}</div>
+
+  <div class="fmc-card" *ngIf="!isLoading && entries.length > 0">
+    <table class="scoreboard-table">
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th>Citizen</th>
+          <th>Locality</th>
+          <th>Points</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let entry of entries"
+            [class.current-user]="entry.userId === currentUserId">
+          <td>
+            <span class="rank-badge">
+              {{ entry.rank === 1 ? '🥇' : entry.rank === 2 ? '🥈' : entry.rank === 3 ? '🥉' : '#' + entry.rank }}
+            </span>
+          </td>
+          <td>
+            {{ entry.fullName }}
+            <span class="you-tag" *ngIf="entry.userId === currentUserId"> (You)</span>
+          </td>
+          <td>{{ entry.localityName }}</td>
+          <td class="points-cell">{{ entry.points }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <app-empty-state
+    *ngIf="!isLoading && entries.length === 0 && !errorMessage"
+    icon="bi bi-trophy-fill"
+    title="No scoreboard data yet"
+    subtitle="Be the first to report and resolve issues in your locality!"
+  ></app-empty-state>
+</div>

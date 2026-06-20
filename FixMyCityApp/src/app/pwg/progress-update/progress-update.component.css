@@ -1,0 +1,52 @@
+/* src/app/pwg/progress-update/progress-update.component.css */
+
+.fmc-page {
+  max-width: 600px;
+}
+
+.progress-card {
+  padding: 28px 32px;
+}
+
+.card-header {
+  margin-bottom: 24px;
+}
+
+.back-btn {
+  margin-bottom: 12px;
+}
+
+.card-header h3 {
+  margin: 0 0 4px;
+  font-size: 18px;
+}
+
+.card-sub {
+  font-size: 13px;
+  color: var(--fmc-text-muted);
+  margin: 0;
+}
+
+.note-area {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.optional {
+  font-size: 11px;
+  color: var(--fmc-text-light);
+  font-weight: 400;
+}
+
+.success-msg {
+  font-size: 13px;
+  color: var(--fmc-success);
+  margin-bottom: 12px;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 8px;
+}

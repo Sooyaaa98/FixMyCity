@@ -1,0 +1,11 @@
+<!-- src/app/layouts/citizen-layout/citizen-layout.component.html -->
+<div class="layout-shell">
+  <app-navbar [userRole]="userRole"></app-navbar>
+  <main class="layout-main">
+    <router-outlet></router-outlet>
+  </main>
+  <!-- Global toast notifications -->
+  <app-toast></app-toast>
+  <!-- AI Chatbot widget — available to all citizens -->
+  <app-chatbot-widget></app-chatbot-widget>
+</div>

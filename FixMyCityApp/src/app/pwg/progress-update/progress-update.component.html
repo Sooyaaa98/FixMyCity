@@ -1,0 +1,49 @@
+<!-- src/app/pwg/progress-update/progress-update.component.html -->
+
+<div class="fmc-page">
+  <div class="fmc-card progress-card">
+
+    <div class="card-header">
+      <button class="btn-secondary back-btn" (click)="goBack()">← Back</button>
+      <h3>📝 Post Progress Update</h3>
+      <p class="card-sub">Complaint #{{ complaintId }}</p>
+    </div>
+
+    <form [formGroup]="progressForm" (ngSubmit)="onSubmit()">
+
+      <div class="fmc-form-group">
+        <label class="fmc-label required">Progress Note</label>
+        <textarea formControlName="progressNote"
+                  class="fmc-input note-area"
+                  [class.error]="progressForm.get('progressNote')?.invalid && progressForm.get('progressNote')?.touched"
+                  placeholder="Describe the work done or current progress...">
+        </textarea>
+        <span class="fmc-error-msg"
+              *ngIf="progressForm.get('progressNote')?.invalid && progressForm.get('progressNote')?.touched">
+          Progress note is required.
+        </span>
+      </div>
+
+      <div class="fmc-form-group">
+        <label class="fmc-label">Photo Path <span class="optional">(optional)</span></label>
+        <input type="text"
+               formControlName="photoPath"
+               class="fmc-input"
+               placeholder="e.g. uploads/progress_photo.jpg" />
+      </div>
+
+      <div class="fmc-error-msg" *ngIf="errorMsg">{{ errorMsg }}</div>
+      <div class="success-msg" *ngIf="successMsg">✅ {{ successMsg }}</div>
+
+      <div class="form-actions">
+        <button type="button" class="btn-secondary" (click)="goBack()">Cancel</button>
+        <button type="submit" class="btn-primary"
+                [disabled]="isLoading || progressForm.invalid">
+          {{ isLoading ? 'Posting...' : 'Post Update' }}
+        </button>
+      </div>
+
+    </form>
+
+  </div>
+</div>

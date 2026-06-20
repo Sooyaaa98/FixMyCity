@@ -1,0 +1,128 @@
+/* src/app/admin/complaint-detail/admin-complaint-detail.component.css */
+
+:host {
+  display: block;
+}
+
+/* ── Header ─────────────────────────────────────────────────────────── */
+.detail-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.detail-header__left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.detail-header__title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--fmc-text);
+}
+
+/* ── Two-column grid ─────────────────────────────────────────────────── */
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 20px;
+  align-items: start;
+}
+
+.detail-main {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ── Description card ────────────────────────────────────────────────── */
+.detail-desc-card {
+  padding: 24px;
+}
+
+.detail-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0 0 8px;
+  color: var(--fmc-text);
+}
+
+.detail-location {
+  font-size: 13px;
+  color: var(--fmc-text-muted);
+  margin: 0 0 16px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.detail-body {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--fmc-text);
+  margin: 0;
+}
+
+/* ── Section title inside card ───────────────────────────────────────── */
+.detail-section-title {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--fmc-text-muted);
+  margin: 0 0 16px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+/* ── Meta list (sidebar) ─────────────────────────────────────────────── */
+.meta-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.meta-item-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--fmc-border);
+  font-size: 13.5px;
+}
+
+.meta-item-row:last-child {
+  border-bottom: none;
+}
+
+.meta-key {
+  color: var(--fmc-text-muted);
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  flex-shrink: 0;
+  padding-top: 2px;
+}
+
+.meta-val {
+  color: var(--fmc-text);
+  font-weight: 500;
+  text-align: right;
+}
+
+/* ── Responsive ──────────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .detail-grid {
+    grid-template-columns: 1fr;
+  }
+}

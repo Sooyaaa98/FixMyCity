@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="FixMyCity.API/FixMyCity.API.csproj" Id="c6b49414-ef68-4814-91a0-a8ca76b6b32f" />
+  <Project Path="FixMyCity.DAL/FixMyCity.DAL.csproj" />
+</Solution>

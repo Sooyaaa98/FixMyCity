@@ -1,0 +1,46 @@
+<!-- src/app/shared/components/photo-compare/photo-compare.component.html
+     Phase 8 (§3) — Draggable before/after viewer. -->
+
+<ng-container *ngIf="beforeUrl || afterUrl">
+
+  <!-- Both photos available → swipe-to-compare frame -->
+  <div *ngIf="beforeUrl && afterUrl"
+       #frame
+       class="pc-frame"
+       (pointerdown)="onPointerDown($event)"
+       (pointermove)="onPointerMove($event)"
+       (pointerup)="onPointerUp($event)"
+       tabindex="0"
+       role="slider"
+       aria-label="Before/after photo comparison"
+       [attr.aria-valuenow]="sliderPct"
+       aria-valuemin="0"
+       aria-valuemax="100">
+
+    <!-- The "after" photo sits at the bottom; the "before" photo is clipped
+         on top so the slider reveals the after-photo from left to right. -->
+    <img [src]="afterUrl" alt="After resolution" class="pc-image pc-after" />
+    <img [src]="beforeUrl" alt="Before resolution" class="pc-image pc-before"
+         [style.clip-path]="'inset(0 ' + (100 - sliderPct) + '% 0 0)'" />
+
+    <div class="pc-divider" [style.left.%]="sliderPct">
+      <span class="pc-handle" aria-hidden="true">
+        <i class="bi bi-arrows-expand-vertical"></i>
+      </span>
+    </div>
+
+    <span class="pc-label pc-label-left">Before</span>
+    <span class="pc-label pc-label-right">After</span>
+  </div>
+
+  <!-- Only one photo available — show it solo without the slider. -->
+  <div *ngIf="beforeUrl && !afterUrl" class="pc-single">
+    <img [src]="beforeUrl" alt="Complaint photo" />
+    <span class="pc-label pc-label-left">Submission</span>
+  </div>
+  <div *ngIf="afterUrl && !beforeUrl" class="pc-single">
+    <img [src]="afterUrl" alt="Resolution photo" />
+    <span class="pc-label pc-label-right">Resolution</span>
+  </div>
+
+</ng-container>

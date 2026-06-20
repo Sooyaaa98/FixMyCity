@@ -1,0 +1,19 @@
+<div class="fmc-page not-found-page">
+  <div class="fmc-card not-found-card">
+    <div class="not-found-icon">🧭</div>
+    <h2 class="page-title">Page not found</h2>
+    <p class="page-subtitle">
+      We couldn't find <code>{{ attemptedUrl }}</code>.
+      It may have been moved, or you may have arrived here from an old link.
+    </p>
+
+    <div class="form-actions">
+      <button type="button" class="btn-primary" (click)="goHome()">
+        <i class="bi bi-house-door-fill"></i> Take me home
+      </button>
+      <button type="button" class="btn-secondary" routerLink="/login">
+        Go to login
+      </button>
+    </div>
+  </div>
+</div>

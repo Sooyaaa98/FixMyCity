@@ -1,0 +1,64 @@
+<!-- src/app/shared/components/comments-thread/comments-thread.component.html
+     Phase 8 (§7) — Public discussion thread on a complaint. -->
+
+<div class="ct-wrap">
+  <h4 class="ct-title">
+    <i class="bi bi-chat-dots-fill me-1" aria-hidden="true"></i>
+    Discussion <span class="ct-count">({{ comments.length }})</span>
+  </h4>
+
+  <!-- Composer -->
+  <div class="ct-composer">
+    <textarea class="form-control"
+              rows="2"
+              maxlength="1500"
+              placeholder="Add a comment…"
+              [(ngModel)]="draft"
+              [disabled]="posting"></textarea>
+    <div class="d-flex align-items-center justify-content-between mt-2">
+      <small class="text-muted">{{ draft.length }} / 1500</small>
+      <button class="btn btn-primary btn-sm"
+              [disabled]="posting || !draft.trim() || draft.trim().length < 2"
+              (click)="post()">
+        <i class="bi bi-send-fill me-1" aria-hidden="true"></i>
+        {{ posting ? 'Posting…' : 'Post' }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Empty state -->
+  <p *ngIf="!loading && comments.length === 0" class="text-muted text-center mt-3 mb-0">
+    No comments yet. Be the first to start the conversation.
+  </p>
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="text-muted text-center my-3">
+    <i class="bi bi-arrow-clockwise bi-spin" aria-hidden="true"></i> Loading…
+  </div>
+
+  <!-- Comment list -->
+  <ul class="ct-list" *ngIf="!loading && comments.length > 0">
+    <li *ngFor="let c of comments"
+        class="ct-item"
+        [class.ct-item--official]="c.isOfficialReply">
+      <div class="ct-meta">
+        <strong class="ct-author">{{ c.authorName || 'User #' + c.userId }}</strong>
+        <span class="badge bg-primary ms-2" *ngIf="c.isOfficialReply">
+          <i class="bi bi-patch-check-fill me-1" aria-hidden="true"></i>
+          Official ({{ c.authorRole }})
+        </span>
+        <span class="ct-time text-muted ms-2">
+          {{ c.createdAt | date:'medium' }}
+        </span>
+        <button *ngIf="canDelete(c)"
+                type="button"
+                class="btn btn-link btn-sm text-danger ms-auto p-0"
+                (click)="delete(c.commentId)"
+                aria-label="Delete comment">
+          <i class="bi bi-trash" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="ct-text">{{ c.commentText }}</div>
+    </li>
+  </ul>
+</div>

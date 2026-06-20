@@ -1,0 +1,154 @@
+/* src/app/admin/pending-approvals/pending-approvals.component.css */
+
+.page-title {
+  margin: 0 0 24px;
+  font-size: 21px;
+  color: var(--fmc-text);
+}
+
+/* ── Tabs ── */
+.tab-bar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+  border-bottom: 2px solid var(--fmc-border);
+}
+
+.tab-btn {
+  padding: 12px 24px;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--fmc-text-muted);
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: inherit;
+}
+
+.tab-btn:hover {
+  color: var(--fmc-primary);
+}
+
+.tab-btn.active {
+  color: var(--fmc-primary);
+  border-bottom-color: var(--fmc-primary);
+  font-weight: 600;
+}
+
+.tab-count {
+  background: var(--fmc-primary);
+  color: #fff;
+  border-radius: 12px;
+  font-size: 11px;
+  padding: 2px 8px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+/* ── Cards ── */
+.approval-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.approval-card {
+  padding: 24px;
+  transition: box-shadow 0.2s, transform 0.15s;
+}
+
+.approval-card:hover {
+  box-shadow: var(--fmc-shadow-md);
+  transform: translateY(-2px);
+}
+
+.approval-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.approval-name {
+  margin: 0 0 4px;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--fmc-text);
+}
+
+.approval-sub {
+  font-size: 14px;
+  color: var(--fmc-text-muted);
+}
+
+.approval-meta {
+  margin-bottom: 20px;
+  row-gap: 16px;
+  background: var(--fmc-surface-2);
+  padding: 16px;
+  border-radius: var(--fmc-radius);
+  border: 1px solid var(--fmc-border);
+}
+
+.meta-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 14px;
+  color: var(--fmc-text);
+  font-weight: 500;
+}
+
+.meta-label {
+  font-size: 11px;
+  color: var(--fmc-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  font-weight: 600;
+}
+
+.approval-actions {
+  display: flex;
+  gap: 12px;
+  padding-top: 16px;
+  border-top: 1px solid var(--fmc-border);
+}
+
+/* ── Feedback ── */
+.action-msg {
+  margin-bottom: 20px;
+  font-size: 14px;
+  padding: 12px 16px;
+  border-radius: var(--fmc-radius);
+}
+
+.success-msg {
+  background: var(--fmc-success-light);
+  color: #065f46;
+  border: 1px solid #6ee7b7;
+}
+
+.loading-msg {
+  color: var(--fmc-text-muted);
+  font-size: 15px;
+  text-align: center;
+  padding: 40px;
+}
+
+.empty-state {
+  font-size: 15px;
+  color: var(--fmc-text-muted);
+  padding: 48px;
+  text-align: center;
+  background: var(--fmc-surface);
+  border-radius: var(--fmc-radius-lg);
+  border: 1px dashed var(--fmc-border);
+}

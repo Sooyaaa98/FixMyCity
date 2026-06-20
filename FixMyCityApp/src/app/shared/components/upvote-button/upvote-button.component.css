@@ -1,0 +1,48 @@
+/* src/app/shared/components/upvote-button/upvote-button.component.css */
+
+.uv-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  border: 1px solid var(--fmc-border, #e2e8f0);
+  background: var(--fmc-bg-elev, #fff);
+  color: var(--fmc-text, #0f172a);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.12s ease, color 0.15s ease;
+  font-variant-numeric: tabular-nums;
+}
+
+.uv-btn:hover,
+.uv-btn:focus-visible {
+  background: var(--fmc-bg-soft, #f1f5f9);
+  outline: none;
+}
+
+.uv-btn:active { transform: scale(0.96); }
+
+.uv-btn--voted {
+  background: var(--fmc-accent, #2563eb);
+  color: #fff;
+  border-color: var(--fmc-accent, #2563eb);
+}
+
+.uv-btn--voted:hover,
+.uv-btn--voted:focus-visible {
+  background: var(--fmc-accent-strong, #1d4ed8);
+}
+
+.uv-btn--block {
+  padding: 0.55rem 1.1rem;
+  font-size: 1rem;
+  gap: 0.6rem;
+}
+
+.uv-btn[disabled] { opacity: 0.6; cursor: progress; }
+
+@media (prefers-reduced-motion: reduce) {
+  .uv-btn, .uv-btn:active { transition: none; transform: none; }
+}

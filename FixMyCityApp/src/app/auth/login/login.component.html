@@ -1,0 +1,116 @@
+<!-- src/app/auth/login/login.component.html -->
+
+<div class="login-wrapper">
+  <div class="fmc-card login-card">
+
+    <!-- Logo -->
+    <div class="login-logo">
+      <div class="login-logo-icon mb-2">
+        <i class="bi bi-geo-alt-fill"></i>
+      </div>
+      <h2>FixMyCity</h2>
+      <p class="login-tagline">Citizen Complaint Management Platform</p>
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+
+      <!-- Email -->
+      <div class="fmc-form-group">
+        <label class="fmc-label required">Email Address</label>
+        <div class="login-input-wrap">
+          <i class="bi bi-envelope-fill login-input-icon"></i>
+          <input type="email"
+                 formControlName="email"
+                 class="fmc-input login-padded"
+                 [class.error]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched"
+                 placeholder="you@example.com"
+                 autocomplete="email" />
+        </div>
+        <span class="fmc-error-msg"
+              *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
+          A valid email address is required.
+        </span>
+      </div>
+
+      <!-- Password -->
+      <div class="fmc-form-group">
+        <label class="fmc-label required">Password</label>
+        <div class="login-input-wrap">
+          <i class="bi bi-lock-fill login-input-icon"></i>
+          <input [type]="showPassword ? 'text' : 'password'"
+                 formControlName="password"
+                 class="fmc-input login-padded login-padded-right"
+                 [class.error]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
+                 placeholder="Enter your password"
+                 autocomplete="current-password" />
+          <button type="button" class="login-eye-btn" (click)="showPassword = !showPassword"
+                  [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'">
+            <i class="bi" [class.bi-eye-fill]="!showPassword" [class.bi-eye-slash-fill]="showPassword"></i>
+          </button>
+        </div>
+        <span class="fmc-error-msg"
+              *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+          Password is required.
+        </span>
+      </div>
+
+      <!-- API error -->
+      <div class="login-api-error" *ngIf="errorMessage">
+        <i class="bi bi-exclamation-circle-fill me-2"></i>{{ errorMessage }}
+      </div>
+
+      <!-- Phase 8 (§18) — Forgot password link, before the Sign In CTA so
+           citizens see it immediately if their password didn't work. -->
+      <div class="text-end mb-2">
+        <a routerLink="/forgot-password" class="small">Forgot password?</a>
+      </div>
+
+      <!-- Submit -->
+      <button type="submit"
+              class="btn-primary login-btn"
+              [disabled]="isLoading || loginForm.invalid"
+              fmcRipple>
+        <span *ngIf="!isLoading"><i class="bi bi-box-arrow-in-right me-2"></i>Sign In</span>
+        <span *ngIf="isLoading"><i class="bi bi-arrow-repeat bi-spin me-2"></i>Signing in…</span>
+      </button>
+
+    </form>
+
+    <!-- SSO -->
+    <div class="login-divider">
+      <span>or</span>
+    </div>
+    <button type="button"
+            class="btn-secondary login-sso-btn"
+            (click)="signInWithGoogle()"
+            [disabled]="isLoading"
+            aria-label="Sign in with Google demo SSO">
+      <span class="login-sso-icon" aria-hidden="true">G</span>
+      Continue with Google (demo)
+    </button>
+
+    <!-- Register links -->
+    <div class="login-links">
+      <span>New here? Register as:</span>
+      <div class="login-register-links mt-2">
+        <a routerLink="/register/citizen" class="login-reg-btn">
+          <i class="bi bi-person-fill me-1"></i>Citizen
+        </a>
+        <a routerLink="/register/organisation" class="login-reg-btn">
+          <i class="bi bi-building me-1"></i>Organisation
+        </a>
+        <a routerLink="/register/department" class="login-reg-btn">
+          <i class="bi bi-briefcase-fill me-1"></i>Department
+        </a>
+      </div>
+    </div>
+
+    <!-- Back to home -->
+    <div class="text-center mt-3">
+      <a routerLink="/home" class="login-back-link">
+        <i class="bi bi-arrow-left me-1"></i>Back to Home
+      </a>
+    </div>
+
+  </div>
+</div>

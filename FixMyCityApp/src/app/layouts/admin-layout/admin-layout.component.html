@@ -1,0 +1,10 @@
+<!-- src/app/layouts/admin-layout/admin-layout.component.html -->
+<div class="layout-shell">
+  <app-navbar [userRole]="userRole"></app-navbar>
+  <main class="layout-main">
+    <router-outlet></router-outlet>
+  </main>
+  <app-toast></app-toast>
+  <!-- Chatbot available to admin too for complaint lookup -->
+  <app-chatbot-widget></app-chatbot-widget>
+</div>

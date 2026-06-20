@@ -1,0 +1,55 @@
+<!-- src/app/citizen/my-complaints/my-complaints.component.html -->
+
+<div class="fmc-page">
+
+  <div class="page-header">
+    <h3>📋 My Complaints</h3>
+    <div class="d-flex gap-2">
+      <!-- Phase 8 (§10) — CSV export of the current filtered list. -->
+      <button class="btn-secondary"
+              (click)="exportCsv()"
+              [disabled]="filteredComplaints.length === 0"
+              aria-label="Export complaints as CSV">
+        <i class="bi bi-filetype-csv me-1" aria-hidden="true"></i> Export CSV
+      </button>
+      <button class="btn-primary" routerLink="/citizen/submit">+ Report Issue</button>
+    </div>
+  </div>
+
+  <!-- Filter bar -->
+  <div class="filter-bar fmc-card">
+    <div class="fmc-form-group filter-group">
+      <label class="fmc-label" for="statusFilter">Filter by Status</label>
+      <select id="statusFilter" class="fmc-input" [(ngModel)]="filterStatus" (change)="applyFilter()">
+        <option *ngFor="let s of statusOptions" [value]="s">{{ s || 'All Statuses' }}</option>
+      </select>
+    </div>
+    <button class="btn-secondary" (click)="clearFilter()">Clear</button>
+  </div>
+
+  <!-- Phase 6 §9c — skeleton shimmer placeholders replace the spinner so
+       users see roughly what's coming instead of an indeterminate twirl. -->
+  <ng-container *ngIf="isLoading">
+    <app-skeleton-card *ngFor="let _ of [1,2,3,4,5]"></app-skeleton-card>
+  </ng-container>
+  <div class="fmc-error-msg" *ngIf="errorMessage && !isLoading">{{ errorMessage }}</div>
+
+  <app-empty-state
+    *ngIf="!isLoading && filteredComplaints.length === 0 && !errorMessage"
+    icon="bi bi-inbox"
+    title="No complaints found"
+    subtitle="You haven't reported any issues yet, or none match the selected filter."
+    actionLabel="Report an Issue"
+    (action)="onCardClicked(0)"
+    [routerLink]="['/citizen/submit']"
+  ></app-empty-state>
+
+  <div class="complaints-list" *ngIf="!isLoading && filteredComplaints.length > 0">
+    <app-complaint-card
+      *ngFor="let c of filteredComplaints"
+      [complaint]="c"
+      (cardClicked)="onCardClicked($event)">
+    </app-complaint-card>
+  </div>
+
+</div>

@@ -1,0 +1,163 @@
+/* src/app/pwg/open-complaints/open-complaints.component.css */
+
+.page-title {
+  margin: 0 0 20px;
+  font-size: 21px;
+  color: var(--fmc-text);
+}
+
+.feedback-msg {
+  margin-bottom: 16px;
+  font-size: 14px;
+}
+
+.filter-panel {
+  margin-bottom: 24px;
+  padding: 16px 20px;
+}
+
+.filter-row {
+  display: flex;
+  gap: 16px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+
+.filter-group {
+  margin-bottom: 0;
+  flex: 1;
+  min-width: 160px;
+}
+
+.filter-actions {
+  display: flex;
+  gap: 8px;
+  padding-bottom: 2px;
+}
+
+.complaints-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* ── Complaint Row ── */
+.complaint-row {
+  padding: 20px 24px;
+  border-radius: var(--fmc-radius-lg);
+  transition: box-shadow 0.2s, transform 0.15s;
+}
+
+.complaint-row:hover {
+  box-shadow: var(--fmc-shadow-md);
+  transform: translateY(-2px);
+}
+
+.row-main {
+  cursor: pointer;
+}
+
+.row-main:hover .row-title {
+  color: var(--fmc-primary);
+}
+
+.row-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.row-id {
+  font-size: 12px;
+  color: var(--fmc-text-muted);
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+
+.row-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 6px;
+  transition: color 0.15s;
+  color: var(--fmc-text);
+}
+
+.row-desc {
+  font-size: 14px;
+  color: var(--fmc-text-muted);
+  margin: 0 0 14px;
+  line-height: 1.6;
+}
+
+.row-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--fmc-text-muted);
+  margin-bottom: 16px;
+}
+
+.meta-chip {
+  background: var(--fmc-surface-2);
+  padding: 4px 10px;
+  border-radius: 20px;
+  border: 1px solid var(--fmc-border);
+}
+
+.row-action {
+  margin-top: 4px;
+  padding-top: 16px;
+  border-top: 1px dashed var(--fmc-border);
+}
+
+.request-btn {
+  font-size: 13px;
+  padding: 8px 16px;
+}
+
+/* ── Inline Request Form ── */
+.request-form {
+  margin-top: 16px;
+  padding: 16px;
+  border: 1px solid var(--fmc-border);
+  border-radius: var(--fmc-radius);
+  background: var(--fmc-surface-2);
+}
+
+.request-note {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.optional {
+  font-size: 11px;
+  color: var(--fmc-text-light);
+  font-weight: 500;
+  margin-left: 4px;
+}
+
+.request-form-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+/* ── States ── */
+.loading-msg {
+  color: var(--fmc-text-muted);
+  font-size: 14px;
+  text-align: center;
+  padding: 32px;
+}
+
+.empty-state {
+  font-size: 14px;
+  color: var(--fmc-text-muted);
+  padding: 48px;
+  text-align: center;
+  background: var(--fmc-surface);
+  border-radius: var(--fmc-radius-lg);
+  border: 1px dashed var(--fmc-border);
+}

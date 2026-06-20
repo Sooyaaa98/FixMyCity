@@ -1,0 +1,79 @@
+/* src/app/auth/register-department/register-department.component.css */
+
+.register-wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--fmc-bg);
+  padding: 24px;
+}
+
+.register-card {
+  width: 100%;
+  max-width: 760px;
+  padding: 36px 40px;
+}
+
+.register-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+  .register-header h2 {
+    font-size: 20px;
+    color: var(--fmc-primary);
+    margin: 0 0 4px;
+  }
+
+  .register-header h3 {
+    font-size: 16px;
+    color: var(--fmc-text-muted);
+    font-weight: 400;
+    margin: 0 0 8px;
+  }
+
+.approval-note {
+  font-size: 12px;
+  color: var(--fmc-accent);
+  margin: 0;
+}
+
+.section-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--fmc-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 20px 0 12px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--fmc-border);
+}
+
+.span-2 {
+  grid-column: 1 / -1;
+}
+
+.api-error {
+  margin-bottom: 12px;
+}
+
+.success-msg {
+  font-size: 13px;
+  color: var(--fmc-success);
+  margin-bottom: 12px;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 11px;
+  font-size: 15px;
+  margin-top: 8px;
+}
+
+.bottom-link {
+  text-align: center;
+  margin-top: 16px;
+  font-size: 13px;
+  color: var(--fmc-text-muted);
+}

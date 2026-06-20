@@ -1,0 +1,203 @@
+/* src/app/admin/pwg-reports/pwg-reports.component.css */
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.page-header h2 { margin: 0 0 4px; font-size: 20px; }
+.page-header p  { margin: 0; font-size: 14px; color: var(--fmc-text-muted); }
+
+.page-header__actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.filter-select { min-width: 160px; max-width: 200px; }
+
+/* ── Table ────────────────────────────────────────────────────────────────── */
+
+.reports-table { padding: 0; overflow: hidden; }
+
+.table-wrap { overflow-x: auto; }
+
+.fmc-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.fmc-table th {
+  padding: 12px 16px;
+  text-align: left;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--fmc-text-muted);
+  border-bottom: 1px solid var(--fmc-border);
+  background: var(--fmc-surface-2, #f8fafc);
+  white-space: nowrap;
+}
+
+.fmc-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--fmc-border);
+  vertical-align: middle;
+}
+
+.fmc-table tbody tr:hover { background: var(--fmc-surface-2, #f8fafc); }
+.fmc-table tbody tr:last-child td { border-bottom: none; }
+
+.report-id { font-weight: 700; color: var(--fmc-text-muted); }
+
+.complaint-link {
+  color: var(--fmc-primary);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.complaint-link:hover { text-decoration: underline; }
+
+.content-preview {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  max-width: 240px;
+  color: var(--fmc-text-primary, #1e293b);
+}
+
+.action-badge {
+  background: var(--fmc-warning-light);
+  color: #92400e;
+  border-radius: 10px;
+  padding: 2px 8px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.no-action { color: var(--fmc-text-muted); }
+
+.report-date { white-space: nowrap; color: var(--fmc-text-muted); }
+
+.action-col {
+  display: flex;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.btn--sm { padding: 5px 10px; font-size: 12px; }
+
+/* ── Modal ────────────────────────────────────────────────────────────────── */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 8500;
+  padding: 1rem;
+}
+
+.modal-panel {
+  width: 100%;
+  max-width: 520px;
+  max-height: 90vh;
+  overflow-y: auto;
+  border-radius: var(--fmc-radius-lg);
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.modal-header h3 { margin: 0; font-size: 17px; }
+
+.modal-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--fmc-text-muted);
+  font-size: 1.1rem;
+  padding: 4px;
+  border-radius: 4px;
+}
+
+.modal-close:hover { color: var(--fmc-danger); }
+
+.modal-body { margin-bottom: 20px; }
+
+.report-detail { margin-bottom: 16px; }
+
+.report-full {
+  font-size: 14px;
+  color: var(--fmc-text-primary, #1e293b);
+  line-height: 1.6;
+  background: var(--fmc-surface-2, #f1f5f9);
+  border-radius: var(--fmc-radius);
+  padding: 10px 14px;
+  margin: 6px 0 0;
+}
+
+.meta-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  font-weight: 700;
+  color: var(--fmc-text-muted);
+}
+
+.action-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.action-option {
+  padding: 6px 14px;
+  border: 2px solid var(--fmc-border);
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+  color: var(--fmc-text-primary, #1e293b);
+}
+
+.action-option:hover { border-color: var(--fmc-primary); color: var(--fmc-primary); }
+
+.action-option--selected {
+  border-color: var(--fmc-primary);
+  background: #eff6ff;
+  color: var(--fmc-primary);
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  margin-top: 8px;
+  font-size: 13px;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding-top: 16px;
+  border-top: 1px solid var(--fmc-border);
+}

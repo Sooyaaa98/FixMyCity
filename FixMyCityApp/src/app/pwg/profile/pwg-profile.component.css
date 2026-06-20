@@ -1,0 +1,76 @@
+/* src/app/pwg/profile/pwg-profile.component.css */
+
+.page-title {
+  margin: 0 0 20px;
+}
+
+.info-card {
+  margin-bottom: 16px;
+}
+
+.info-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.org-name {
+  margin: 0;
+  font-size: 18px;
+}
+
+.org-type-badge {
+  background: var(--fmc-surface-2);
+  border: 1px solid var(--fmc-border);
+  border-radius: 20px;
+  padding: 2px 12px;
+  font-size: 12px;
+  color: var(--fmc-text-muted);
+}
+
+.info-meta {
+  margin-top: 8px;
+}
+
+.meta-block {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  font-size: 14px;
+}
+
+.meta-label {
+  font-size: 11px;
+  color: var(--fmc-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.edit-card {
+}
+
+.edit-heading {
+  margin: 0 0 20px;
+  font-size: 15px;
+}
+
+.span-2 {
+  grid-column: 1 / -1;
+}
+
+.success-msg {
+  font-size: 13px;
+  color: var(--fmc-success);
+  margin-bottom: 12px;
+}
+
+.save-btn {
+  margin-top: 4px;
+}
+
+.loading-msg {
+  color: var(--fmc-text-muted);
+  font-size: 14px;
+}

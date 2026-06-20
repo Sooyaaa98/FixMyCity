@@ -1,0 +1,212 @@
+<!-- src/app/admin/dashboard/admin-dashboard.component.html -->
+
+<div class="fmc-page">
+
+  <!-- ── Header ─────────────────────────────────────────────────────────── -->
+  <div class="dash-header fmc-card">
+    <div>
+      <h2 class="dash-title">
+        <i class="bi bi-speedometer2" aria-hidden="true"></i>
+        Admin Dashboard
+      </h2>
+      <p class="dash-subtitle">Platform overview · auto-refreshes every 60 s</p>
+    </div>
+    <button class="btn-secondary btn--sm" (click)="load()" [disabled]="isLoading">
+      <i class="bi bi-arrow-clockwise" [class.bi-spin]="isLoading" aria-hidden="true"></i>
+      Refresh
+    </button>
+  </div>
+
+  <app-loading-spinner *ngIf="isLoading" message="Loading statistics…"></app-loading-spinner>
+  <div class="fmc-error-msg" *ngIf="errorMessage && !isLoading">{{ errorMessage }}</div>
+
+  <ng-container *ngIf="stats && !isLoading">
+
+    <!-- ── AI Service Health Widget ──────────────────────────────────────── -->
+    <div class="fmc-card ai-health-card" role="region" aria-label="AI Service Status">
+      <div class="ai-health-left">
+        <div class="ai-health-indicator" [class.ai-health-indicator--online]="aiOnline"
+             [class.ai-health-indicator--offline]="!aiOnline" aria-hidden="true">
+          <i class="bi" [class.bi-check-lg]="aiOnline" [class.bi-x-lg]="!aiOnline"></i>
+        </div>
+        <div>
+          <span class="ai-health-label">AI Service</span>
+          <span class="ai-health-status" [class.ai-health-status--online]="aiOnline">
+            {{ aiChecking ? 'Checking…' : (aiOnline ? 'Online' : 'Offline') }}
+          </span>
+        </div>
+      </div>
+      <div class="ai-health-actions">
+        <button class="btn-secondary btn--sm" (click)="checkAIHealth()" [disabled]="aiChecking">
+          <i class="bi bi-activity" aria-hidden="true"></i> Check Health
+        </button>
+      </div>
+    </div>
+
+    <!-- ── Complaint Overview ─────────────────────────────────────────────── -->
+    <div class="section-label">
+      <i class="bi bi-card-list" aria-hidden="true"></i>
+      Complaint Overview
+      <span class="section-hint">Click a card to view filtered list</span>
+    </div>
+
+    <div class="fmc-grid-4 stats-grid">
+
+      <a class="fmc-card stat-card stat--primary"
+         [routerLink]="['/admin/complaints']" title="All complaints">
+        <i class="bi bi-clipboard2-check stat-icon" aria-hidden="true"></i>
+        <div class="stat-value">{{ stats.totalComplaints }}</div>
+        <div class="stat-label">Total Complaints</div>
+        <div class="stat-cta">View All <i class="bi bi-arrow-right" aria-hidden="true"></i></div>
+      </a>
+
+      <a class="fmc-card stat-card stat--warning"
+         [routerLink]="['/admin/complaints']" [queryParams]="{ status: 'Submitted' }">
+        <i class="bi bi-send-fill stat-icon" aria-hidden="true"></i>
+        <div class="stat-value">{{ stats.submitted }}</div>
+        <div class="stat-label">Submitted</div>
+        <div class="stat-cta">View <i class="bi bi-arrow-right" aria-hidden="true"></i></div>
+      </a>
+
+      <a class="fmc-card stat-card stat--info"
+         [routerLink]="['/admin/complaints']" [queryParams]="{ status: 'In Progress' }">
+        <i class="bi bi-gear-fill stat-icon" aria-hidden="true"></i>
+        <div class="stat-value">{{ stats.inProgress }}</div>
+        <div class="stat-label">In Progress</div>
+        <div class="stat-cta">View <i class="bi bi-arrow-right" aria-hidden="true"></i></div>
+      </a>
+
+      <a class="fmc-card stat-card stat--success"
+         [routerLink]="['/admin/complaints']" [queryParams]="{ status: 'Resolved' }">
+        <i class="bi bi-check-circle-fill stat-icon" aria-hidden="true"></i>
+        <div class="stat-value">{{ stats.resolved }}</div>
+        <div class="stat-label">Resolved</div>
+        <div class="stat-cta">View <i class="bi bi-arrow-right" aria-hidden="true"></i></div>
+      </a>
+
+      <a class="fmc-card stat-card stat--danger"
+         routerLink="/admin/escalated">
+        <i class="bi bi-exclamation-triangle-fill stat-icon" aria-hidden="true"></i>
+        <div class="stat-value">{{ stats.escalated }}</div>
+        <div class="stat-label">Escalated</div>
+        <div class="stat-cta">View <i class="bi bi-arrow-right" aria-hidden="true"></i></div>
+      </a>
+
+      <a class="fmc-card stat-card stat--danger"
+         [routerLink]="['/admin/complaints']" [queryParams]="{ status: 'Rejected' }">
+        <i class="bi bi-x-lg-circle stat-icon" aria-hidden="true"></i>
+        <div class="stat-value">{{ stats.rejected }}</div>
+        <div class="stat-label">Rejected</div>
+        <div class="stat-cta">View <i class="bi bi-arrow-right" aria-hidden="true"></i></div>
+      </a>
+
+      <a class="fmc-card stat-card stat--warning"
+         [routerLink]="['/admin/complaints']" [queryParams]="{ status: 'Re-opened' }">
+        <i class="bi bi-arrow-counterclockwise stat-icon" aria-hidden="true"></i>
+        <div class="stat-value">{{ stats.reopened }}</div>
+        <div class="stat-label">Re-opened</div>
+        <div class="stat-cta">View <i class="bi bi-arrow-right" aria-hidden="true"></i></div>
+      </a>
+
+      <div class="fmc-card stat-card stat--neutral">
+        <i class="bi bi-link-45deg stat-icon" aria-hidden="true"></i>
+        <div class="stat-value">{{ stats.linked }}</div>
+        <div class="stat-label">Linked Dupes</div>
+      </div>
+
+    </div>
+
+    <!-- ── User Overview ──────────────────────────────────────────────────── -->
+    <div class="section-label">
+      <i class="bi bi-people-fill" aria-hidden="true"></i>
+      User Overview
+    </div>
+
+    <div class="fmc-grid-4 stats-grid">
+
+      <div class="fmc-card stat-card">
+        <i class="bi bi-person-fill stat-icon" aria-hidden="true"></i>
+        <div class="stat-value">{{ stats.totalCitizens }}</div>
+        <div class="stat-label">Citizens</div>
+      </div>
+
+      <div class="fmc-card stat-card">
+        <i class="bi bi-wrench-adjustable stat-icon" aria-hidden="true"></i>
+        <div class="stat-value">{{ stats.totalSolvers }}</div>
+        <div class="stat-label">Departments</div>
+      </div>
+
+      <div class="fmc-card stat-card">
+        <i class="bi bi-building stat-icon" aria-hidden="true"></i>
+        <div class="stat-value">{{ stats.totalPWG }}</div>
+        <div class="stat-label">PWG Orgs</div>
+      </div>
+
+      <div class="fmc-card stat-card">
+        <i class="bi bi-person-fill-secret stat-icon" aria-hidden="true"></i>
+        <div class="stat-value">{{ stats.totalAdmins }}</div>
+        <div class="stat-label">Admins</div>
+      </div>
+
+    </div>
+
+    <!-- ── Quick Actions ──────────────────────────────────────────────────── -->
+    <div class="section-label">
+      <i class="bi bi-lightning-charge-fill" aria-hidden="true"></i>
+      Quick Actions
+    </div>
+
+    <div class="fmc-grid-3 quick-links">
+      <a routerLink="/admin/approvals" class="fmc-card quick-card">
+        <i class="bi bi-clipboard2-check bi-2x quick-icon" aria-hidden="true"></i>
+        <span class="quick-label">Pending Approvals</span>
+      </a>
+      <a routerLink="/admin/users" class="fmc-card quick-card">
+        <i class="bi bi-people-fill bi-2x quick-icon" aria-hidden="true"></i>
+        <span class="quick-label">Manage Users</span>
+      </a>
+      <a routerLink="/admin/escalated" class="fmc-card quick-card">
+        <i class="bi bi-exclamation-triangle-fill bi-2x quick-icon" aria-hidden="true"
+           style="color: var(--fmc-danger)"></i>
+        <span class="quick-label">Escalated Complaints</span>
+      </a>
+      <a routerLink="/admin/pwg-reports" class="fmc-card quick-card">
+        <i class="bi bi-flag-fill bi-2x quick-icon" aria-hidden="true"
+           style="color: var(--fmc-warning)"></i>
+        <span class="quick-label">PWG Reports</span>
+      </a>
+      <a routerLink="/admin/complaints" class="fmc-card quick-card">
+        <i class="bi bi-card-list bi-2x quick-icon" aria-hidden="true"></i>
+        <span class="quick-label">All Complaints</span>
+      </a>
+      <a routerLink="/admin/notifications" class="fmc-card quick-card">
+        <i class="bi bi-bell-fill bi-2x quick-icon" aria-hidden="true"></i>
+        <span class="quick-label">Notifications</span>
+      </a>
+      <!-- Phase 8 (§6) — Appeals queue quick link. -->
+      <a routerLink="/admin/appeals" class="fmc-card quick-card">
+        <i class="bi bi-scales bi-2x quick-icon" aria-hidden="true"
+           style="color: var(--fmc-danger)"></i>
+        <span class="quick-label">Citizen Appeals</span>
+      </a>
+    </div>
+
+    <!-- Phase 8 (§9) — Complaint volume trend chart. -->
+    <div class="fmc-card mt-3">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <h4 class="mb-0">📈 Complaint trend</h4>
+        <div class="btn-group btn-group-sm" role="group" aria-label="Range">
+          <button class="btn btn-outline-primary" [class.active]="trendDays === 7"  (click)="loadTrend(7)">  7d</button>
+          <button class="btn btn-outline-primary" [class.active]="trendDays === 30" (click)="loadTrend(30)">30d</button>
+          <button class="btn btn-outline-primary" [class.active]="trendDays === 90" (click)="loadTrend(90)">90d</button>
+        </div>
+      </div>
+      <app-trend-chart [data]="trendRows"
+                       [title]="'Last ' + trendDays + ' days'"
+                       [height]="240">
+      </app-trend-chart>
+    </div>
+
+  </ng-container>
+
+</div>

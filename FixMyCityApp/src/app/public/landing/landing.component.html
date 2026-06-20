@@ -1,0 +1,151 @@
+<!-- src/app/public/landing/landing.component.html
+     Phase 6 additions:
+       • #heroSection + canvas particle bg (§5, §12)
+       • Typing animation via [innerHTML] (§11)
+       • #statNum data-targets for the count-up (§4)
+       • fmcReveal / revealDelay on step + benefit cards (§3)
+       • fmcTilt on step + benefit cards (§7)
+       • fmcRipple on every primary CTA (§8)
+       • [class]="step.icon" so Bootstrap-Icons strings render directly (§2c) -->
+
+<!-- ══ HERO ═════════════════════════════════════════════════════════════════ -->
+<section class="lp-hero" #heroSection>
+  <canvas #particleCanvas class="lp-particles" aria-hidden="true"></canvas>
+
+  <div class="container">
+    <div class="row align-items-center justify-content-center text-center">
+      <div class="col-lg-8">
+        <div class="lp-hero-badge mb-3">
+          <i class="bi bi-geo-alt-fill me-2"></i>Citizen Complaint Management Platform
+        </div>
+
+        <h1 class="lp-hero-title lp-hero-title--typing">
+          <span [innerHTML]="heroDisplayedHtml"></span><span class="lp-cursor" aria-hidden="true">|</span>
+        </h1>
+
+        <p class="lp-hero-sub">
+          FixMyCity connects citizens directly with municipal authorities.
+          Report infrastructure issues, track resolutions in real time, and earn
+          recognition for your civic participation.
+        </p>
+
+        <div class="lp-hero-actions d-flex flex-wrap justify-content-center gap-3 mt-4">
+          <a routerLink="/register/citizen" class="lp-btn-primary" fmcRipple>
+            <i class="bi bi-pencil-square me-2"></i>Raise a Complaint
+          </a>
+          <a routerLink="/login" class="lp-btn-outline" [queryParams]="{tab:'track'}">
+            <i class="bi bi-search me-2"></i>Track Complaint
+          </a>
+          <a routerLink="/login" class="lp-btn-ghost">
+            <i class="bi bi-box-arrow-in-right me-2"></i>Login / Sign Up
+          </a>
+          <!-- Phase 8 (§17) — Public transparency portal (no signup needed). -->
+          <a routerLink="/transparency" class="lp-btn-ghost">
+            <i class="bi bi-eye-fill me-2"></i>Transparency
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stat strip (animated count-up — §4) -->
+    <div class="lp-stat-strip row g-0 mt-5">
+      <div class="col-4 lp-stat">
+        <div class="lp-stat-num" #statNum data-target="10000" data-suffix="+">10,000+</div>
+        <div class="lp-stat-label">Complaints Resolved</div>
+      </div>
+      <div class="col-4 lp-stat">
+        <div class="lp-stat-num">3–5 Days</div>
+        <div class="lp-stat-label">Average Resolution</div>
+      </div>
+      <div class="col-4 lp-stat">
+        <div class="lp-stat-num" #statNum data-target="50" data-suffix="+">50+</div>
+        <div class="lp-stat-label">Connected Agencies</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ HOW IT WORKS ══════════════════════════════════════════════════════════ -->
+<section class="lp-section lp-section--light">
+  <div class="container">
+    <div class="lp-section-header text-center mb-5">
+      <h2 class="lp-section-title">How It Works</h2>
+      <p class="lp-section-sub">From complaint to resolution — five simple steps.</p>
+    </div>
+
+    <div class="row g-4 justify-content-center">
+      <div class="col-12 col-sm-6 col-lg-4"
+           *ngFor="let step of steps; let i = index"
+           fmcReveal
+           [revealDelay]="$any((i % 3) + 1)">
+        <div class="lp-step-card" fmcTilt>
+          <div class="lp-step-num">{{ i + 1 }}</div>
+          <div class="lp-step-icon">
+            <i [class]="step.icon"></i>
+          </div>
+          <h5 class="lp-step-label">{{ step.label }}</h5>
+          <p class="lp-step-desc">{{ step.desc }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ BENEFITS ══════════════════════════════════════════════════════════════ -->
+<section class="lp-section">
+  <div class="container">
+    <div class="lp-section-header text-center mb-5">
+      <h2 class="lp-section-title">Why FixMyCity?</h2>
+      <p class="lp-section-sub">Built for citizens. Trusted by authorities.</p>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-12 col-sm-6 col-lg-3"
+           *ngFor="let b of benefits; let i = index"
+           fmcReveal
+           [revealDelay]="$any((i % 4) + 1)">
+        <div class="lp-benefit-card text-center" fmcTilt>
+          <div class="lp-benefit-icon mb-3">
+            <i [class]="b.icon"></i>
+          </div>
+          <h6 class="lp-benefit-title">{{ b.title }}</h6>
+          <p class="lp-benefit-desc">{{ b.desc }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CTA BAND ═══════════════════════════════════════════════════════════════ -->
+<section class="lp-cta-band">
+  <div class="container text-center">
+    <h3 class="lp-cta-title">Ready to make a difference?</h3>
+    <p class="lp-cta-sub">Join thousands of citizens already making their city better.</p>
+    <a routerLink="/register/citizen" class="lp-btn-primary lp-btn-lg" fmcRipple>
+      <i class="bi bi-person-plus-fill me-2"></i>Get Started — It's Free
+    </a>
+  </div>
+</section>
+
+<!-- ══ FOOTER ═════════════════════════════════════════════════════════════════ -->
+<footer class="lp-footer">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-md-4 mb-3 mb-md-0">
+        <div class="lp-footer-brand">
+          <i class="bi bi-geo-alt-fill me-2"></i>FixMyCity
+        </div>
+        <p class="lp-footer-tagline">Connecting citizens with authorities since 2024.</p>
+      </div>
+      <div class="col-md-4 text-md-center mb-3 mb-md-0">
+        <a routerLink="/login" class="lp-footer-link me-3">Login</a>
+        <a routerLink="/register/citizen" class="lp-footer-link me-3">Register</a>
+        <a routerLink="/register/organisation" class="lp-footer-link me-3">Organisations</a>
+        <a routerLink="/register/department" class="lp-footer-link">Departments</a>
+      </div>
+      <div class="col-md-4 text-md-end">
+        <p class="lp-footer-copy">© {{ currentYear }} FixMyCity. All rights reserved.</p>
+      </div>
+    </div>
+  </div>
+</footer>

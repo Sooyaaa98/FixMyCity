@@ -1,0 +1,84 @@
+<!-- src/app/admin/appeals/appeals.component.html
+     Phase 8 (§6) — Admin queue for citizen appeals. -->
+
+<div class="fmc-page">
+  <div class="page-header">
+    <h3>⚖️ Citizen Appeals</h3>
+    <div class="btn-group btn-group-sm" role="group" aria-label="Filter">
+      <button class="btn btn-outline-primary" [class.active]="filter === 'Pending'"
+              (click)="setFilter('Pending')">Pending</button>
+      <button class="btn btn-outline-primary" [class.active]="filter === 'Resolved'"
+              (click)="setFilter('Resolved')">Resolved</button>
+      <button class="btn btn-outline-primary" [class.active]="filter === ''"
+              (click)="setFilter('')">All</button>
+    </div>
+  </div>
+
+  <ng-container *ngIf="loading">
+    <app-skeleton-card *ngFor="let _ of [1,2,3]"></app-skeleton-card>
+  </ng-container>
+
+  <app-empty-state *ngIf="!loading && appeals.length === 0"
+                    icon="bi bi-check2-circle"
+                    title="No appeals to review"
+                    subtitle="When a citizen appeals a rejected complaint, it will appear here."
+                    [routerLink]="['/admin/dashboard']"></app-empty-state>
+
+  <div class="appeals-list" *ngIf="!loading && appeals.length > 0">
+    <div *ngFor="let a of appeals" class="fmc-card appeal-row">
+      <div class="d-flex justify-content-between align-items-start gap-2 flex-wrap">
+        <div>
+          <span class="badge bg-secondary">#{{ a.appealId }}</span>
+          <a class="text-decoration-none ms-2"
+             [routerLink]="['/admin/complaints', a.complaintId]">
+            Complaint #{{ a.complaintId }} — {{ a.complaintTitle }}
+          </a>
+          <div class="text-muted small mt-1">
+            <span *ngIf="a.complaintCategory">{{ a.complaintCategory }}</span>
+            <span *ngIf="a.complaintLocality" class="ms-2">{{ a.complaintLocality }}</span>
+            <span class="ms-2">Filed by {{ a.citizenName }}</span>
+            <span class="ms-2">{{ a.createdAt | date:'medium' }}</span>
+          </div>
+        </div>
+        <span class="badge"
+              [ngClass]="{ 'bg-warning text-dark': a.status === 'Pending',
+                            'bg-success': a.decision === 'Approved',
+                            'bg-danger':  a.decision === 'Rejected' }">
+          {{ a.status }}<span *ngIf="a.decision"> · {{ a.decision }}</span>
+        </span>
+      </div>
+      <p class="mb-2 mt-2"><em>{{ a.reason }}</em></p>
+      <div class="text-muted small" *ngIf="a.adminNote">
+        <strong>Admin note:</strong> {{ a.adminNote }}
+      </div>
+      <div class="text-end mt-2" *ngIf="a.status === 'Pending'">
+        <button class="btn btn-primary btn-sm" (click)="open(a)">
+          Review
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Decision modal -->
+  <div *ngIf="selected" class="modal-overlay" (click)="close()">
+    <div class="modal-card fmc-card" (click)="$event.stopPropagation()">
+      <h4>Review appeal #{{ selected.appealId }}</h4>
+      <p>
+        <strong>Complaint:</strong> #{{ selected.complaintId }} — {{ selected.complaintTitle }}<br>
+        <strong>Reason:</strong> {{ selected.reason }}
+      </p>
+      <div class="fmc-form-group">
+        <label class="fmc-label">Admin note (optional)</label>
+        <textarea class="form-control" rows="3" maxlength="500"
+                  [(ngModel)]="noteDraft"
+                  placeholder="Why are you accepting / rejecting this appeal?">
+        </textarea>
+      </div>
+      <div class="d-flex justify-content-end gap-2 mt-3">
+        <button class="btn btn-outline-secondary" (click)="close()">Cancel</button>
+        <button class="btn btn-danger" (click)="decide('Rejected')">Reject Appeal</button>
+        <button class="btn btn-success" (click)="decide('Approved')">Approve Appeal</button>
+      </div>
+    </div>
+  </div>
+</div>

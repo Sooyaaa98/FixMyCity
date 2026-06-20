@@ -1,0 +1,124 @@
+<!-- src/app/solver/pwg-requests/pwg-requests.component.html -->
+
+<div class="fmc-page">
+
+  <h3 class="page-title">PWG Participation Requests</h3>
+
+  <!-- Tabs -->
+  <div class="tab-bar">
+    <button [class]="activeTab === 'pending' ? 'tab-btn active' : 'tab-btn'"
+            (click)="setTab('pending')">
+      🕐 Pending
+      <span class="tab-count" *ngIf="pendingRequests.length > 0">{{ pendingRequests.length }}</span>
+    </button>
+    <button [class]="activeTab === 'all' ? 'tab-btn active' : 'tab-btn'"
+            (click)="setTab('all')">
+      📋 All Requests
+    </button>
+  </div>
+
+  <!-- Feedback -->
+  <div class="action-msg success-msg" *ngIf="actionMessage">✅ {{ actionMessage }}</div>
+  <div class="action-msg fmc-error-msg" *ngIf="actionError">{{ actionError }}</div>
+
+  <!-- ── Pending Tab ─────────────────────────────────────────────────── -->
+  <ng-container *ngIf="activeTab === 'pending'">
+
+    <div *ngIf="isLoadingPending" class="loading-msg">Loading pending requests...</div>
+
+    <div *ngIf="!isLoadingPending && pendingRequests.length === 0" class="empty-state">
+      No pending PWG participation requests.
+    </div>
+
+    <div class="requests-list" *ngIf="!isLoadingPending">
+      <div class="fmc-card request-card" *ngFor="let req of pendingRequests">
+
+        <div class="request-header">
+          <div>
+            <span class="request-id">Request #{{ req.requestId }}</span>
+            <h4 class="request-title">
+              {{ req.organisation?.orgName || 'Org #' + req.orgId }}
+            </h4>
+            <span class="complaint-ref">
+              on Complaint #{{ req.complaintId }}
+              <span *ngIf="req.complaint">— {{ req.complaint.title }}</span>
+            </span>
+          </div>
+          <span class="badge-status badge-Submitted">Pending</span>
+        </div>
+
+        <div class="request-note" *ngIf="req.requestNote">
+          <span class="meta-label">Organisation Note:</span> {{ req.requestNote }}
+        </div>
+
+        <div class="request-meta">
+          <span class="meta-label">Requested:</span>
+          {{ req.requestedAt | date: 'dd MMM yyyy' }}
+        </div>
+
+        <!-- Decision form -->
+        <div class="decision-panel" *ngIf="activeDecisionId === req.requestId">
+          <div class="fmc-form-group">
+            <label class="fmc-label">Decision Note <span class="optional">(optional)</span></label>
+            <textarea [(ngModel)]="decisionNote" class="fmc-input decision-note-area"
+                      placeholder="Add a note for the PWG organisation..."></textarea>
+          </div>
+          <div class="decision-actions">
+            <button class="btn-secondary" (click)="cancelDecision()">Cancel</button>
+            <button class="btn-danger" (click)="decide(req, 'Rejected')">✗ Reject</button>
+            <button class="btn-success" (click)="decide(req, 'Approved')">✓ Approve</button>
+          </div>
+        </div>
+
+        <div class="request-actions" *ngIf="activeDecisionId !== req.requestId">
+          <button class="btn-primary" (click)="openDecision(req.requestId)">Review & Decide</button>
+        </div>
+
+      </div>
+    </div>
+
+  </ng-container>
+
+  <!-- ── All Requests Tab ────────────────────────────────────────────── -->
+  <ng-container *ngIf="activeTab === 'all'">
+
+    <div *ngIf="isLoadingAll" class="loading-msg">Loading all requests...</div>
+
+    <div *ngIf="!isLoadingAll && allRequests.length === 0" class="empty-state">
+      No PWG participation requests found for your department.
+    </div>
+
+    <div class="requests-list" *ngIf="!isLoadingAll">
+      <div class="fmc-card request-card" *ngFor="let req of allRequests">
+
+        <div class="request-header">
+          <div>
+            <span class="request-id">Request #{{ req.requestId }}</span>
+            <h4 class="request-title">
+              {{ req.organisation?.orgName || 'Org #' + req.orgId }}
+            </h4>
+            <span class="complaint-ref">
+              on Complaint #{{ req.complaintId }}
+              <span *ngIf="req.complaint">— {{ req.complaint.title }}</span>
+            </span>
+          </div>
+          <span [class]="'badge-status badge-' + req.status">{{ req.status }}</span>
+        </div>
+
+        <div class="request-meta-row">
+          <span><span class="meta-label">Requested:</span> {{ req.requestedAt | date: 'dd MMM yyyy' }}</span>
+          <span *ngIf="req.decidedAt">
+            <span class="meta-label">Decided:</span> {{ req.decidedAt | date: 'dd MMM yyyy' }}
+          </span>
+        </div>
+
+        <div class="request-note" *ngIf="req.decisionNote">
+          <span class="meta-label">Decision Note:</span> {{ req.decisionNote }}
+        </div>
+
+      </div>
+    </div>
+
+  </ng-container>
+
+</div>

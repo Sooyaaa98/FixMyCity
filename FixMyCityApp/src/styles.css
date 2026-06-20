@@ -1,0 +1,1472 @@
+/* src/styles.css */
+
+/* ── Reset & Base ─────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--fmc-bg);
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  color: var(--fmc-text);
+  margin: 0;
+  padding: 0;
+  font-size: 15px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── CSS Custom Properties ───────────────────────────────────────────── */
+:root {
+  /* ── Brand palette (Indigo-600 primary — premium SaaS feel) ── */
+  --fmc-primary: #4f46e5;
+  --fmc-primary-dark: #4338ca;
+  --fmc-primary-light: #eef2ff;
+  --fmc-accent: #f59e0b;
+  --fmc-success: #10b981;
+  --fmc-success-light: #d1fae5;
+  --fmc-warning: #f59e0b;
+  --fmc-warning-light: #fef3c7;
+  --fmc-danger: #ef4444;
+  --fmc-danger-light: #fee2e2;
+  --fmc-info: #6366f1;
+  /* Text primary alias — used as a safe fallback across components */
+  --fmc-text-primary: #0f172a;
+  /* Surfaces */
+  --fmc-bg: #f1f5f9;
+  --fmc-surface: #ffffff;
+  --fmc-surface-2: #f8fafc;
+  --fmc-border: #e2e8f0;
+  --fmc-border-strong: #cbd5e1;
+  /* Text */
+  --fmc-text: #0f172a;
+  --fmc-text-muted: #64748b;
+  --fmc-text-light: #94a3b8;
+  /* Effects */
+  --fmc-radius: 10px;
+  --fmc-radius-lg: 16px;
+  --fmc-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.06), 0 1px 2px -1px rgba(0, 0, 0, 0.04);
+  --fmc-shadow-md: 0 4px 16px -2px rgba(0, 0, 0, 0.10), 0 2px 6px -2px rgba(0, 0, 0, 0.05);
+  --fmc-shadow-lg: 0 10px 30px -4px rgba(0, 0, 0, 0.12), 0 4px 10px -4px rgba(0, 0, 0, 0.06);
+  /* Layout */
+  --fmc-navbar-h: 70px;
+  --fmc-sidebar-w: 240px;
+  --fmc-content-max: 1120px;
+  /* Transition */
+  --fmc-transition: all 0.2s ease;
+}
+
+/* ── Typography ──────────────────────────────────────────────────────── */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  color: var(--fmc-text);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.3;
+}
+
+a {
+  color: var(--fmc-primary);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* ── Layout helpers ──────────────────────────────────────────────────── */
+.fmc-page {
+  padding: 28px 24px;
+  max-width: var(--fmc-content-max);
+  margin: 0 auto;
+}
+
+/* ── Cards ───────────────────────────────────────────────────────────── */
+.fmc-card {
+  background: var(--fmc-surface);
+  border-radius: var(--fmc-radius-lg);
+  box-shadow: var(--fmc-shadow);
+  padding: 20px 24px;
+  border: 1px solid var(--fmc-border);
+}
+
+/* ── Grid ────────────────────────────────────────────────────────────── */
+.fmc-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.fmc-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.fmc-grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+
+/* ── Status badge variants ───────────────────────────────────────────── */
+.badge-status {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 11px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1px;
+  white-space: nowrap;
+}
+
+.badge-Submitted    { background: #dbeafe; color: #1d4ed8; }
+.badge-In\ Progress { background: var(--fmc-warning-light); color: #92400e; }
+.badge-Resolved     { background: var(--fmc-success-light); color: #065f46; }
+.badge-Rejected     { background: var(--fmc-danger-light); color: #991b1b; }
+.badge-Escalated    { background: #fde8d8; color: #843a0c; }
+.badge-Reopened     { background: #ede9fe; color: #4c1d95; }
+.badge-Pending      { background: var(--fmc-warning-light); color: #92400e; }
+.badge-Approved     { background: var(--fmc-success-light); color: #065f46; }
+
+/* ── Logo ────────────────────────────────────────────────────────────── */
+.fmc-logo-img {
+  height: 40px;
+  width: auto;
+  object-fit: contain;
+  transition: transform 0.2s;
+  display: block;
+}
+
+.fmc-brand:hover .fmc-logo-img {
+  transform: scale(1.05);
+}
+
+/* ── Criticality left-border indicators ──────────────────────────────── */
+.crit-High   { border-left: 4px solid var(--fmc-danger); }
+.crit-Medium { border-left: 4px solid var(--fmc-warning); }
+.crit-Low    { border-left: 4px solid var(--fmc-success); }
+
+/* ── Form styles ─────────────────────────────────────────────────────── */
+.fmc-form-group {
+  margin-bottom: 18px;
+}
+
+.fmc-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--fmc-text-muted);
+  margin-bottom: 5px;
+}
+
+.fmc-label.required::after {
+  content: ' *';
+  color: var(--fmc-danger);
+}
+
+.fmc-input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1.5px solid var(--fmc-border);
+  border-radius: var(--fmc-radius);
+  font-size: 14px;
+  font-family: inherit;
+  transition: var(--fmc-transition);
+  background: var(--fmc-surface-2);
+  color: var(--fmc-text);
+}
+
+.fmc-input:focus {
+  outline: none;
+  border-color: var(--fmc-primary);
+  background: var(--fmc-surface);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+.fmc-input.error {
+  border-color: var(--fmc-danger);
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.10);
+}
+
+.fmc-error-msg {
+  font-size: 12px;
+  color: var(--fmc-danger);
+  margin-top: 4px;
+  font-weight: 500;
+}
+
+/* ── Buttons ─────────────────────────────────────────────────────────── */
+.btn-primary {
+  background: var(--fmc-primary);
+  color: #fff;
+  border: none;
+  padding: 10px 22px;
+  border-radius: var(--fmc-radius);
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  transition: var(--fmc-transition);
+  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.25);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: var(--fmc-primary-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+}
+
+.btn-primary:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 1px 4px rgba(37, 99, 235, 0.2);
+}
+
+.btn-primary:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--fmc-primary);
+  border: 1.5px solid var(--fmc-primary);
+  padding: 8.5px 20px;
+  border-radius: var(--fmc-radius);
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  transition: var(--fmc-transition);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: var(--fmc-primary-light);
+  border-color: var(--fmc-primary-dark);
+}
+
+.btn-secondary:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.btn-danger {
+  background: var(--fmc-danger);
+  color: #fff;
+  border: none;
+  padding: 10px 22px;
+  border-radius: var(--fmc-radius);
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  transition: var(--fmc-transition);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-danger:hover:not(:disabled) {
+  background: #dc2626;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3);
+}
+
+.btn-success {
+  background: var(--fmc-success);
+  color: #fff;
+  border: none;
+  padding: 10px 22px;
+  border-radius: var(--fmc-radius);
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  transition: var(--fmc-transition);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-success:hover:not(:disabled) {
+  background: #059669;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3);
+}
+
+/* ── Button size modifier ────────────────────────────────────────────── */
+.btn--sm {
+  padding: 6px 14px;
+  font-size: 13px;
+}
+
+/* ── Responsive ──────────────────────────────────────────────────────── */
+@media (max-width: 992px) {
+  .fmc-grid-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .fmc-grid-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .fmc-grid-2,
+  .fmc-grid-3,
+  .fmc-grid-4 {
+    grid-template-columns: 1fr;
+  }
+
+  .fmc-page {
+    padding: 16px;
+  }
+
+  .fmc-card {
+    padding: 16px;
+  }
+}
+
+/* ── Card hover (global opt-in) ──────────────────────────────────────── */
+.fmc-card-hover {
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.fmc-card-hover:hover {
+  box-shadow: var(--fmc-shadow-md);
+  transform: translateY(-2px);
+}
+
+/* ── Utility ─────────────────────────────────────────────────────────── */
+.fmc-divider {
+  border: none;
+  border-top: 1px solid var(--fmc-border);
+  margin: 16px 0;
+}
+
+.fmc-text-primary { color: var(--fmc-primary); }
+.fmc-text-muted   { color: var(--fmc-text-muted); }
+.fmc-text-danger  { color: var(--fmc-danger); }
+.fmc-text-success { color: var(--fmc-success); }
+
+/* ── Page section spacing ────────────────────────────────────────────── */
+.fmc-section {
+  margin-bottom: 24px;
+}
+
+/* ── Alert / inline message boxes ───────────────────────────────────── */
+.fmc-alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 16px;
+  border-radius: var(--fmc-radius);
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+.fmc-alert--danger  { background: var(--fmc-danger-light);  color: #991b1b;  border: 1px solid #fca5a5; }
+.fmc-alert--success { background: var(--fmc-success-light); color: #065f46;  border: 1px solid #6ee7b7; }
+.fmc-alert--warning { background: var(--fmc-warning-light); color: #92400e;  border: 1px solid #fcd34d; }
+.fmc-alert--info    { background: var(--fmc-primary-light); color: #1d4ed8;  border: 1px solid #bfdbfe; }
+
+/* ── Loading state helper ────────────────────────────────────────────── */
+.fmc-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 40px 20px;
+  color: var(--fmc-text-muted);
+  font-size: 14px;
+}
+
+/* ── Empty state helper ──────────────────────────────────────────────── */
+.fmc-empty {
+  text-align: center;
+  padding: 48px 24px;
+  color: var(--fmc-text-muted);
+  background: var(--fmc-surface);
+  border-radius: var(--fmc-radius-lg);
+  border: 1px dashed var(--fmc-border);
+}
+
+.fmc-empty i {
+  font-size: 2.5rem;
+  opacity: 0.35;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.fmc-empty p {
+  margin: 0;
+  font-size: 14px;
+}
+/* ── Utility classes used throughout components ──────────────────────────── */
+
+.loading-msg {
+  padding: 1.5rem;
+  text-align: center;
+  color: var(--fmc-text-muted, #64748b);
+  font-size: 0.9rem;
+}
+
+.loading-msg .fa-spinner { color: var(--fmc-primary); }
+
+.success-msg {
+  padding: 0.7rem 1rem;
+  background: var(--fmc-success-light, #d1fae5);
+  color: #065f46;
+  border: 1px solid #6ee7b7;
+  border-radius: var(--fmc-radius);
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
+
+.empty-state {
+  padding: 3rem 1rem;
+  text-align: center;
+  color: var(--fmc-text-muted, #64748b);
+  font-size: 0.9rem;
+}
+
+.feedback-msg {
+  margin-bottom: 1rem;
+}
+
+.page-title {
+  margin: 0 0 1.25rem;
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+/* ── Table utility ───────────────────────────────────────────────────────── */
+
+.fmc-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.fmc-table th {
+  padding: 0.7rem 1rem;
+  text-align: left;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--fmc-text-muted, #64748b);
+  border-bottom: 1px solid var(--fmc-border);
+  background: var(--fmc-surface-2, #f8fafc);
+  white-space: nowrap;
+}
+
+.fmc-table td {
+  padding: 0.7rem 1rem;
+  border-bottom: 1px solid var(--fmc-border);
+  vertical-align: middle;
+}
+
+.fmc-table tbody tr:last-child td { border-bottom: none; }
+.fmc-table tbody tr:hover { background: var(--fmc-surface-2, #f8fafc); }
+
+.table-wrap { overflow-x: auto; }
+
+/* ── Profile / manage-users utilities ────────────────────────────────────── */
+
+.actions-col { display: flex; gap: 0.4rem; }
+.role-tabs  { display: flex; gap: 4px; }
+.role-tab   { padding: 6px 14px; background: none; border: 1px solid var(--fmc-border); border-radius: 6px; cursor: pointer; font-size: 0.8rem; font-weight: 500; transition: all 0.15s; }
+.role-tab--active { background: var(--fmc-primary); color: #fff; border-color: var(--fmc-primary); }
+.role-tab:hover:not(.role-tab--active) { border-color: var(--fmc-primary); color: var(--fmc-primary); }
+
+.users-table { padding: 0; overflow: hidden; }
+.page-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 16px; }
+
+/* ── misc ────────────────────────────────────────────────────────────────── */
+.complaint-count {
+  font-size: 0.875rem;
+  color: var(--fmc-text-muted, #64748b);
+  margin-bottom: 0.75rem;
+  font-weight: 500;
+}
+
+/* ── Shared profile sub-section pattern ──────────────────────────────────────
+   Used by SuperAdmin (shared user-profile), Solver and PWG profile pages
+   so the role-specific Dept/Org sections sit next to the shared user-profile
+   with consistent typography, header bar, and meta grid.
+   ----------------------------------------------------------------------- */
+.profile-section {
+  margin-top: 16px;
+}
+
+.profile-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--fmc-border);
+}
+
+  .profile-section-header h4 {
+    margin: 0;
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--fmc-text);
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .profile-section-header h4 i {
+    font-size: 18px;
+  }
+
+.profile-section-title {
+  margin: 0 0 16px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--fmc-text);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+  .profile-section-title i {
+    color: var(--fmc-primary);
+    font-size: 14px;
+  }
+
+.info-meta {
+  gap: 14px 24px;
+}
+
+.meta-block {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+  .meta-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--fmc-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .meta-value {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--fmc-text);
+    word-break: break-word;
+  }
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 18px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 540px) {
+  .form-actions {
+    flex-direction: column-reverse;
+  }
+  .form-actions button {
+    width: 100%;
+  }
+}
+
+/* ── Global polish ─────────────────────────────────────────────────────────
+   Subtle improvements applied site-wide to round out the look without
+   touching individual component CSS. Keeps existing tokens; tightens cards,
+   selects, and focus rings.
+   ----------------------------------------------------------------------- */
+
+/* Native selects: match the .fmc-input padding/height + add a caret. */
+select.fmc-input {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding-right: 36px;
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath fill='%2364748b' d='M6 8 0 0h12z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 10px;
+  cursor: pointer;
+}
+
+textarea.fmc-input {
+  min-height: 96px;
+  resize: vertical;
+  line-height: 1.55;
+}
+
+/* Card stack rhythm — anywhere multiple .fmc-card siblings stack, give them
+   consistent vertical spacing without per-page overrides. */
+.fmc-card + .fmc-card,
+.fmc-page > .fmc-card + .fmc-card {
+  margin-top: 16px;
+}
+
+/* Page heading: nicer default for the .page-title used across role pages. */
+.page-title {
+  margin: 0 0 18px;
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--fmc-text);
+}
+
+/* Section heading between cards (e.g. "Organisation Details" in registration) */
+.section-label {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--fmc-text-muted);
+  margin: 24px 0 12px;
+  padding-bottom: 6px;
+  border-bottom: 1px dashed var(--fmc-border);
+}
+
+.section-label:first-child {
+  margin-top: 4px;
+}
+
+/* Slightly tighter alert margins where they sit inside cards */
+.fmc-card > .fmc-alert {
+  margin-top: 16px;
+  margin-bottom: 0;
+}
+
+/* Buttons grow comfortably on touch but cap at sensible sizes */
+.btn-primary,
+.btn-secondary,
+.btn-danger,
+.btn-success {
+  min-height: 38px;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+/* Inputs feel slightly more "designed" when focused */
+.fmc-input:focus,
+select.fmc-input:focus,
+textarea.fmc-input:focus {
+  border-color: var(--fmc-primary);
+  background: var(--fmc-surface);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.14);
+}
+
+/* Make all primary headings render with the brand typeface explicitly */
+h1, h2, h3 { letter-spacing: -0.018em; }
+
+/* Scrollbars (Chromium): subtle, on-brand */
+* { scrollbar-width: thin; scrollbar-color: var(--fmc-border-strong) transparent; }
+*::-webkit-scrollbar { width: 8px; height: 8px; }
+*::-webkit-scrollbar-thumb { background: var(--fmc-border-strong); border-radius: 8px; }
+*::-webkit-scrollbar-thumb:hover { background: var(--fmc-text-light); }
+*::-webkit-scrollbar-track { background: transparent; }
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   PHASE 5 — SaaS polish + dark mode (2026-05-19)
+   ───────────────────────────────────────────────────────────────────────
+   • Extended design tokens (radii, elevation, motion, gradients)
+   • Dark theme via [data-theme="dark"] attribute on <html>
+   • Smooth cross-theme transitions on neutral surfaces
+   • Polished cards / forms / buttons / tables / chips / status badges
+   • Theme toggle classes (.fmc-theme-toggle)
+   • Premium navigation polish (.fmc-navbar / .fmc-sidebar surfaces)
+   • Accessible focus rings preserved at all theme states
+   ─────────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Phase-5 additions — extra tokens (updated to indigo palette). */
+  --fmc-primary-50:  #eef2ff;
+  --fmc-primary-100: #e0e7ff;
+  --fmc-primary-500: #6366f1;
+  --fmc-primary-600: #4f46e5;
+  --fmc-primary-700: #4338ca;
+  --fmc-gradient-brand: linear-gradient(135deg, #4f46e5 0%, #7c3aed 60%, #9333ea 100%);
+  --fmc-gradient-soft:  linear-gradient(180deg, #f8fafc 0%, #eef2f7 100%);
+  --fmc-glass-bg: rgba(255, 255, 255, 0.78);
+  --fmc-glass-border: rgba(255, 255, 255, 0.65);
+  --fmc-elev-1: 0 1px 2px rgba(15, 23, 42, 0.05), 0 1px 4px rgba(15, 23, 42, 0.04);
+  --fmc-elev-2: 0 4px 10px rgba(15, 23, 42, 0.06), 0 2px 4px rgba(15, 23, 42, 0.04);
+  --fmc-elev-3: 0 12px 28px rgba(15, 23, 42, 0.12), 0 4px 10px rgba(15, 23, 42, 0.06);
+  --fmc-motion-fast: 140ms cubic-bezier(.4, 0, .2, 1);
+  --fmc-motion: 220ms cubic-bezier(.4, 0, .2, 1);
+  color-scheme: light;
+}
+
+/* ── Dark theme ────────────────────────────────────────────────────────── */
+[data-theme="dark"] {
+  /* Surfaces — deep navy/slate */
+  --fmc-bg:           #0d1117;
+  --fmc-surface:      #161b22;
+  --fmc-surface-2:    #1c2331;
+  --fmc-border:       #21262d;
+  --fmc-border-strong:#30363d;
+
+  /* Text */
+  --fmc-text:         #e6edf4;
+  --fmc-text-primary: #e6edf4;
+  --fmc-text-muted:   #8b949e;
+  --fmc-text-light:   #58626c;
+
+  /* Brand — indigo lifted for dark surfaces */
+  --fmc-primary:       #818cf8;
+  --fmc-primary-dark:  #6366f1;
+  --fmc-primary-light: #1e1b4b;
+  --fmc-primary-50:    #1e1b4b;
+  --fmc-primary-100:   #2e27a0;
+  --fmc-primary-500:   #818cf8;
+  --fmc-primary-600:   #6366f1;
+  --fmc-primary-700:   #4f46e5;
+
+  /* Semantic */
+  --fmc-accent:        #fbbf24;
+  --fmc-success:       #3fb950;
+  --fmc-success-light: #0d2c1a;
+  --fmc-warning:       #d29922;
+  --fmc-warning-light: #2d1e00;
+  --fmc-danger:        #f85149;
+  --fmc-danger-light:  #3a0d09;
+  --fmc-info:          #818cf8;
+
+  /* Elevation against dark surfaces */
+  --fmc-shadow:    0 1px 3px rgba(0, 0, 0, 0.55), 0 1px 2px rgba(0, 0, 0, 0.40);
+  --fmc-shadow-md: 0 6px 20px rgba(0, 0, 0, 0.60), 0 2px 6px rgba(0, 0, 0, 0.40);
+  --fmc-shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.70), 0 6px 14px rgba(0, 0, 0, 0.45);
+  --fmc-elev-1: 0 1px 3px rgba(0, 0, 0, 0.55), 0 1px 2px rgba(0, 0, 0, 0.40);
+  --fmc-elev-2: 0 6px 20px rgba(0, 0, 0, 0.60), 0 2px 6px rgba(0, 0, 0, 0.40);
+  --fmc-elev-3: 0 16px 40px rgba(0, 0, 0, 0.70), 0 6px 14px rgba(0, 0, 0, 0.45);
+
+  --fmc-gradient-soft:  linear-gradient(180deg, #161b22 0%, #0d1117 100%);
+  --fmc-glass-bg:       rgba(22, 27, 34, 0.82);
+  --fmc-glass-border:   rgba(255, 255, 255, 0.07);
+
+  color-scheme: dark;
+}
+
+/* Smooth theme switch — transition the neutral chrome but keep
+   inputs / animations from picking it up (else cursors lag). */
+html, body, .fmc-card, .fmc-input, .btn-primary, .btn-secondary,
+.btn-danger, .btn-success, .fmc-navbar, .fmc-sidebar, .badge-status,
+table.fmc-table, .fmc-table th, .fmc-table td {
+  transition:
+    background-color var(--fmc-motion),
+    border-color    var(--fmc-motion),
+    color           var(--fmc-motion),
+    box-shadow      var(--fmc-motion);
+}
+
+/* ── Body background — subtle gradient for SaaS feel ──────────────────── */
+body {
+  background-image:
+    radial-gradient(at 8% -8%,  rgba(79, 70, 229, 0.07)  0%, transparent 35%),
+    radial-gradient(at 92% 0%,  rgba(124, 58, 237, 0.05) 0%, transparent 40%),
+    radial-gradient(at 50% 100%, rgba(16, 185, 129, 0.04) 0%, transparent 40%);
+  background-attachment: fixed;
+}
+[data-theme="dark"] body {
+  background-image:
+    radial-gradient(at 8% -8%,  rgba(129, 140, 248, 0.10)  0%, transparent 35%),
+    radial-gradient(at 92% 0%,  rgba(167, 139, 250, 0.07) 0%, transparent 40%),
+    radial-gradient(at 50% 100%, rgba(63, 185, 80, 0.05) 0%, transparent 40%);
+}
+
+/* ── Cards — soft elevation, hover lift ───────────────────────────────── */
+.fmc-card {
+  box-shadow: var(--fmc-elev-1);
+  border: 1px solid var(--fmc-border);
+}
+.fmc-card-hover:hover {
+  box-shadow: var(--fmc-elev-2);
+  transform: translateY(-1px);
+}
+
+/* Stat card surface — gradient frame */
+.fmc-stat-card {
+  position: relative;
+  overflow: hidden;
+  background: var(--fmc-surface);
+  border: 1px solid var(--fmc-border);
+  border-radius: var(--fmc-radius-lg);
+  padding: 18px 20px;
+  box-shadow: var(--fmc-elev-1);
+  transition: transform var(--fmc-motion), box-shadow var(--fmc-motion);
+}
+.fmc-stat-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--fmc-gradient-brand);
+  opacity: 0;
+  transition: opacity var(--fmc-motion);
+  pointer-events: none;
+}
+.fmc-stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--fmc-elev-2);
+}
+.fmc-stat-card:hover::before { opacity: 0.04; }
+
+/* ── Forms — slightly larger touch targets, calmer borders ────────────── */
+.fmc-input {
+  background: var(--fmc-surface);
+  border-color: var(--fmc-border);
+}
+.fmc-input::placeholder { color: var(--fmc-text-light); }
+.fmc-input:hover:not(:focus):not(:disabled) {
+  border-color: var(--fmc-border-strong);
+}
+
+/* ── Buttons — refined elevation + ghost variant ──────────────────────── */
+.btn-primary {
+  background: var(--fmc-primary);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.10) inset, 0 2px 6px rgba(37, 99, 235, 0.25);
+}
+.btn-secondary {
+  background: var(--fmc-surface);
+  color: var(--fmc-primary);
+}
+.btn-secondary:hover:not(:disabled) {
+  background: var(--fmc-primary-light);
+}
+.btn-ghost {
+  background: transparent;
+  color: var(--fmc-text);
+  border: 1px solid var(--fmc-border);
+  padding: 8px 16px;
+  border-radius: var(--fmc-radius);
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--fmc-transition);
+  display: inline-flex; align-items: center; gap: 6px;
+  min-height: 38px;
+}
+.btn-ghost:hover:not(:disabled) {
+  background: var(--fmc-surface-2);
+  border-color: var(--fmc-border-strong);
+}
+
+/* Theme toggle — sits in the navbar / topbar */
+.fmc-theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px; height: 36px;
+  border-radius: 999px;
+  border: 1px solid var(--fmc-border);
+  background: var(--fmc-surface);
+  color: var(--fmc-text-muted);
+  cursor: pointer;
+  transition: var(--fmc-transition);
+}
+.fmc-theme-toggle:hover {
+  color: var(--fmc-primary);
+  border-color: var(--fmc-primary);
+  background: var(--fmc-primary-light);
+}
+.fmc-theme-toggle .fmc-theme-toggle__icon {
+  width: 18px; height: 18px;
+  display: inline-block;
+}
+.fmc-theme-toggle .icon-sun { display: inline; }
+.fmc-theme-toggle .icon-moon { display: none; }
+[data-theme="dark"] .fmc-theme-toggle .icon-sun  { display: none; }
+[data-theme="dark"] .fmc-theme-toggle .icon-moon { display: inline; }
+
+/* ── Status badges — dark-mode-safe colours ───────────────────────────── */
+.badge-status { box-shadow: 0 1px 0 rgba(15, 23, 42, 0.04) inset; }
+[data-theme="dark"] .badge-Submitted    { background: #1e1b4b; color: #c7d2fe; }
+[data-theme="dark"] .badge-In\ Progress { background: #2d1e00; color: #fde68a; }
+[data-theme="dark"] .badge-Resolved     { background: #0d2c1a; color: #86efac; }
+[data-theme="dark"] .badge-Rejected     { background: #3a0d09; color: #fca5a5; }
+[data-theme="dark"] .badge-Escalated    { background: #3b1800; color: #fdba74; }
+[data-theme="dark"] .badge-Reopened     { background: #2e1065; color: #e9d5ff; }
+[data-theme="dark"] .badge-Pending      { background: #2d1e00; color: #fde68a; }
+[data-theme="dark"] .badge-Approved     { background: #0d2c1a; color: #86efac; }
+
+/* ── Tables — modern zebra + row hover ────────────────────────────────── */
+.fmc-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: var(--fmc-surface);
+  border: 1px solid var(--fmc-border);
+  border-radius: var(--fmc-radius-lg);
+  overflow: hidden;
+  font-size: 14px;
+}
+.fmc-table thead th {
+  text-align: left;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--fmc-text-muted);
+  background: var(--fmc-surface-2);
+  border-bottom: 1px solid var(--fmc-border);
+  padding: 12px 14px;
+}
+.fmc-table tbody td {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--fmc-border);
+  color: var(--fmc-text);
+}
+.fmc-table tbody tr:last-child td { border-bottom: none; }
+.fmc-table tbody tr:hover td { background: var(--fmc-surface-2); }
+
+/* ── Chips & pills (filters, AI tags) ─────────────────────────────────── */
+.fmc-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  background: var(--fmc-surface-2);
+  color: var(--fmc-text-muted);
+  border: 1px solid var(--fmc-border);
+}
+.fmc-chip--accent {
+  background: var(--fmc-primary-light);
+  color: var(--fmc-primary);
+  border-color: transparent;
+}
+
+/* ── Navbar / sidebar surfaces ────────────────────────────────────────── */
+.fmc-navbar, .navbar.fmc-navbar {
+  background: var(--fmc-glass-bg);
+  -webkit-backdrop-filter: saturate(160%) blur(10px);
+          backdrop-filter: saturate(160%) blur(10px);
+  border-bottom: 1px solid var(--fmc-glass-border);
+}
+.fmc-sidebar {
+  background: var(--fmc-surface);
+  border-right: 1px solid var(--fmc-border);
+}
+
+/* ── Empty / loading states get a softer look ─────────────────────────── */
+.fmc-empty, .empty-state {
+  text-align: center;
+  padding: 36px 20px;
+  color: var(--fmc-text-muted);
+  background: var(--fmc-surface);
+  border: 1px dashed var(--fmc-border-strong);
+  border-radius: var(--fmc-radius-lg);
+}
+
+/* ── Animations — fade-in for newly-rendered cards / pages ───────────── */
+@keyframes fmc-fade-in-up {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fmc-card, .fmc-stat-card {
+  animation: fmc-fade-in-up 280ms cubic-bezier(.4,0,.2,1) both;
+}
+
+/* Reduced-motion users get static surfaces. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Razorpay branding harmonisation ──────────────────────────────────── */
+/* The Razorpay modal sits on top of our app; ensure our toasts stay above it. */
+.toast-container, .fmc-toast { z-index: 2147483646 !important; }
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   PHASE 6 — Approved frontend upgrades (2026-05-20)
+   ───────────────────────────────────────────────────────────────────────
+   Global animation utilities (fmc-fade-up, fmc-fade-in, fmc-shimmer,
+   fmc-ripple, fmc-pulse-ring, fmc-count-in) + scroll-reveal classes +
+   skeleton-loader base + form-input focus glow.
+   See fixmycity-frontend-upgrades.md §1b, §17a.
+   ─────────────────────────────────────────────────────────────────────── */
+
+@keyframes fmc-fade-up {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fmc-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes fmc-shimmer {
+  0%   { background-position: -600px 0; }
+  100% { background-position:  600px 0; }
+}
+@keyframes fmc-ripple {
+  to { transform: scale(2.8); opacity: 0; }
+}
+@keyframes fmc-pulse-ring {
+  0%   { transform: scale(1);    opacity: 0.7; }
+  100% { transform: scale(1.65); opacity: 0; }
+}
+@keyframes fmc-count-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Scroll-reveal — applied by the RevealDirective via IntersectionObserver. */
+.fmc-reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.45s ease, transform 0.45s ease;
+  will-change: opacity, transform;
+}
+.fmc-reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.fmc-reveal-delay-1 { transition-delay: 0.10s; }
+.fmc-reveal-delay-2 { transition-delay: 0.20s; }
+.fmc-reveal-delay-3 { transition-delay: 0.30s; }
+.fmc-reveal-delay-4 { transition-delay: 0.40s; }
+
+/* Bootstrap Icons spin utility — replaces FA's `fa-spin`. Applied
+   conditionally via [class.bi-spin]="loading" wherever the spinner needs
+   to rotate (refresh buttons, in-flight AI calls, etc.). */
+@keyframes bi-spin-rot {
+  to { transform: rotate(360deg); }
+}
+.bi-spin {
+  display: inline-block;
+  animation: bi-spin-rot 0.85s linear infinite;
+}
+
+/* Bootstrap Icons size utilities — FA's `fa-2x` / `fa-3x` analogues. */
+.bi-1-5x { font-size: 1.5em; line-height: 1; }
+.bi-2x   { font-size: 2em;   line-height: 1; }
+.bi-3x   { font-size: 3em;   line-height: 1; }
+
+/* Skeleton shimmer base — used by app-skeleton-card. */
+.fmc-skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--fmc-border) 25%,
+    var(--fmc-bg) 50%,
+    var(--fmc-border) 75%
+  );
+  background-size: 600px 100%;
+  animation: fmc-shimmer 1.5s infinite;
+  border-radius: 6px;
+}
+
+/* Form input focus glow — branded ring, dark-mode aware via primary token. */
+.fmc-input:focus {
+  outline: none;
+  border-color: var(--fmc-primary);
+  box-shadow:
+    0 0 0 3px rgba(79, 70, 229, 0.15),
+    0 1px 3px rgba(0, 0, 0, 0.06);
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+[data-theme="dark"] .fmc-input:focus {
+  box-shadow:
+    0 0 0 3px rgba(129, 140, 248, 0.22),
+    0 1px 3px rgba(0, 0, 0, 0.35);
+}
+.fmc-input:hover:not(:focus):not(:disabled) {
+  border-color: var(--fmc-border-strong);
+}
+.fmc-input.error:focus {
+  box-shadow:
+    0 0 0 3px rgba(239, 68, 68, 0.15),
+    0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   PHASE 7 — Dark-mode coverage, visual polish & theme-switch animation
+   ───────────────────────────────────────────────────────────────────────
+   Fixes:
+   • Bootstrap dropdown/text-dark not adapting in dark mode
+   • Hardcoded colours in .login-api-error, modal-warnings, etc.
+   • Select caret colour in dark mode
+   • Chatbot panel & sidebar/layout backgrounds
+   • Spinner overlay
+   • Theme-switch ripple animation
+   ─────────────────────────────────────────────────────────────────────── */
+
+/* ── Theme-switch animation ─────────────────────────────────────────── */
+/* Triggered by adding .theme-switching to <html> briefly. */
+@keyframes fmc-theme-flash {
+  0%   { opacity: 0.18; }
+  40%  { opacity: 0.10; }
+  100% { opacity: 0; }
+}
+
+html.theme-switching::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: var(--fmc-primary);
+  pointer-events: none;
+  z-index: 2147483647;
+  animation: fmc-theme-flash 0.45s cubic-bezier(.4, 0, .2, 1) forwards;
+}
+
+/* Icon spin on toggle */
+@keyframes fmc-icon-spin {
+  0%   { transform: rotate(0deg) scale(1); }
+  50%  { transform: rotate(180deg) scale(0.85); }
+  100% { transform: rotate(360deg) scale(1); }
+}
+.fmc-theme-toggle.toggling .fmc-theme-toggle__icon {
+  animation: fmc-icon-spin 0.42s cubic-bezier(.4, 0, .2, 1) both;
+}
+
+/* ── --fmc-text-primary alias fix for dark mode ─────────────────────── */
+/* Some components use var(--fmc-text-primary) as a fallback — keep it
+   in sync with --fmc-text in dark mode. */
+[data-theme="dark"] {
+  --fmc-text-primary: var(--fmc-text);
+}
+
+/* ── Bootstrap dropdown — dark mode ────────────────────────────────── */
+[data-theme="dark"] .dropdown-menu {
+  background-color: var(--fmc-surface) !important;
+  border-color: var(--fmc-border) !important;
+  color: var(--fmc-text) !important;
+}
+[data-theme="dark"] .dropdown-item {
+  color: var(--fmc-text) !important;
+}
+[data-theme="dark"] .dropdown-item:hover,
+[data-theme="dark"] .dropdown-item:focus {
+  background-color: var(--fmc-surface-2) !important;
+  color: var(--fmc-text) !important;
+}
+[data-theme="dark"] .dropdown-item.text-danger:hover {
+  background-color: var(--fmc-danger-light) !important;
+  color: var(--fmc-danger) !important;
+}
+[data-theme="dark"] .dropdown-divider {
+  border-color: var(--fmc-border) !important;
+}
+/* .text-dark Bootstrap utility */
+[data-theme="dark"] .text-dark {
+  color: var(--fmc-text) !important;
+}
+[data-theme="dark"] .text-muted {
+  color: var(--fmc-text-muted) !important;
+}
+[data-theme="dark"] .border-bottom {
+  border-color: var(--fmc-border) !important;
+}
+
+/* ── Select caret — dark mode ───────────────────────────────────────── */
+[data-theme="dark"] select.fmc-input {
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath fill='%238b949e' d='M6 8 0 0h12z'/%3E%3C/svg%3E");
+  color-scheme: dark;
+}
+
+/* ── Loading spinner backdrop — dark mode ───────────────────────────── */
+[data-theme="dark"] .fmc-spinner-page {
+  background: rgba(13, 17, 23, 0.85);
+}
+
+/* ── Navbar collapsed panel — dark mode ─────────────────────────────── */
+[data-theme="dark"] .navbar-collapse {
+  background: var(--fmc-surface) !important;
+  border-top-color: var(--fmc-border) !important;
+}
+
+/* ── Chatbot dark mode ──────────────────────────────────────────────── */
+[data-theme="dark"] .chatbot-panel {
+  background: var(--fmc-surface);
+  border: 1px solid var(--fmc-border);
+}
+[data-theme="dark"] .chatbot-input {
+  background: var(--fmc-surface-2);
+  border-color: var(--fmc-border);
+  color: var(--fmc-text);
+}
+[data-theme="dark"] .chatbot-input:focus {
+  background: var(--fmc-surface);
+  border-color: var(--fmc-primary);
+}
+[data-theme="dark"] .chatbot-input-row {
+  border-top-color: var(--fmc-border);
+}
+[data-theme="dark"] .chatbot-msg--bot .chatbot-msg__bubble {
+  background: var(--fmc-surface-2);
+  color: var(--fmc-text);
+}
+
+/* ── Modal warning boxes — dark mode ────────────────────────────────── */
+[data-theme="dark"] .modal-warning {
+  background: #2d1e00 !important;
+  border-color: #92400e !important;
+  color: #fbbf24 !important;
+}
+[data-theme="dark"] .modal-warning--danger {
+  background: var(--fmc-danger-light) !important;
+  border-color: #7f1d1d !important;
+  color: var(--fmc-danger) !important;
+}
+[data-theme="dark"] .modal-warning--info {
+  background: var(--fmc-primary-light) !important;
+  border-color: #2e27a0 !important;
+  color: var(--fmc-primary) !important;
+}
+[data-theme="dark"] .modal-overlay {
+  background: rgba(0, 0, 0, 0.65);
+}
+[data-theme="dark"] .modal-panel {
+  background: var(--fmc-surface);
+}
+[data-theme="dark"] .modal-user-info {
+  background: var(--fmc-surface-2);
+}
+
+/* ── Login error box — dark mode ────────────────────────────────────── */
+[data-theme="dark"] .login-api-error {
+  background: var(--fmc-danger-light) !important;
+  border-color: #7f1d1d !important;
+  color: var(--fmc-danger) !important;
+}
+[data-theme="dark"] .login-wrapper {
+  background: transparent;
+}
+
+/* ── Admin dashboard AI health indicators — dark mode ───────────────── */
+[data-theme="dark"] .ai-health-indicator--online  { background: #0d2c1a; color: var(--fmc-success); }
+[data-theme="dark"] .ai-health-indicator--offline { background: var(--fmc-danger-light); color: var(--fmc-danger); }
+
+/* ── Admin stat/quick cards — dark mode text fix ─────────────────────── */
+[data-theme="dark"] div.stat-card .stat-value { color: var(--fmc-text); }
+[data-theme="dark"] .quick-label { color: var(--fmc-text); }
+[data-theme="dark"] .stat--info  { color: #818cf8; }
+
+/* ── Profile role badge in modals — dark mode ────────────────────────── */
+[data-theme="dark"] .profile-role {
+  background: var(--fmc-primary-light) !important;
+  color: var(--fmc-primary) !important;
+}
+
+/* ── Alert boxes — dark mode ────────────────────────────────────────── */
+[data-theme="dark"] .fmc-alert--danger  { background: var(--fmc-danger-light);  color: var(--fmc-danger);  border-color: #7f1d1d; }
+[data-theme="dark"] .fmc-alert--success { background: var(--fmc-success-light); color: var(--fmc-success); border-color: #14532d; }
+[data-theme="dark"] .fmc-alert--warning { background: var(--fmc-warning-light); color: var(--fmc-warning); border-color: #78350f; }
+[data-theme="dark"] .fmc-alert--info    { background: var(--fmc-primary-light); color: var(--fmc-primary); border-color: #2e27a0; }
+[data-theme="dark"] .success-msg {
+  background: var(--fmc-success-light);
+  border-color: #14532d;
+  color: var(--fmc-success);
+}
+
+/* ── Toast message text — dark mode ─────────────────────────────────── */
+[data-theme="dark"] .fmc-toast__message { color: var(--fmc-text); }
+[data-theme="dark"] .fmc-toast__close:hover { color: var(--fmc-text); }
+[data-theme="dark"] .fmc-toast { background: var(--fmc-surface); border-color: var(--fmc-border); }
+
+/* ── Section label / divider — dark mode ────────────────────────────── */
+[data-theme="dark"] .section-label { border-bottom-color: var(--fmc-border); }
+[data-theme="dark"] .fmc-divider { border-top-color: var(--fmc-border); }
+[data-theme="dark"] .profile-section-header { border-bottom-color: var(--fmc-border); }
+
+/* ── Escalated-complaints action panel — dark mode ───────────────────── */
+[data-theme="dark"] .action-panel--empty {
+  background: var(--fmc-surface);
+  border-color: var(--fmc-border-strong);
+}
+[data-theme="dark"] .log-entry {
+  background: var(--fmc-surface-2);
+  border-left-color: var(--fmc-primary);
+}
+[data-theme="dark"] .status-option {
+  border-color: var(--fmc-border);
+  color: var(--fmc-text);
+}
+[data-theme="dark"] .status-option--selected {
+  border-color: var(--fmc-primary);
+  background: var(--fmc-primary-light);
+}
+
+/* ── Role tabs — dark mode ───────────────────────────────────────────── */
+[data-theme="dark"] .role-tab {
+  border-color: var(--fmc-border);
+  color: var(--fmc-text-muted);
+}
+[data-theme="dark"] .role-tab:hover:not(.role-tab--active) {
+  border-color: var(--fmc-primary);
+  color: var(--fmc-primary);
+  background: var(--fmc-primary-light);
+}
+
+/* ── Button secondary dark mode fix ─────────────────────────────────── */
+[data-theme="dark"] .btn-secondary {
+  background: var(--fmc-surface);
+  border-color: var(--fmc-primary);
+  color: var(--fmc-primary);
+}
+[data-theme="dark"] .btn-secondary:hover:not(:disabled) {
+  background: var(--fmc-primary-light);
+}
+[data-theme="dark"] .btn-ghost {
+  background: var(--fmc-surface);
+  border-color: var(--fmc-border);
+  color: var(--fmc-text);
+}
+[data-theme="dark"] .btn-ghost:hover:not(:disabled) {
+  background: var(--fmc-surface-2);
+  border-color: var(--fmc-border-strong);
+}
+
+/* ── Scrollbar — dark mode ───────────────────────────────────────────── */
+[data-theme="dark"] * {
+  scrollbar-color: var(--fmc-border-strong) transparent;
+}
+[data-theme="dark"] *::-webkit-scrollbar-thumb { background: var(--fmc-border-strong); }
+[data-theme="dark"] *::-webkit-scrollbar-thumb:hover { background: var(--fmc-text-light); }
+
+/* ── Improved spacing & visual polish (all themes) ───────────────────── */
+
+/* Tighter heading rhythm inside cards */
+.fmc-card h4, .fmc-card h5, .fmc-card h6 { margin-top: 0; }
+
+/* Better table header contrast */
+.fmc-table thead th {
+  background: var(--fmc-surface-2);
+  color: var(--fmc-text-muted);
+}
+
+/* Chip with primary tint — use indigo-aware colours */
+.fmc-chip--accent {
+  background: var(--fmc-primary-light);
+  color: var(--fmc-primary);
+  border-color: transparent;
+}
+
+/* Subtle inner-shadow on card top to add depth */
+.fmc-card {
+  box-shadow: var(--fmc-elev-1);
+}
+
+/* Improve fmc-page top spacing on smaller screens */
+@media (max-width: 640px) {
+  .fmc-page { padding: 14px 12px; }
+}
+
+/* Btn primary uses the new indigo — update focus ring too */
+.btn-primary:focus-visible {
+  outline: 3px solid rgba(79, 70, 229, 0.4);
+  outline-offset: 2px;
+}
+
+/* Stat values that were using a hardcoded dark colour */
+div.stat-card .stat-value { color: var(--fmc-text); }
+.quick-label { color: var(--fmc-text); }
+
+/* ── Remaining component dark-mode patches ────────────────────────────── */
+
+/* Activity feed icon backgrounds */
+[data-theme="dark"] .af-icon--update  { background: var(--fmc-primary-light) !important; color: var(--fmc-primary) !important; }
+[data-theme="dark"] .af-icon--reward  { background: var(--fmc-warning-light) !important; color: var(--fmc-warning) !important; }
+
+/* Notification highlight boxes */
+[data-theme="dark"] .notif-unread-bg,
+[data-theme="dark"] [style*="#f0f7ff"] { background: var(--fmc-primary-light) !important; }
+
+/* Gamification certificates — amber shades on dark */
+[data-theme="dark"] .cert-ribbon,
+[data-theme="dark"] .cert-badge { filter: brightness(0.85) saturate(1.2); }
+
+/* Register / auth form success & error boxes */
+[data-theme="dark"] .api-error {
+  background: var(--fmc-danger-light) !important;
+  border-color: #7f1d1d !important;
+  color: var(--fmc-danger) !important;
+}
+[data-theme="dark"] .success-msg {
+  background: var(--fmc-success-light) !important;
+  border-color: #14532d !important;
+  color: var(--fmc-success) !important;
+}
+
+/* PWG action badge */
+[data-theme="dark"] .action-badge {
+  background: var(--fmc-warning-light) !important;
+  color: var(--fmc-warning) !important;
+}
+
+/* Pending approvals status text */
+[data-theme="dark"] .status-approved { color: var(--fmc-success) !important; }
+[data-theme="dark"] .status-rejected { color: var(--fmc-danger) !important; }
+
+/* Map view text colour */
+[data-theme="dark"] .map-popup-text { color: var(--fmc-text) !important; }
+
+/* ai-notice box */
+[data-theme="dark"] .ai-notice {
+  background: var(--fmc-primary-light);
+  border-color: var(--fmc-primary-dark);
+  color: var(--fmc-primary);
+}
+
+/* Submit-complaint dropzone */
+[data-theme="dark"] .dropzone,
+[data-theme="dark"] .upload-zone {
+  background: var(--fmc-surface-2);
+  border-color: var(--fmc-border-strong);
+  color: var(--fmc-text-muted);
+}
+
+/* Citizen complaint detail / progress steps */
+[data-theme="dark"] .progress-step--done   { background: var(--fmc-success-light); color: var(--fmc-success); }
+[data-theme="dark"] .progress-step--active { background: var(--fmc-primary-light); color: var(--fmc-primary); }
+
+/* ── Improved fmc-theme-toggle appearance ─────────────────────────────── */
+/* Slightly larger click target + primary ring on focus */
+.fmc-theme-toggle {
+  width: 38px; height: 38px;
+}
+.fmc-theme-toggle:focus-visible {
+  outline: 3px solid rgba(79, 70, 229, 0.4);
+  outline-offset: 2px;
+}
+[data-theme="dark"] .fmc-theme-toggle:focus-visible {
+  outline-color: rgba(129, 140, 248, 0.5);
+}
+
+

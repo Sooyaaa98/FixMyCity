@@ -1,0 +1,12 @@
+/* src/app/layouts/admin-layout/admin-layout.component.css */
+.layout-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--fmc-bg);
+}
+
+.layout-main {
+  flex: 1;
+  padding-top: 8px;
+}

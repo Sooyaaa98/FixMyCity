@@ -1,0 +1,74 @@
+/* src/app/admin/complaint-list/admin-complaint-list.component.css */
+
+:host {
+  display: block;
+}
+
+/* ── Page Header ─────────────────────────────────────────────────────── */
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.page-header__left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.page-header__title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--fmc-text);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.count-badge {
+  font-size: 12px;
+  font-weight: 600;
+  background: var(--fmc-surface-2);
+  color: var(--fmc-text-muted);
+  padding: 2px 9px;
+  border-radius: 12px;
+  border: 1px solid var(--fmc-border);
+}
+
+/* ── Filter panel ────────────────────────────────────────────────────── */
+.filter-panel {
+  margin-bottom: 20px;
+  padding: 16px 20px;
+}
+
+.filter-row {
+  display: flex;
+  gap: 16px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+
+.filter-group {
+  flex: 1;
+  min-width: 160px;
+  margin-bottom: 0;
+}
+
+.filter-actions {
+  display: flex;
+  gap: 8px;
+  padding-bottom: 2px;
+}
+
+/* ── Complaints list ─────────────────────────────────────────────────── */
+.complaints-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}

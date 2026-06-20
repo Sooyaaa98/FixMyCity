@@ -1,0 +1,328 @@
+<!-- src/app/citizen/complaint-detail/citizen-complaint-detail.component.html -->
+
+<div class="fmc-page">
+
+  <button class="btn-secondary back-btn" (click)="goBack()">
+    <i class="bi bi-arrow-left" aria-hidden="true"></i> Back to Complaints
+  </button>
+
+  <app-loading-spinner *ngIf="isLoading" message="Loading complaint…"></app-loading-spinner>
+  <div class="fmc-error-msg" *ngIf="errorMessage && !isLoading">{{ errorMessage }}</div>
+
+  <ng-container *ngIf="complaint && !isLoading">
+
+    <!-- ── Main Detail Card ───────────────────────────────────────────────── -->
+    <div [class]="'fmc-card crit-' + complaint.criticality + ' detail-card'">
+
+      <div class="detail-top">
+        <div>
+          <span class="detail-id">#{{ complaint.complaintId }}</span>
+          <h2 class="detail-title">{{ complaint.title }}</h2>
+        </div>
+        <app-status-badge [status]="complaint.status"></app-status-badge>
+      </div>
+
+      <p class="detail-desc">{{ complaint.description }}</p>
+
+      <!-- Phase 8 (§14) SLA badge — only shown for in-flight complaints -->
+      <div class="d-flex align-items-center gap-2 mb-3"
+           *ngIf="complaint.estimatedResDate
+                  && complaint.status !== 'Resolved'
+                  && complaint.status !== 'Rejected'
+                  && complaint.status !== 'Linked'">
+        <span class="text-muted small">SLA:</span>
+        <span class="badge" [class]="'badge ' + (complaint.estimatedResDate | slaBadgeClass:complaint.status)">
+          <i class="bi bi-clock-history me-1" aria-hidden="true"></i>
+          {{ complaint.estimatedResDate | sla:complaint.status }}
+        </span>
+      </div>
+
+      <!-- Phase 8 (§4, §8, §1) Share + QR + Upvote row -->
+      <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
+        <!-- §1 upvote toggle, shown on every complaint -->
+        <app-upvote-button [complaintId]="complaint.complaintId"
+                            variant="inline"></app-upvote-button>
+        <button type="button" class="btn btn-sm btn-outline-primary"
+                (click)="shareThis()" aria-label="Share complaint">
+          <i class="bi bi-share-fill me-1" aria-hidden="true"></i> Share
+        </button>
+        <button type="button" class="btn btn-sm btn-outline-secondary"
+                data-bs-toggle="collapse" data-bs-target="#qrPanel"
+                aria-label="Show QR code">
+          <i class="bi bi-qr-code me-1" aria-hidden="true"></i> QR code
+        </button>
+      </div>
+      <div class="collapse mb-3" id="qrPanel">
+        <div class="d-flex flex-column flex-md-row align-items-md-center gap-3 p-3"
+             style="background:var(--fmc-bg-soft,#f8f9fa); border-radius:12px;">
+          <img *ngIf="qrImageSrc" [src]="qrImageSrc"
+               alt="QR code linking to this complaint"
+               width="180" height="180" style="border-radius:8px; background:#fff; padding:8px;" />
+          <div>
+            <strong>Scan to open this complaint</strong>
+            <p class="text-muted small mb-2">
+              Print it on a sticker so neighbours can scan and track progress.
+            </p>
+            <button type="button" class="btn btn-sm btn-primary" (click)="downloadQrCode()">
+              <i class="bi bi-download me-1" aria-hidden="true"></i> Download PNG
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="fmc-grid-2 detail-meta">
+        <div class="meta-block">
+          <span class="meta-label">Category</span>
+          <span class="meta-value">{{ complaint.category?.categoryName || '—' }}</span>
+        </div>
+        <div class="meta-block">
+          <span class="meta-label">Locality</span>
+          <span class="meta-value">{{ complaint.locality?.localityName || '—' }}</span>
+        </div>
+        <div class="meta-block">
+          <span class="meta-label">Address</span>
+          <span class="meta-value">{{ complaint.address }}</span>
+        </div>
+        <div class="meta-block">
+          <span class="meta-label">Criticality</span>
+          <span class="meta-value">{{ complaint.criticality }}</span>
+        </div>
+        <div class="meta-block">
+          <span class="meta-label">Submitted</span>
+          <span class="meta-value">{{ complaint.submittedAt | date: 'dd MMM yyyy, HH:mm' }}</span>
+        </div>
+        <div class="meta-block" *ngIf="complaint.estimatedResDate">
+          <span class="meta-label">Est. Resolution</span>
+          <span class="meta-value">{{ complaint.estimatedResDate | date: 'dd MMM yyyy' }}</span>
+        </div>
+        <div class="meta-block" *ngIf="complaint.resolvedAt">
+          <span class="meta-label">Resolved On</span>
+          <span class="meta-value">{{ complaint.resolvedAt | date: 'dd MMM yyyy' }}</span>
+        </div>
+        <div class="meta-block" *ngIf="complaint.department">
+          <span class="meta-label">Assigned Dept</span>
+          <span class="meta-value">{{ complaint.department.deptName }}</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ── Funding / Contribution Panel ──────────────────────────────────── -->
+    <div class="fmc-card action-card funding-card" *ngIf="isOwner">
+      <div class="funding-header">
+        <div>
+          <h4>💰 Community Funding</h4>
+          <p class="funding-total">Total raised: <strong>₹{{ fundingTotal | number: '1.2-2' }}</strong></p>
+        </div>
+        <button class="btn-primary btn--sm" (click)="openContributePanel()" *ngIf="!showContributeForm">
+          <i class="bi bi-plus-lg-circle" aria-hidden="true"></i> Contribute
+        </button>
+      </div>
+
+      <!-- Contribute form -->
+      <div class="contribute-form" *ngIf="showContributeForm">
+        <div class="fmc-form-group">
+          <label class="fmc-label required" for="amount">Amount (₹)</label>
+          <input
+            id="amount"
+            type="number"
+            class="fmc-input"
+            [(ngModel)]="contributeAmount"
+            min="1"
+            max="100000"
+            placeholder="Enter amount in ₹"
+          />
+        </div>
+        <div class="contribute-actions">
+          <button class="btn-secondary" type="button" (click)="cancelContribute()">Cancel</button>
+          <button
+            class="btn-success"
+            type="button"
+            [disabled]="!contributeAmount || contributeAmount < 1 || paymentLoading"
+            (click)="pay()"
+          >
+            <span *ngIf="paymentLoading"><i class="bi bi-arrow-repeat"></i> Processing…</span>
+            <span *ngIf="!paymentLoading">Pay ₹{{ contributeAmount || 0 | number: '1.0-0' }}</span>
+          </button>
+        </div>
+        <p class="contribute-note">Payments are processed securely via Razorpay.</p>
+      </div>
+
+      <!-- Contributions list -->
+      <div class="contributions-list" *ngIf="contributions.length > 0 && !showContributeForm">
+        <div class="fmc-divider"></div>
+        <p class="contributions-title">Recent contributions</p>
+        <div class="contribution-item" *ngFor="let c of contributions | slice:0:5">
+          <span class="contribution-amount">₹{{ c.amount | number: '1.2-2' }}</span>
+          <span class="contribution-status badge-status"
+                [class]="'badge-' + c.paymentStatus">
+            {{ c.paymentStatus }}
+          </span>
+          <span class="contribution-date">{{ c.contributedAt | date: 'dd MMM' }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Phase 8 (§3) — Before/after photo viewer.
+         Only rendered when the complaint is Resolved AND we have both a
+         submission and a resolution image. -->
+    <div class="fmc-card action-card"
+         *ngIf="complaint.status === 'Resolved' && allAttachments.length > 0">
+      <h4>🖼️ Before / After</h4>
+      <p class="text-muted small mb-3">
+        Drag the slider to compare the original photo with the resolved photo.
+      </p>
+      <app-photo-compare [attachments]="allAttachments"></app-photo-compare>
+    </div>
+
+    <!-- ── Attachments ────────────────────────────────────────────────────── -->
+    <div class="fmc-card action-card" *ngIf="attachments.length > 0">
+      <h4>📎 Attachments</h4>
+      <div class="attachments-list">
+        <a
+          *ngFor="let att of attachments"
+          class="attachment-item"
+          [href]="att.filePath"
+          target="_blank"
+          rel="noopener"
+          [attr.aria-label]="'Download ' + att.fileName"
+        >
+          <i class="bi bi-file-earmark-fill-image-o" aria-hidden="true"></i>
+          <span>{{ att.fileName }}</span>
+          <span class="att-size" *ngIf="att.fileSizeKB">{{ att.fileSizeKB }}KB</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- ── Rating Panel ───────────────────────────────────────────────────── -->
+    <div class="fmc-card action-card" *ngIf="canRate">
+      <h4>⭐ Rate this Resolution</h4>
+      <form [formGroup]="ratingForm" (ngSubmit)="submitRating()">
+        <div class="star-row">
+          <label class="fmc-label required">Your Rating</label>
+          <div class="stars" role="radiogroup" aria-label="Rating">
+            <button
+              *ngFor="let s of starOptions"
+              type="button"
+              class="star-btn"
+              [class.filled]="(ratingForm.get('stars')?.value ?? 0) >= s"
+              [attr.aria-label]="s + ' star' + (s !== 1 ? 's' : '')"
+              (click)="setStars(s)"
+            >★</button>
+          </div>
+        </div>
+        <div class="fmc-form-group">
+          <label class="fmc-label" for="comment">Comment (optional)</label>
+          <textarea
+            id="comment"
+            formControlName="comment"
+            class="fmc-input"
+            rows="3"
+            placeholder="Describe your experience…"
+          ></textarea>
+        </div>
+        <button type="submit" class="btn-primary" [disabled]="ratingForm.invalid">
+          Submit Rating
+        </button>
+      </form>
+    </div>
+
+    <!-- ── Reopen Panel ───────────────────────────────────────────────────── -->
+    <div class="fmc-card action-card" *ngIf="canReopen">
+      <h4>🔄 Reopen Complaint</h4>
+      <p class="reopen-note">
+        Your rating of {{ lastStars }} star{{ lastStars !== 1 ? 's' : '' }} qualifies this complaint for re-opening.
+      </p>
+      <form [formGroup]="reopenForm" (ngSubmit)="submitReopen()">
+        <div class="fmc-form-group">
+          <label class="fmc-label required" for="reason">Reason for Reopening</label>
+          <textarea
+            id="reason"
+            formControlName="reason"
+            class="fmc-input"
+            [class.error]="reopenForm.get('reason')?.invalid && reopenForm.get('reason')?.touched"
+            rows="3"
+            placeholder="Explain why the issue is still unresolved…"
+          ></textarea>
+          <span class="fmc-error-msg"
+                *ngIf="reopenForm.get('reason')?.invalid && reopenForm.get('reason')?.touched">
+            Reason is required (min 10 characters).
+          </span>
+        </div>
+        <button type="submit" class="btn-danger" [disabled]="reopenForm.invalid">
+          Reopen Complaint
+        </button>
+      </form>
+    </div>
+
+    <!-- Phase 8 (§6) Appeal panel — only visible to the complaint owner
+         once it has been Rejected. After filing, shows the appeal status. -->
+    <div class="fmc-card action-card"
+         *ngIf="isOwner && complaint.status === 'Rejected'">
+      <h4>⚖️ Appeal this decision</h4>
+      <ng-container *ngIf="myAppealForThis; else canAppeal">
+        <p class="mb-1">
+          Your appeal was filed on
+          <strong>{{ myAppealForThis.createdAt | date:'medium' }}</strong>.
+        </p>
+        <span class="badge"
+              [ngClass]="{ 'bg-warning text-dark': myAppealForThis.status === 'Pending',
+                            'bg-success': myAppealForThis.decision === 'Approved',
+                            'bg-danger':  myAppealForThis.decision === 'Rejected' }">
+          {{ myAppealForThis.status }}<span *ngIf="myAppealForThis.decision"> · {{ myAppealForThis.decision }}</span>
+        </span>
+        <p class="mt-2 mb-0 text-muted small" *ngIf="myAppealForThis.adminNote">
+          Admin note: {{ myAppealForThis.adminNote }}
+        </p>
+      </ng-container>
+      <ng-template #canAppeal>
+        <p class="text-muted small mb-2">
+          If you believe this complaint was rejected in error, you may file an
+          appeal. A SuperAdmin will review it and may reopen the complaint.
+        </p>
+        <button *ngIf="!showAppealForm"
+                type="button"
+                class="btn btn-outline-danger btn-sm"
+                (click)="showAppealForm = true">
+          File appeal
+        </button>
+        <div *ngIf="showAppealForm" class="mt-2">
+          <textarea class="form-control"
+                    rows="3"
+                    minlength="10"
+                    maxlength="1000"
+                    [(ngModel)]="appealReason"
+                    placeholder="Why should this complaint be reopened? (min 10 characters)"></textarea>
+          <div class="d-flex justify-content-end gap-2 mt-2">
+            <button class="btn btn-outline-secondary btn-sm"
+                    (click)="showAppealForm = false; appealReason = ''">Cancel</button>
+            <button class="btn btn-danger btn-sm"
+                    [disabled]="appealLoading || appealReason.trim().length < 10"
+                    (click)="submitAppeal()">
+              {{ appealLoading ? 'Filing…' : 'Submit appeal' }}
+            </button>
+          </div>
+        </div>
+      </ng-template>
+    </div>
+
+    <!-- ── Timeline ───────────────────────────────────────────────────────── -->
+    <div class="fmc-card timeline-card">
+      <h4>📋 Activity Timeline</h4>
+      <app-timeline [entries]="timeline"></app-timeline>
+    </div>
+
+    <!-- Phase 8 (§7) Comments thread — every authenticated user can post,
+         the server stamps Solver / SuperAdmin replies as Official. -->
+    <div class="fmc-card action-card">
+      <app-comments-thread [complaintId]="complaint.complaintId"></app-comments-thread>
+    </div>
+
+    <!-- Phase 8 (§15) Internal notes — silently hidden for non-staff. -->
+    <div class="fmc-card action-card">
+      <app-internal-notes [complaintId]="complaint.complaintId"></app-internal-notes>
+    </div>
+
+  </ng-container>
+
+</div>

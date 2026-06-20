@@ -1,0 +1,46 @@
+/* src/app/shared/components/activity-feed/activity-feed.component.css */
+
+.af-wrap { display: flex; flex-direction: column; gap: 0.5rem; }
+
+.af-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.af-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.6rem 0.8rem;
+  background: var(--fmc-bg-elev, #fff);
+  border: 1px solid var(--fmc-border, #e2e8f0);
+  border-radius: 12px;
+}
+
+.af-icon {
+  flex: 0 0 32px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--fmc-bg-soft, #f1f5f9);
+  color: var(--fmc-text, #0f172a);
+  font-size: 14px;
+}
+
+.af-icon--reward { background: #fffbeb; color: #b45309; }
+.af-icon--update { background: #eff6ff; color: #1d4ed8; }
+
+.af-text {
+  color: var(--fmc-text, #0f172a);
+  font-size: 0.93rem;
+  line-height: 1.4;
+}
+
+.af-time { font-size: 0.78rem; }

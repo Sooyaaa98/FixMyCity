@@ -1,0 +1,388 @@
+/* src/app/public/landing/landing.component.css */
+
+/* ── Hero ─────────────────────────────────────────────────────────────── */
+.lp-hero {
+  --mx: 50%;
+  --my: 50%;
+  background: linear-gradient(140deg, #0f3d6e 0%, #1a6bbd 55%, #1e88e5 100%);
+  color: #fff;
+  padding: 80px 0 60px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Phase 6 — radial spotlight that follows the cursor (§5). */
+.lp-hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    320px circle at var(--mx) var(--my),
+    rgba(255, 255, 255, 0.07),
+    transparent 70%
+  );
+  pointer-events: none;
+  transition: background 0.08s ease;
+  z-index: 1;
+}
+
+/* Keep child content above the spotlight overlay + particle canvas. */
+.lp-hero > .container { position: relative; z-index: 2; }
+
+.lp-hero-badge {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  padding: 6px 16px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.lp-hero-title {
+  font-size: clamp(2rem, 5vw, 3.25rem);
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.2;
+  margin: 16px 0 20px;
+  letter-spacing: -0.5px;
+}
+
+.lp-hero-sub {
+  font-size: 16px;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.82);
+  max-width: 540px;
+  margin: 0 auto;
+}
+
+/* ── Hero CTAs ────────────────────────────────────────────────────────── */
+.lp-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  background: var(--fmc-accent, #e8780a);
+  color: #fff;
+  border: none;
+  padding: 13px 28px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s, transform 0.15s;
+  cursor: pointer;
+}
+
+.lp-btn-primary:hover {
+  background: #c96308;
+  color: #fff;
+  text-decoration: none;
+  transform: translateY(-1px);
+}
+
+.lp-btn-outline {
+  display: inline-flex;
+  align-items: center;
+  background: transparent;
+  color: #fff;
+  border: 2px solid rgba(255, 255, 255, 0.7);
+  padding: 11px 26px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.lp-btn-outline:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: #fff;
+  color: #fff;
+  text-decoration: none;
+}
+
+.lp-btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: none;
+  padding: 11px 20px;
+  border-radius: 8px;
+  transition: color 0.2s, background 0.2s;
+}
+
+.lp-btn-ghost:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+  text-decoration: none;
+}
+
+.lp-btn-lg {
+  padding: 15px 36px;
+  font-size: 16px;
+}
+
+/* ── Stat Strip ────────────────────────────────────────────────────────── */
+.lp-stat-strip {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.lp-stat {
+  padding: 20px 16px;
+  text-align: center;
+  border-right: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.lp-stat:last-child {
+  border-right: none;
+}
+
+.lp-stat-num {
+  font-size: 22px;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1;
+}
+
+.lp-stat-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: rgba(255, 255, 255, 0.65);
+  margin-top: 4px;
+}
+
+/* ── Sections ─────────────────────────────────────────────────────────── */
+.lp-section {
+  padding: 72px 0;
+  background: var(--fmc-surface, #fff);
+}
+
+.lp-section--light {
+  background: var(--fmc-bg, #f0f2f5);
+}
+
+.lp-section-title {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 800;
+  color: var(--fmc-text, #212529);
+  margin-bottom: 8px;
+}
+
+.lp-section-sub {
+  font-size: 15px;
+  color: var(--fmc-text-muted, #6c757d);
+  margin: 0;
+}
+
+/* ── How It Works Steps ────────────────────────────────────────────────── */
+.lp-step-card {
+  background: var(--fmc-surface, #fff);
+  border-radius: 12px;
+  padding: 28px 24px;
+  height: 100%;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.07);
+  position: relative;
+  border-top: 3px solid var(--fmc-primary, #1a6bbd);
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.lp-step-card:hover {
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.11);
+  transform: translateY(-2px);
+}
+
+.lp-step-num {
+  position: absolute;
+  top: -14px;
+  left: 24px;
+  width: 28px;
+  height: 28px;
+  background: var(--fmc-primary, #1a6bbd);
+  color: #fff;
+  border-radius: 50%;
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lp-step-icon {
+  font-size: 26px;
+  color: var(--fmc-primary, #1a6bbd);
+  margin-bottom: 14px;
+  margin-top: 8px;
+}
+
+.lp-step-label {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--fmc-text, #212529);
+  margin-bottom: 8px;
+}
+
+.lp-step-desc {
+  font-size: 13px;
+  color: var(--fmc-text-muted, #6c757d);
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* ── Benefit Cards ─────────────────────────────────────────────────────── */
+.lp-benefit-card {
+  padding: 28px 20px;
+  border-radius: 12px;
+  height: 100%;
+  transition: background 0.2s;
+}
+
+.lp-benefit-card:hover {
+  background: var(--fmc-bg, #f0f2f5);
+}
+
+.lp-benefit-icon {
+  width: 56px;
+  height: 56px;
+  background: rgba(26, 107, 189, 0.1);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  color: var(--fmc-primary, #1a6bbd);
+  margin: 0 auto;
+}
+
+.lp-benefit-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--fmc-text, #212529);
+  margin-bottom: 8px;
+}
+
+.lp-benefit-desc {
+  font-size: 13px;
+  color: var(--fmc-text-muted, #6c757d);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ── CTA Band ──────────────────────────────────────────────────────────── */
+.lp-cta-band {
+  background: linear-gradient(135deg, #0f3d6e, #1a6bbd);
+  color: #fff;
+  padding: 64px 0;
+}
+
+.lp-cta-title {
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+.lp-cta-sub {
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 28px;
+}
+
+/* ── Footer ────────────────────────────────────────────────────────────── */
+.lp-footer {
+  background: #0d1b2a;
+  color: rgba(255, 255, 255, 0.7);
+  padding: 40px 0;
+}
+
+.lp-footer-brand {
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 6px;
+}
+
+.lp-footer-tagline {
+  font-size: 12px;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.lp-footer-link {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.6);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.lp-footer-link:hover {
+  color: #fff;
+  text-decoration: none;
+}
+
+.lp-footer-copy {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.4);
+  margin: 0;
+}
+
+/* ── Responsive ────────────────────────────────────────────────────────── */
+@media (max-width: 576px) {
+  .lp-hero {
+    padding: 56px 0 40px;
+  }
+
+  .lp-hero-actions {
+    flex-direction: column;
+  }
+
+  .lp-btn-primary,
+  .lp-btn-outline,
+  .lp-btn-ghost {
+    justify-content: center;
+  }
+
+  .lp-section {
+    padding: 48px 0;
+  }
+
+  .lp-cta-band {
+    padding: 48px 0;
+  }
+}
+
+/* ── Phase 6 additions ────────────────────────────────────────────────── */
+
+/* §11 — typing animation cursor */
+.lp-hero-title--typing {
+  min-height: 2.4em;          /* prevent layout jump while text is empty */
+}
+.lp-cursor {
+  display: inline-block;
+  margin-left: 2px;
+  color: rgba(255, 255, 255, 0.85);
+  animation: blink 0.9s step-end infinite;
+}
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lp-cursor { animation: none; opacity: 0; }
+}
+
+/* §12 — particle canvas. Sits behind text but above the gradient. */
+.lp-particles {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}

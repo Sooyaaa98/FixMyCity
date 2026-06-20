@@ -1,0 +1,60 @@
+# ---- .NET ----
+bin/
+obj/
+*.user
+*.suo
+.vs/
+*.ncrunch*
+*.pdb
+
+# ---- Secrets (never commit real keys) ----
+appsettings.Development.json
+appsettings.Production.json
+appsettings.Staging.json
+appsettings.Local.json
+*.Development.json
+*.Production.json
+*.Staging.json
+.env
+.env.local
+.env.*.local
+*.pfx
+*.key
+
+# ---- Uploads / runtime data ----
+FixMyCityUploads/
+FixMyCity.API/FixMyCityUploads/
+*.sqlite
+*.db
+
+# ---- Publish artifacts ----
+publish/
+*.publish.xml
+
+# ---- Node / Angular ----
+node_modules/
+dist/
+.angular/
+npm-debug.log*
+yarn-debug.log*
+
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*.egg-info/
+venv/
+.venv/
+.pytest_cache/
+
+# ---- IDE / OS ----
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# ---- Archives & cruft ----
+*.zip
+*.7z
+*.tar.gz
+*.bak
+*.log

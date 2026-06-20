@@ -1,0 +1,116 @@
+/* src/app/gamification/my-certificates/my-certificates.component.css */
+
+.cert-page-header {
+  margin-bottom: 24px;
+}
+
+.cert-page-header h2 {
+  margin: 0 0 6px;
+  font-size: 22px;
+}
+
+.cert-page-header p {
+  margin: 0;
+  color: var(--fmc-text-muted);
+  font-size: 14px;
+}
+
+/* ── Certificate Grid ─────────────────────────────────────────────────────── */
+
+.cert-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.cert-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+  border: 2px solid #fcd34d;
+  border-radius: var(--fmc-radius-lg);
+  padding: 20px;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.cert-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--fmc-shadow-md);
+}
+
+.cert-icon {
+  font-size: 2.5rem;
+  line-height: 1;
+  text-align: center;
+}
+
+.cert-body {
+  flex: 1;
+}
+
+.cert-milestone {
+  margin: 0 0 12px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #92400e;
+}
+
+.cert-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-bottom: 8px;
+}
+
+.cert-meta__label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #b45309;
+  font-weight: 700;
+}
+
+.cert-meta__value {
+  font-size: 13px;
+  font-weight: 500;
+  color: #78350f;
+}
+
+.cert-code {
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  background: rgba(180, 83, 9, 0.08);
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: #92400e;
+  word-break: break-all;
+}
+
+.cert-footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.cert-download {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+}
+
+.cert-pending {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  color: var(--fmc-text-muted);
+}
+
+.btn--sm { padding: 6px 14px; font-size: 13px; }
+
+@media (max-width: 480px) {
+  .cert-grid {
+    grid-template-columns: 1fr;
+  }
+}

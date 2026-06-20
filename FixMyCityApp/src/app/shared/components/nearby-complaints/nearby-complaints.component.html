@@ -1,0 +1,82 @@
+<!-- src/app/shared/components/nearby-complaints/nearby-complaints.component.html
+     Phase 8 (§5) — Citizen-facing "Issues near me" panel.
+     Built so it fits inside any page section without further wrapping. -->
+
+<div class="nb-card fmc-card">
+  <div class="nb-header">
+    <div>
+      <h4 class="nb-title">
+        <i class="bi bi-geo-alt-fill me-1 text-primary" aria-hidden="true"></i>
+        Issues near you
+      </h4>
+      <p class="nb-subtitle text-muted small mb-0">
+        See open complaints in your immediate area.
+      </p>
+    </div>
+
+    <div class="d-flex align-items-center gap-2 nb-actions" *ngIf="hasResult">
+      <label for="nbRadius" class="visually-hidden">Search radius</label>
+      <select id="nbRadius"
+              class="form-select form-select-sm"
+              [ngModel]="radiusKm"
+              (ngModelChange)="changeRadius($event)"
+              [disabled]="loading">
+        <option [ngValue]="1">1 km</option>
+        <option [ngValue]="2">2 km</option>
+        <option [ngValue]="5">5 km</option>
+        <option [ngValue]="10">10 km</option>
+      </select>
+    </div>
+  </div>
+
+  <div *ngIf="!hasResult && !loading" class="nb-empty">
+    <button class="btn btn-primary" (click)="useMyLocation()">
+      <i class="bi bi-geo me-1" aria-hidden="true"></i>
+      Use my location
+    </button>
+    <p class="text-muted small mt-2 mb-0">
+      We'll only use your location to find complaints near you. It is never stored.
+    </p>
+  </div>
+
+  <div *ngIf="errorMessage" class="alert alert-warning mt-2 mb-0">
+    {{ errorMessage }}
+  </div>
+
+  <div *ngIf="loading" class="nb-loading">
+    <app-skeleton-card *ngFor="let _ of [1, 2, 3]"></app-skeleton-card>
+  </div>
+
+  <div *ngIf="!loading && hasResult && rows.length === 0" class="nb-empty">
+    <i class="bi bi-emoji-smile fs-3" aria-hidden="true"></i>
+    <p class="mb-0 text-muted">No open complaints within {{ radiusKm }} km. Quiet neighbourhood!</p>
+  </div>
+
+  <ul class="nb-list" *ngIf="!loading && rows.length > 0">
+    <li *ngFor="let r of rows"
+        class="nb-row"
+        tabindex="0"
+        (click)="goTo(r.complaintId)"
+        (keyup.enter)="goTo(r.complaintId)">
+      <div class="nb-row-main">
+        <div class="d-flex align-items-center gap-2">
+          <span class="nb-id">#{{ r.complaintId }}</span>
+          <app-status-badge [status]="r.status"></app-status-badge>
+        </div>
+        <div class="nb-row-title">{{ r.title }}</div>
+        <div class="nb-row-meta">
+          <span *ngIf="r.categoryName">
+            <i class="bi bi-tag-fill me-1" aria-hidden="true"></i>{{ r.categoryName }}
+          </span>
+          <span *ngIf="r.localityName">
+            <i class="bi bi-pin-map-fill ms-2 me-1" aria-hidden="true"></i>{{ r.localityName }}
+          </span>
+        </div>
+      </div>
+      <div class="nb-row-distance">
+        <i class="bi bi-cursor-fill" aria-hidden="true"></i>
+        {{ r.distanceKm | number:'1.1-1' }} km
+      </div>
+    </li>
+  </ul>
+</div>

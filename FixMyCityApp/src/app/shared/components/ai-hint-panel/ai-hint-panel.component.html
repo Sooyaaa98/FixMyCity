@@ -1,0 +1,60 @@
+<!-- src/app/shared/components/ai-hint-panel/ai-hint-panel.component.html -->
+
+<div class="ai-panel" *ngIf="visible" role="region" aria-label="AI Suggestions">
+
+  <!-- Loading state -->
+  <div class="ai-panel__loading" *ngIf="loading" aria-live="polite">
+    <span class="ai-panel__dot"></span>
+    <span class="ai-panel__dot"></span>
+    <span class="ai-panel__dot"></span>
+    <span class="ai-panel__label">AI analysing your text…</span>
+  </div>
+
+  <!-- Category suggestions -->
+  <div class="ai-panel__section ai-panel__suggestions"
+       *ngIf="!loading && hasSuggestions"
+       aria-live="polite">
+    <div class="ai-panel__header">
+      <i class="bi bi-magic" aria-hidden="true"></i>
+      <span>AI suggests these categories</span>
+    </div>
+    <div class="ai-panel__chips">
+      <button
+        *ngFor="let s of suggestions"
+        type="button"
+        class="ai-chip"
+        [attr.aria-label]="'Use category ' + s.categoryName + ', ' + confidencePercent(s.confidence) + '% confidence'"
+        (click)="acceptCategory(s.categoryId)"
+      >
+        <span class="ai-chip__name">{{ s.categoryName }}</span>
+        <span class="ai-chip__badge">{{ confidencePercent(s.confidence) }}%</span>
+      </button>
+    </div>
+    <p class="ai-panel__note">Click a suggestion to auto-fill the category.</p>
+  </div>
+
+  <!-- Duplicate warning -->
+  <div class="ai-panel__section ai-panel__duplicates"
+       *ngIf="!loading && hasDuplicates"
+       role="alert"
+       aria-live="assertive">
+    <div class="ai-panel__header ai-panel__header--warn">
+      <i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i>
+      <span>{{ duplicateResult!.count }} similar complaint{{ duplicateResult!.count !== 1 ? 's' : '' }} found</span>
+    </div>
+    <p class="ai-panel__note">
+      Your complaint may already exist. Please review existing complaints before submitting.
+      If your issue is different, click "Submit Anyway".
+    </p>
+    <div class="ai-panel__ids">
+      <span class="ai-chip ai-chip--neutral"
+            *ngFor="let id of duplicateResult!.similarComplaintIds">
+        #{{ id }}
+      </span>
+    </div>
+    <button type="button" class="btn-secondary ai-panel__anyway" (click)="onSubmitAnyway()">
+      Submit Anyway
+    </button>
+  </div>
+
+</div>

@@ -1,0 +1,94 @@
+<!-- src/app/citizen/interests/interests.component.html -->
+
+<div class="fmc-page">
+
+  <div class="interests-header fmc-card">
+    <div>
+      <h2>🎯 My Interests</h2>
+      <p>
+        Select the categories and localities you care about.
+        Our AI uses this to recommend relevant complaints.
+      </p>
+    </div>
+    <div class="interests-summary">
+      <span class="interest-count">
+        <i class="bi bi-tag-fill" aria-hidden="true"></i>
+        {{ categoryCount }} categor{{ categoryCount !== 1 ? 'ies' : 'y' }}
+      </span>
+      <span class="interest-count">
+        <i class="bi bi-geo-alt-fill" aria-hidden="true"></i>
+        {{ localityCount }} localit{{ localityCount !== 1 ? 'ies' : 'y' }}
+      </span>
+    </div>
+  </div>
+
+  <app-loading-spinner *ngIf="isLoading" message="Loading interests…"></app-loading-spinner>
+
+  <ng-container *ngIf="!isLoading">
+
+    <!-- Categories -->
+    <div class="fmc-card interests-section">
+      <h3 class="section-title">
+        <i class="bi bi-tag-fill" aria-hidden="true"></i>
+        Issue Categories
+      </h3>
+      <p class="section-hint">Select the types of issues you want recommendations for.</p>
+
+      <div class="interest-chips" role="group" aria-label="Category interests">
+        <button
+          *ngFor="let cat of categories"
+          type="button"
+          class="interest-chip"
+          [class.interest-chip--active]="hasCategoryInterest(cat.categoryId)"
+          [disabled]="saving"
+          (click)="toggleCategory(cat.categoryId)"
+          [attr.aria-pressed]="hasCategoryInterest(cat.categoryId)"
+          [attr.aria-label]="cat.categoryName + (hasCategoryInterest(cat.categoryId) ? ' (selected)' : '')"
+        >
+          <i class="bi" [class.bi-check-circle-fill]="hasCategoryInterest(cat.categoryId)"
+             [class.bi-circle]="!hasCategoryInterest(cat.categoryId)" aria-hidden="true"></i>
+          {{ cat.categoryName }}
+        </button>
+      </div>
+
+      <app-empty-state
+        *ngIf="categories.length === 0"
+        icon="bi bi-tag-fill"
+        title="No categories available"
+      ></app-empty-state>
+    </div>
+
+    <!-- Localities -->
+    <div class="fmc-card interests-section">
+      <h3 class="section-title">
+        <i class="bi bi-geo-alt-fill" aria-hidden="true"></i>
+        Preferred Localities
+      </h3>
+      <p class="section-hint">Get recommendations from additional areas beyond your home locality.</p>
+
+      <div class="interest-chips" role="group" aria-label="Locality interests">
+        <button
+          *ngFor="let loc of localities"
+          type="button"
+          class="interest-chip"
+          [class.interest-chip--active]="hasLocalityInterest(loc.localityId)"
+          [disabled]="saving"
+          (click)="toggleLocality(loc.localityId)"
+          [attr.aria-pressed]="hasLocalityInterest(loc.localityId)"
+        >
+          <i class="bi" [class.bi-check-circle-fill]="hasLocalityInterest(loc.localityId)"
+             [class.bi-circle]="!hasLocalityInterest(loc.localityId)" aria-hidden="true"></i>
+          {{ loc.localityName }}
+        </button>
+      </div>
+
+      <app-empty-state
+        *ngIf="localities.length === 0"
+        icon="bi bi-map"
+        title="No localities available"
+      ></app-empty-state>
+    </div>
+
+  </ng-container>
+
+</div>

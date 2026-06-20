@@ -1,0 +1,164 @@
+<!-- src/app/shared/components/user-profile/user-profile.component.html -->
+
+<div class="fmc-page">
+
+  <app-loading-spinner *ngIf="isLoading" message="Loading profile…"></app-loading-spinner>
+
+  <ng-container *ngIf="profile && !isLoading">
+
+    <!-- ── Header ──────────────────────────────────────────────────────────── -->
+    <div class="profile-header fmc-card">
+      <div class="profile-avatar" aria-hidden="true">{{ profile.fullName.charAt(0).toUpperCase() }}</div>
+      <div class="profile-info">
+        <h2 class="profile-name">{{ profile.fullName }}</h2>
+        <span class="profile-role">{{ profile.roleName }}</span>
+        <span class="profile-email">{{ profile.email }}</span>
+        <span *ngIf="profile.localityName" class="profile-locality">
+          <i class="bi bi-geo-alt-fill" aria-hidden="true"></i> {{ profile.localityName }}
+        </span>
+        <span *ngIf="profile.points != null" class="profile-points">
+          ⭐ {{ profile.points }} points
+        </span>
+        <span *ngIf="profile.isBanned" class="badge-status badge-Rejected" style="margin-top:4px">
+          <i class="bi bi-slash-circle"></i> Account Banned
+        </span>
+        <span *ngIf="!profile.isActive && !profile.isBanned" class="badge-status badge-Rejected" style="margin-top:4px">
+          Deactivated
+        </span>
+      </div>
+      <div class="profile-actions">
+        <button *ngIf="!isEditing && !isChangingPassword" class="btn-primary btn--sm" (click)="startEdit()">
+          <i class="bi bi-pencil-square"></i> Edit Profile
+        </button>
+        <button *ngIf="!isChangingPassword && !isEditing" class="btn-secondary btn--sm" (click)="isChangingPassword = true">
+          <i class="bi bi-lock-fill"></i> Change Password
+        </button>
+      </div>
+    </div>
+
+    <!-- ── Profile Edit Form ───────────────────────────────────────────────── -->
+    <div class="fmc-card" *ngIf="!isChangingPassword">
+      <h4>Profile Details</h4>
+      <form [formGroup]="profileForm" (ngSubmit)="saveProfile()" novalidate>
+        <div class="fmc-grid-2">
+
+          <div class="fmc-form-group">
+            <label class="fmc-label">Full Name</label>
+            <input type="text" formControlName="fullName" class="fmc-input"
+                   [class.error]="profileForm.get('fullName')?.invalid && profileForm.get('fullName')?.touched" />
+            <span class="fmc-error-msg"
+                  *ngIf="profileForm.get('fullName')?.invalid && profileForm.get('fullName')?.touched">
+              Full name is required (min 2 chars).
+            </span>
+          </div>
+
+          <div class="fmc-form-group">
+            <label class="fmc-label">Email</label>
+            <input type="email" formControlName="email" class="fmc-input" />
+          </div>
+
+          <div class="fmc-form-group">
+            <label class="fmc-label">Phone</label>
+            <input type="text" formControlName="phone" class="fmc-input"
+                   [class.error]="profileForm.get('phone')?.invalid && profileForm.get('phone')?.touched" />
+            <span class="fmc-error-msg"
+                  *ngIf="profileForm.get('phone')?.invalid && profileForm.get('phone')?.touched">
+              Phone is required.
+            </span>
+          </div>
+
+          <div class="fmc-form-group">
+            <label class="fmc-label">Role</label>
+            <input type="text" formControlName="roleName" class="fmc-input" />
+          </div>
+
+          <div class="fmc-form-group span-2">
+            <label class="fmc-label">Address</label>
+            <input type="text" formControlName="address" class="fmc-input" />
+          </div>
+
+          <div class="fmc-form-group">
+            <label class="fmc-label">Locality</label>
+            <select formControlName="localityId" class="fmc-input"
+                    [class.error]="profileForm.get('localityId')?.invalid && profileForm.get('localityId')?.touched">
+              <option [value]="null">-- Select Locality --</option>
+              <option *ngFor="let l of localities" [value]="l.localityId ?? l.LocalityId">
+                {{ l.localityName ?? l.LocalityName }}
+              </option>
+            </select>
+          </div>
+
+        </div>
+
+        <div class="form-actions" *ngIf="isEditing">
+          <button type="button" class="btn-secondary" (click)="cancelEdit()">Cancel</button>
+          <button type="submit" class="btn-primary" [disabled]="isSaving || profileForm.invalid">
+            {{ isSaving ? 'Saving…' : 'Save Changes' }}
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- ── Password Form ───────────────────────────────────────────────────── -->
+    <div class="fmc-card" *ngIf="isChangingPassword">
+      <h4>Change Password</h4>
+      <form [formGroup]="passwordForm" (ngSubmit)="savePassword()" novalidate>
+
+        <div class="fmc-form-group">
+          <label class="fmc-label required">Current Password</label>
+          <div class="pwd-wrap">
+            <input [type]="showCurrentPassword ? 'text' : 'password'"
+                   formControlName="currentPassword" class="fmc-input" />
+            <button type="button" class="pwd-toggle"
+                    (click)="showCurrentPassword = !showCurrentPassword" tabindex="-1">
+              <i class="bi" [class.bi-eye-fill]="!showCurrentPassword"
+                 [class.bi-eye-slash-fill]="showCurrentPassword"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="fmc-grid-2">
+          <div class="fmc-form-group">
+            <label class="fmc-label required">New Password</label>
+            <div class="pwd-wrap">
+              <input [type]="showNewPassword ? 'text' : 'password'"
+                     formControlName="newPassword" class="fmc-input"
+                     placeholder="Min. 6 characters" />
+              <button type="button" class="pwd-toggle"
+                      (click)="showNewPassword = !showNewPassword" tabindex="-1">
+                <i class="bi" [class.bi-eye-fill]="!showNewPassword"
+                   [class.bi-eye-slash-fill]="showNewPassword"></i>
+              </button>
+            </div>
+            <span class="fmc-error-msg"
+                  *ngIf="passwordForm.get('newPassword')?.errors?.['minlength'] && passwordForm.get('newPassword')?.touched">
+              Minimum 6 characters.
+            </span>
+          </div>
+
+          <div class="fmc-form-group">
+            <label class="fmc-label required">Confirm New Password</label>
+            <input [type]="showConfirmPassword ? 'text' : 'password'"
+                   formControlName="confirmPassword" class="fmc-input" />
+            <span class="fmc-error-msg"
+                  *ngIf="passwordForm.errors?.['mismatch'] && passwordForm.get('confirmPassword')?.touched">
+              Passwords do not match.
+            </span>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn-secondary"
+                  (click)="isChangingPassword = false; passwordForm.reset()">
+            Cancel
+          </button>
+          <button type="submit" class="btn-primary"
+                  [disabled]="passwordForm.invalid || !!passwordForm.errors?.['mismatch']">
+            Update Password
+          </button>
+        </div>
+      </form>
+    </div>
+
+  </ng-container>
+</div>

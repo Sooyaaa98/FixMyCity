@@ -1,0 +1,99 @@
+<!-- src/app/admin/pending-approvals/pending-approvals.component.html -->
+
+<div class="fmc-page">
+
+  <h3 class="page-title">Pending Approvals</h3>
+
+  <!-- Tabs -->
+  <div class="tab-bar">
+    <button [class]="activeTab === 'depts' ? 'tab-btn active' : 'tab-btn'"
+            (click)="setTab('depts')">
+      🏢 Departments
+      <span class="tab-count" *ngIf="depts.length > 0">{{ depts.length }}</span>
+    </button>
+    <button [class]="activeTab === 'orgs' ? 'tab-btn active' : 'tab-btn'"
+            (click)="setTab('orgs')">
+      🤝 Organisations
+      <span class="tab-count" *ngIf="orgs.length > 0">{{ orgs.length }}</span>
+    </button>
+  </div>
+
+  <!-- Action feedback -->
+  <div class="action-msg success-msg" *ngIf="actionMessage">✅ {{ actionMessage }}</div>
+  <div class="action-msg fmc-error-msg" *ngIf="actionError">{{ actionError }}</div>
+
+  <!-- ── Depts Tab ─────────────────────────────────────────────────────── -->
+  <ng-container *ngIf="activeTab === 'depts'">
+    <div *ngIf="isLoadingDepts" class="loading-msg">Loading departments...</div>
+
+    <div *ngIf="!isLoadingDepts && depts.length === 0" class="empty-state">
+      No pending department registrations.
+    </div>
+
+    <div class="approval-list" *ngIf="!isLoadingDepts">
+      <div class="fmc-card approval-card" *ngFor="let dept of depts">
+
+        <div class="approval-header">
+          <div>
+            <h4 class="approval-name">{{ dept.deptName }}</h4>
+            <span class="approval-sub">{{ dept.ministry }}</span>
+          </div>
+          <span class="badge-status badge-Submitted">Pending</span>
+        </div>
+
+        <div class="fmc-grid-2 approval-meta">
+          <div class="meta-row"><span class="meta-label">Contact Person</span><span>{{ dept.user?.fullName || '—' }}</span></div>
+          <div class="meta-row"><span class="meta-label">Email</span><span>{{ dept.user?.email || dept.contactEmail }}</span></div>
+          <div class="meta-row"><span class="meta-label">Phone</span><span>{{ dept.contactPhone }}</span></div>
+          <div class="meta-row"><span class="meta-label">Locality</span><span>{{ dept.locality?.localityName || dept.localityId }}</span></div>
+          <div class="meta-row"><span class="meta-label">Address</span><span>{{ dept.address }}</span></div>
+          <div class="meta-row"><span class="meta-label">Registered</span><span>{{ dept.createdAt | date: 'dd MMM yyyy' }}</span></div>
+        </div>
+
+        <div class="approval-actions">
+          <button class="btn-success" (click)="decideDept(dept, 'Approved')">✓ Approve</button>
+          <button class="btn-danger" (click)="decideDept(dept, 'Rejected')">✗ Reject</button>
+        </div>
+
+      </div>
+    </div>
+  </ng-container>
+
+  <!-- ── Orgs Tab ──────────────────────────────────────────────────────── -->
+  <ng-container *ngIf="activeTab === 'orgs'">
+    <div *ngIf="isLoadingOrgs" class="loading-msg">Loading organisations...</div>
+
+    <div *ngIf="!isLoadingOrgs && orgs.length === 0" class="empty-state">
+      No pending organisation registrations.
+    </div>
+
+    <div class="approval-list" *ngIf="!isLoadingOrgs">
+      <div class="fmc-card approval-card" *ngFor="let org of orgs">
+
+        <div class="approval-header">
+          <div>
+            <h4 class="approval-name">{{ org.orgName }}</h4>
+            <span class="approval-sub">{{ org.orgType }}</span>
+          </div>
+          <span class="badge-status badge-Submitted">Pending</span>
+        </div>
+
+        <div class="fmc-grid-2 approval-meta">
+          <div class="meta-row"><span class="meta-label">Contact Person</span><span>{{ org.user?.fullName || '—' }}</span></div>
+          <div class="meta-row"><span class="meta-label">Login Email</span><span>{{ org.user?.email || '—' }}</span></div>
+          <div class="meta-row"><span class="meta-label">Contact Email</span><span>{{ org.contactEmail }}</span></div>
+          <div class="meta-row"><span class="meta-label">Contact Phone</span><span>{{ org.contactPhone }}</span></div>
+          <div class="meta-row"><span class="meta-label">Reg. No.</span><span>{{ org.registrationNo }}</span></div>
+          <div class="meta-row"><span class="meta-label">Registered</span><span>{{ org.createdAt | date: 'dd MMM yyyy' }}</span></div>
+        </div>
+
+        <div class="approval-actions">
+          <button class="btn-success" (click)="decideOrg(org, 'Approved')">✓ Approve</button>
+          <button class="btn-danger" (click)="decideOrg(org, 'Rejected')">✗ Reject</button>
+        </div>
+
+      </div>
+    </div>
+  </ng-container>
+
+</div>

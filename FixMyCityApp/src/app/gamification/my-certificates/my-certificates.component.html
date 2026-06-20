@@ -1,0 +1,52 @@
+<!-- src/app/gamification/my-certificates/my-certificates.component.html -->
+
+<div class="fmc-page">
+
+  <div class="cert-page-header">
+    <h2>🎖️ My Certificates</h2>
+    <p>Certificates are issued for reaching civic engagement milestones.</p>
+  </div>
+
+  <app-loading-spinner *ngIf="isLoading" message="Loading certificates…"></app-loading-spinner>
+
+  <app-empty-state
+    *ngIf="!isLoading && certificates.length === 0"
+    icon="bi bi-trophy-fill"
+    title="No certificates yet"
+    subtitle="Keep engaging with complaints to earn milestone certificates!"
+  ></app-empty-state>
+
+  <div class="cert-grid" *ngIf="!isLoading && certificates.length > 0">
+    <div
+      *ngFor="let cert of certificates; trackBy: trackById"
+      class="cert-card fmc-card"
+    >
+      <div class="cert-icon" aria-hidden="true">{{ milestoneIcon(cert.milestone) }}</div>
+
+      <div class="cert-body">
+        <h3 class="cert-milestone">{{ cert.milestone }}</h3>
+        <div class="cert-meta">
+          <span class="cert-meta__label">Issued</span>
+          <span class="cert-meta__value">{{ cert.issuedAt | date: 'dd MMM yyyy' }}</span>
+        </div>
+        <div class="cert-meta">
+          <span class="cert-meta__label">Verification Code</span>
+          <code class="cert-code">{{ cert.verificationCode }}</code>
+        </div>
+      </div>
+
+      <div class="cert-footer">
+        <button
+          type="button"
+          (click)="download(cert)"
+          class="btn-primary btn--sm cert-download"
+          [attr.aria-label]="'Download certificate for ' + cert.milestone"
+        >
+          <i class="bi bi-download" aria-hidden="true"></i>
+          Download
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>

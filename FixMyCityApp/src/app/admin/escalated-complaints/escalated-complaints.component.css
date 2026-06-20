@@ -1,0 +1,56 @@
+/* src/app/admin/escalated-complaints/escalated-complaints.component.css */
+
+.page-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:16px; }
+.page-header h2 { margin:0; }
+.page-subtitle { margin:4px 0 0; color:var(--fmc-text-muted); font-size:13px; }
+
+.escalated-count { display:flex; align-items:center; gap:8px; margin-bottom:16px; padding:12px 16px;
+  font-size:14px; color:var(--fmc-danger); }
+
+/* Two-column layout */
+.escalated-layout { display:grid; grid-template-columns:minmax(0,1fr) 380px; gap:16px; align-items:start; }
+@media (max-width:900px) { .escalated-layout { grid-template-columns:1fr; } }
+
+/* Complaint cards */
+.complaint-list { display:flex; flex-direction:column; gap:10px; }
+.esc-card { padding:14px 16px; cursor:pointer; border:2px solid transparent; transition:border-color 0.15s, box-shadow 0.15s; }
+.esc-card:hover { border-color:var(--fmc-primary-light,#bfdbfe); box-shadow:0 2px 8px rgba(0,0,0,0.06); }
+.esc-card--selected { border-color:var(--fmc-primary) !important; }
+.esc-card__top { display:flex; align-items:center; gap:8px; margin-bottom:6px; }
+.esc-id { font-family:monospace; font-size:12px; font-weight:700; color:var(--fmc-text-muted); }
+.esc-title { font-size:14px; font-weight:600; margin-bottom:6px; }
+.esc-meta { display:flex; flex-wrap:wrap; gap:12px; font-size:12px; color:var(--fmc-text-muted); }
+.esc-meta span { display:flex; align-items:center; gap:4px; }
+.esc-card__footer { display:flex; align-items:center; justify-content:space-between; margin-top:10px; }
+.btn--xs { padding:3px 8px; font-size:11px; }
+.esc-select-hint { font-size:11px; color:var(--fmc-text-muted); display:flex; align-items:center; gap:4px; }
+.esc-select-hint--active { color:var(--fmc-primary); font-weight:600; }
+
+/* Action panel */
+.action-panel { display:flex; flex-direction:column; gap:12px; }
+.action-panel--empty { display:flex; flex-direction:column; align-items:center; justify-content:center;
+  padding:60px 24px; color:var(--fmc-text-muted); text-align:center; background:var(--fmc-surface);
+  border-radius:var(--fmc-radius-lg); border:2px dashed var(--fmc-border); }
+.action-panel--empty i { font-size:36px; margin-bottom:12px; }
+.action-panel--empty p { margin:0; font-size:14px; }
+.action-panel__title { font-size:13px; font-weight:700; color:var(--fmc-primary); display:flex;
+  align-items:center; gap:6px; padding:0 4px; }
+
+/* Action sections */
+.action-section { padding:16px; display:flex; flex-direction:column; gap:10px; }
+.action-section__title { margin:0; font-size:13px; font-weight:700; display:flex; align-items:center; gap:6px; }
+.action-section__desc { margin:0; font-size:12px; color:var(--fmc-text-muted); }
+
+/* Status radio options */
+.status-options { display:flex; gap:8px; flex-wrap:wrap; }
+.status-option { cursor:pointer; padding:4px 8px; border:2px solid var(--fmc-border); border-radius:6px; transition:border-color 0.12s; }
+.status-option--selected { border-color:var(--fmc-primary); background:var(--fmc-primary-light,#eff6ff); }
+
+/* Escalation log */
+.log-loading { font-size:12px; color:var(--fmc-text-muted); }
+.log-empty { font-size:12px; color:var(--fmc-text-muted); font-style:italic; }
+.log-list { display:flex; flex-direction:column; gap:8px; }
+.log-entry { padding:8px 12px; background:var(--fmc-surface-2,#f8fafc); border-radius:6px; border-left:3px solid var(--fmc-primary); }
+.log-entry__date { font-size:11px; color:var(--fmc-text-muted); margin-bottom:2px; }
+.log-entry__body { font-size:12px; }
+.log-entry__reason { font-size:11px; color:var(--fmc-text-muted); margin-top:4px; font-style:italic; }

@@ -1,0 +1,114 @@
+<!-- src/app/public/transparency/transparency.component.html
+     Phase 8 (§17) — Public transparency portal. Anonymous access. -->
+
+<div class="fmc-page tp-page">
+
+  <header class="tp-hero">
+    <h1 class="tp-title">
+      <i class="bi bi-eye-fill me-2" aria-hidden="true"></i>
+      Public Transparency Portal
+    </h1>
+    <p class="tp-subtitle">
+      Browse civic complaints by anyone, anywhere. No account needed.
+    </p>
+  </header>
+
+  <section class="fmc-card tp-filters">
+    <div class="row g-2">
+      <div class="col-md-3">
+        <label for="tpLocality" class="form-label small mb-1">Locality</label>
+        <select id="tpLocality" class="form-select form-select-sm"
+                [(ngModel)]="filterLocality" (change)="applyFilter()">
+          <option [ngValue]="null">All localities</option>
+          <option *ngFor="let l of localities" [ngValue]="l.localityId">
+            {{ l.localityName }} ({{ l.city }})
+          </option>
+        </select>
+      </div>
+      <div class="col-md-3">
+        <label for="tpCategory" class="form-label small mb-1">Category</label>
+        <select id="tpCategory" class="form-select form-select-sm"
+                [(ngModel)]="filterCategory" (change)="applyFilter()">
+          <option [ngValue]="null">All categories</option>
+          <option *ngFor="let c of categories" [ngValue]="c.categoryId">
+            {{ c.categoryName }}
+          </option>
+        </select>
+      </div>
+      <div class="col-md-3">
+        <label for="tpStatus" class="form-label small mb-1">Status</label>
+        <select id="tpStatus" class="form-select form-select-sm"
+                [(ngModel)]="filterStatus" (change)="applyFilter()">
+          <option *ngFor="let s of statusOptions" [value]="s">{{ s || 'All statuses' }}</option>
+        </select>
+      </div>
+      <div class="col-md-3">
+        <label for="tpKw" class="form-label small mb-1">Keyword</label>
+        <div class="input-group input-group-sm">
+          <input id="tpKw" type="text" class="form-control"
+                 [(ngModel)]="keyword" (keyup.enter)="applyFilter()"
+                 placeholder="e.g. pothole">
+          <button class="btn btn-primary" type="button" (click)="applyFilter()" aria-label="Search">
+            <i class="bi bi-search" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="text-end mt-2">
+      <button class="btn btn-link btn-sm text-decoration-none" (click)="clearFilter()">
+        <i class="bi bi-x-circle me-1" aria-hidden="true"></i> Clear filters
+      </button>
+    </div>
+  </section>
+
+  <div class="alert alert-warning" *ngIf="errorMsg">{{ errorMsg }}</div>
+
+  <ng-container *ngIf="loading && rows.length === 0">
+    <app-skeleton-card *ngFor="let _ of [1,2,3,4]"></app-skeleton-card>
+  </ng-container>
+
+  <p *ngIf="!loading && rows.length === 0 && !errorMsg"
+     class="text-muted text-center my-4">
+    No complaints match those filters.
+  </p>
+
+  <ul class="tp-list" *ngIf="rows.length > 0">
+    <li *ngFor="let c of rows" class="tp-card fmc-card" fmcReveal>
+      <div class="tp-card-head">
+        <span class="tp-id">#{{ c.complaintId }}</span>
+        <app-status-badge [status]="c.status"></app-status-badge>
+        <span class="ms-auto badge bg-info text-dark" *ngIf="c.upvoteCount > 0">
+          <i class="bi bi-hand-thumbs-up-fill me-1" aria-hidden="true"></i>
+          {{ c.upvoteCount }} {{ c.upvoteCount === 1 ? 'upvote' : 'upvotes' }}
+        </span>
+      </div>
+      <h3 class="tp-card-title">{{ c.title }}</h3>
+      <p class="tp-card-desc">{{ c.description }}</p>
+      <div class="tp-card-meta">
+        <span *ngIf="c.categoryName">
+          <i class="bi bi-tag-fill me-1" aria-hidden="true"></i>{{ c.categoryName }}
+        </span>
+        <span *ngIf="c.localityName">
+          <i class="bi bi-geo-alt-fill ms-2 me-1" aria-hidden="true"></i>{{ c.localityName }}
+        </span>
+        <span class="ms-2">
+          <i class="bi bi-calendar3 me-1" aria-hidden="true"></i>{{ c.submittedAt | date:'mediumDate' }}
+        </span>
+      </div>
+      <div class="tp-card-actions">
+        <button class="btn btn-sm btn-outline-primary"
+                (click)="viewDetails(c.complaintId)">
+          View details <i class="bi bi-arrow-right ms-1" aria-hidden="true"></i>
+        </button>
+      </div>
+    </li>
+  </ul>
+
+  <div class="text-center my-3" *ngIf="rows.length > 0 && !reachedEnd">
+    <button class="btn btn-outline-primary"
+            (click)="loadMore()"
+            [disabled]="loading">
+      {{ loading ? 'Loading…' : 'Load more' }}
+    </button>
+  </div>
+</div>

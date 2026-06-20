@@ -1,0 +1,137 @@
+<!-- src/app/citizen/home/citizen-home.component.html -->
+
+<div class="fmc-page">
+
+  <!-- Hero banner -->
+  <div class="home-hero fmc-card">
+    <div class="hero-text">
+      <h2>Welcome back, {{ fullName }} 👋</h2>
+      <p>View and track civic complaints in your area, or report a new issue.</p>
+    </div>
+    <div class="hero-actions">
+      <button class="btn-primary" (click)="goToSubmit()">
+        <i class="bi bi-plus-lg" aria-hidden="true"></i> Report an Issue
+      </button>
+      <a class="btn-secondary" routerLink="/citizen/interests" title="Manage your interest preferences">
+        <i class="bi bi-sliders" aria-hidden="true"></i> My Interests
+      </a>
+    </div>
+  </div>
+
+  <!-- Phase 8 (§5) — Issues near me. Geolocation-gated, opt-in, no storage. -->
+  <app-nearby-complaints
+    detailRoutePrefix="/citizen/complaints"
+    fmcReveal>
+  </app-nearby-complaints>
+
+  <!-- Tab bar -->
+  <div class="home-tabs" role="tablist">
+    <button
+      class="home-tab"
+      [class.home-tab--active]="activeTab === 'feed'"
+      (click)="setTab('feed')"
+      role="tab"
+      [attr.aria-selected]="activeTab === 'feed'"
+    >
+      <i class="bi bi-geo-alt-fill" aria-hidden="true"></i>
+      Locality Feed
+    </button>
+    <button
+      class="home-tab"
+      [class.home-tab--active]="activeTab === 'recommended'"
+      (click)="setTab('recommended')"
+      role="tab"
+      [attr.aria-selected]="activeTab === 'recommended'"
+    >
+      <i class="bi bi-magic" aria-hidden="true"></i>
+      AI Recommendations
+      <span class="home-tab__badge" *ngIf="recommendedComplaints.length">
+        {{ recommendedComplaints.length }}
+      </span>
+    </button>
+    <!-- Phase 8 (§20) — Personal activity feed tab. -->
+    <button
+      class="home-tab"
+      [class.home-tab--active]="activeTab === 'activity'"
+      (click)="setTab('activity')"
+      role="tab"
+      [attr.aria-selected]="activeTab === 'activity'"
+    >
+      <i class="bi bi-activity" aria-hidden="true"></i>
+      My Activity
+    </button>
+  </div>
+
+  <!-- Phase 8 (§20) — Activity feed tab. -->
+  <div *ngIf="activeTab === 'activity'" role="tabpanel">
+    <app-activity-feed [userId]="userId"></app-activity-feed>
+  </div>
+
+  <!-- ── Feed tab ──────────────────────────────────────────────────────────── -->
+  <div *ngIf="activeTab === 'feed'" role="tabpanel">
+    <div class="feed-header">
+      <h3>📍 Complaints in your locality</h3>
+      <button class="btn-secondary btn--sm" (click)="loadFeed()" [disabled]="feedLoading">
+        <i class="bi bi-arrow-clockwise" [class.bi-spin]="feedLoading" aria-hidden="true"></i>
+        Refresh
+      </button>
+    </div>
+
+    <app-loading-spinner *ngIf="feedLoading" message="Loading feed…"></app-loading-spinner>
+
+    <div class="fmc-error-msg" *ngIf="feedError && !feedLoading">{{ feedError }}</div>
+
+    <app-empty-state
+      *ngIf="!feedLoading && feedComplaints.length === 0 && !feedError"
+      icon="bi bi-map"
+      title="No complaints yet"
+      subtitle="No issues have been reported in your locality. Be the first!"
+      actionLabel="Report an Issue"
+      (action)="goToSubmit()"
+    ></app-empty-state>
+
+    <div class="feed-list" *ngIf="!feedLoading && feedComplaints.length > 0">
+      <app-complaint-card
+        *ngFor="let c of feedComplaints"
+        [complaint]="c"
+        (cardClicked)="onCardClicked($event)"
+      ></app-complaint-card>
+    </div>
+  </div>
+
+  <!-- ── Recommendations tab ───────────────────────────────────────────────── -->
+  <div *ngIf="activeTab === 'recommended'" role="tabpanel">
+    <div class="feed-header">
+      <h3>✨ Recommended for You</h3>
+      <button class="btn-secondary btn--sm" (click)="loadRecommendations()" [disabled]="recsLoading">
+        <i class="bi bi-arrow-clockwise" [class.bi-spin]="recsLoading" aria-hidden="true"></i>
+        Refresh
+      </button>
+    </div>
+
+    <div class="ai-notice fmc-card" *ngIf="!recsLoading && recommendedComplaints.length > 0">
+      <i class="bi bi-magic" aria-hidden="true"></i>
+      These complaints match your interests and past activity, curated by AI.
+      <a routerLink="/citizen/interests">Update interests</a>
+    </div>
+
+    <app-loading-spinner *ngIf="recsLoading" message="AI finding recommendations…"></app-loading-spinner>
+
+    <app-empty-state
+      *ngIf="!recsLoading && recommendedComplaints.length === 0"
+      icon="bi bi-magic"
+      title="No recommendations yet"
+      subtitle="Set your interests to get personalised complaint recommendations from our AI."
+      actionLabel="Set My Interests"
+    ></app-empty-state>
+
+    <div class="feed-list" *ngIf="!recsLoading && recommendedComplaints.length > 0">
+      <app-complaint-card
+        *ngFor="let c of recommendedComplaints"
+        [complaint]="c"
+        (cardClicked)="onCardClicked($event)"
+      ></app-complaint-card>
+    </div>
+  </div>
+
+</div>

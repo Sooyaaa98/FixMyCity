@@ -1,0 +1,213 @@
+/* src/app/citizen/complaint-detail/citizen-complaint-detail.component.css */
+
+.back-btn { margin-bottom: 16px; }
+
+/* ── Detail Card ──────────────────────────────────────────────────────────── */
+
+.detail-card { margin-bottom: 16px; }
+
+.detail-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.detail-id {
+  font-size: 11px;
+  color: var(--fmc-text-muted);
+  display: block;
+  margin-bottom: 4px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}
+
+.detail-title { margin: 0; font-size: 20px; }
+
+.detail-desc {
+  color: var(--fmc-text-muted);
+  font-size: 14px;
+  line-height: 1.65;
+  margin-bottom: 16px;
+}
+
+.detail-meta { margin-top: 8px; }
+
+.meta-block {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.meta-label {
+  font-size: 11px;
+  color: var(--fmc-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.meta-value {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--fmc-text-primary, #1e293b);
+  word-break: break-word;
+}
+
+/* ── Action Cards ─────────────────────────────────────────────────────────── */
+
+.action-card { margin-bottom: 16px; }
+.action-card h4 { margin: 0 0 14px; font-size: 15px; }
+
+/* ── Funding ──────────────────────────────────────────────────────────────── */
+
+.funding-card {}
+
+.funding-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.funding-header h4 { margin: 0 0 4px; }
+
+.funding-total {
+  margin: 0;
+  font-size: 14px;
+  color: var(--fmc-text-muted);
+}
+
+.funding-total strong {
+  color: var(--fmc-success);
+  font-size: 16px;
+}
+
+.contribute-form {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--fmc-border);
+}
+
+.contribute-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.contribute-note {
+  font-size: 12px;
+  color: var(--fmc-text-muted);
+  margin: 8px 0 0;
+}
+
+.contributions-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--fmc-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  margin: 12px 0 8px;
+}
+
+.contribution-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0;
+  font-size: 13px;
+  border-bottom: 1px solid var(--fmc-border);
+}
+
+.contribution-item:last-child { border-bottom: none; }
+
+.contribution-amount {
+  font-weight: 600;
+  color: var(--fmc-success);
+  min-width: 80px;
+}
+
+.contribution-date {
+  margin-left: auto;
+  color: var(--fmc-text-muted);
+  font-size: 12px;
+}
+
+/* ── Attachments ──────────────────────────────────────────────────────────── */
+
+.attachments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.attachment-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border: 1px solid var(--fmc-border);
+  border-radius: var(--fmc-radius);
+  text-decoration: none;
+  color: var(--fmc-primary);
+  font-size: 13px;
+  transition: background 0.15s;
+}
+
+.attachment-item:hover {
+  background: var(--fmc-surface-2, #f1f5f9);
+}
+
+.att-size {
+  margin-left: auto;
+  font-size: 11px;
+  color: var(--fmc-text-muted);
+}
+
+/* ── Rating ───────────────────────────────────────────────────────────────── */
+
+.star-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+
+.stars {
+  display: flex;
+  gap: 4px;
+}
+
+.star-btn {
+  background: none;
+  border: none;
+  font-size: 30px;
+  cursor: pointer;
+  color: var(--fmc-border);
+  padding: 0;
+  line-height: 1;
+  transition: color 0.1s, transform 0.1s;
+}
+
+.star-btn.filled { color: var(--fmc-warning); }
+.star-btn:hover  { transform: scale(1.15); }
+
+.reopen-note {
+  font-size: 13px;
+  color: var(--fmc-text-muted);
+  margin-bottom: 14px;
+}
+
+/* ── Timeline ─────────────────────────────────────────────────────────────── */
+
+.timeline-card { margin-bottom: 16px; }
+.timeline-card h4 { margin: 0 0 16px; font-size: 15px; }
+
+.btn--sm {
+  padding: 6px 12px;
+  font-size: 13px;
+}

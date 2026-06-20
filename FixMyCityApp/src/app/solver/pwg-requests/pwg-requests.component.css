@@ -1,0 +1,166 @@
+/* src/app/solver/pwg-requests/pwg-requests.component.css */
+
+.page-title {
+  margin: 0 0 20px;
+}
+
+/* ── Tabs ── */
+.tab-bar {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 20px;
+  border-bottom: 2px solid var(--fmc-border);
+}
+
+.tab-btn {
+  padding: 10px 20px;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--fmc-text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+  .tab-btn:hover {
+    color: var(--fmc-primary);
+  }
+
+  .tab-btn.active {
+    color: var(--fmc-primary);
+    border-bottom-color: var(--fmc-primary);
+  }
+
+.tab-count {
+  background: var(--fmc-primary);
+  color: #fff;
+  border-radius: 10px;
+  font-size: 11px;
+  padding: 1px 7px;
+  font-weight: 600;
+}
+
+/* ── Request Cards ── */
+.requests-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.request-card {
+  padding: 18px 22px;
+}
+
+.request-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 10px;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.request-id {
+  font-size: 11px;
+  color: var(--fmc-text-muted);
+  display: block;
+  margin-bottom: 2px;
+}
+
+.request-title {
+  margin: 0 0 3px;
+  font-size: 15px;
+}
+
+.complaint-ref {
+  font-size: 12px;
+  color: var(--fmc-text-muted);
+}
+
+.request-note {
+  font-size: 13px;
+  color: var(--fmc-text-muted);
+  background: var(--fmc-surface-2);
+  border-left: 3px solid var(--fmc-border);
+  padding: 6px 10px;
+  border-radius: 0 var(--fmc-radius) var(--fmc-radius) 0;
+  margin-bottom: 10px;
+}
+
+.request-meta,
+.request-meta-row {
+  font-size: 12px;
+  color: var(--fmc-text-muted);
+  margin-bottom: 10px;
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.meta-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: var(--fmc-text-muted);
+}
+
+/* ── Decision Panel ── */
+.decision-panel {
+  margin-top: 10px;
+  padding-top: 12px;
+  border-top: 1px solid var(--fmc-border);
+}
+
+.decision-note-area {
+  min-height: 68px;
+  resize: vertical;
+}
+
+.optional {
+  font-size: 11px;
+  color: var(--fmc-text-light);
+  font-weight: 400;
+}
+
+.decision-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 8px;
+  justify-content: flex-end;
+}
+
+.request-actions {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--fmc-border);
+}
+
+/* ── Feedback ── */
+.action-msg {
+  margin-bottom: 16px;
+  font-size: 13px;
+}
+
+.success-msg {
+  color: var(--fmc-success);
+}
+
+.loading-msg {
+  color: var(--fmc-text-muted);
+  font-size: 14px;
+}
+
+.empty-state {
+  font-size: 14px;
+  color: var(--fmc-text-muted);
+  padding: 32px;
+  text-align: center;
+  background: var(--fmc-surface);
+  border-radius: var(--fmc-radius-lg);
+}

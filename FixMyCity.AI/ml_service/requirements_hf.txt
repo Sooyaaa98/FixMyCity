@@ -1,0 +1,47 @@
+# FixMyCity AI Microservice — requirements (Hugging Face API edition)
+# Replaces the original requirements.txt
+# Saves ~3.8 GB: no torch, no transformers, no sentence-transformers, no ollama binary
+#
+# Install:  pip install -r requirements_hf.txt
+# Then add HF_API_TOKEN=hf_xxxx to ml_service/.env
+
+# ── Web framework ──────────────────────────────────────────────────────────────
+fastapi==0.111.0
+uvicorn[standard]==0.29.0
+pydantic==2.7.1
+python-multipart==0.0.9
+python-dotenv==1.0.1         # Phase 3 — loads ml_service/.env at startup before any module reads HF_API_TOKEN. Without it, models silently fall back to "not loaded".
+
+# ── Database ───────────────────────────────────────────────────────────────────
+pyodbc==5.1.0
+pandas>=2.2,<3.0             # no version pin → picks prebuilt wheel, avoids Meson error
+
+# ── Core ML (local — trained on your DB data) ─────────────────────────────────
+scikit-learn==1.4.2
+lightgbm==4.3.0
+numpy>=1.26,<2.0
+joblib==1.4.2
+scipy==1.13.0
+implicit==0.7.2              # ALS collaborative filtering
+
+# ── Forecasting ───────────────────────────────────────────────────────────────
+prophet==1.1.5
+matplotlib==3.8.4
+
+# ── HF Inference API (replaces torch + transformers + sentence-transformers) ───
+huggingface_hub>=0.23,<1.0   # InferenceClient lives here — tiny package, no models
+
+# ── Image (for loading uploaded images before sending to HF CLIP API) ─────────
+Pillow==10.3.0
+pytesseract==0.3.10          # OCR — still local (Tesseract binary required)
+
+# ── Keyword extraction ────────────────────────────────────────────────────────
+# keybert removed — replaced by HFKeyBERT in services/hf_inference.py
+# (uses HF embeddings + sklearn CountVectorizer — no extra dependency)
+
+# ── Content safety ────────────────────────────────────────────────────────────
+better-profanity==0.7.0      # fast rule-based layer (no model download)
+# toxic-bert ML layer now runs via HF Inference API — no local download
+
+# ── HTTP callbacks ────────────────────────────────────────────────────────────
+httpx==0.27.0

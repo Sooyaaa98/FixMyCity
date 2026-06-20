@@ -1,0 +1,104 @@
+<!-- src/app/pwg/open-complaints/open-complaints.component.html -->
+
+<div class="fmc-page">
+
+  <h3 class="page-title">🔍 Open Complaints</h3>
+
+  <!-- Global feedback -->
+  <div class="success-msg feedback-msg" *ngIf="requestMessage">✅ {{ requestMessage }}</div>
+
+  <!-- Filter Panel -->
+  <div class="fmc-card filter-panel">
+    <div class="filter-row">
+
+      <div class="fmc-form-group filter-group">
+        <label class="fmc-label">Category</label>
+        <select [(ngModel)]="filterCategoryId" class="fmc-input">
+          <option [value]="undefined">All Categories</option>
+          <option *ngFor="let cat of categories" [value]="cat.categoryId">
+            {{ cat.categoryName }}
+          </option>
+        </select>
+      </div>
+
+      <div class="fmc-form-group filter-group">
+        <label class="fmc-label">Locality</label>
+        
+      </div>
+
+      <div class="fmc-form-group filter-group">
+        <label class="fmc-label">Criticality</label>
+        <select [(ngModel)]="filterCriticality" class="fmc-input">
+          <option value="">All</option>
+          <option *ngFor="let c of criticalityOptions.slice(1)" [value]="c">{{ c }}</option>
+        </select>
+      </div>
+
+      <div class="filter-actions">
+        <button class="btn-primary" (click)="loadComplaints()">Apply</button>
+        <button class="btn-secondary" (click)="clearFilter()">Clear</button>
+      </div>
+
+    </div>
+  </div>
+
+  <div *ngIf="isLoading" class="loading-msg">Loading complaints...</div>
+  <div *ngIf="errorMessage" class="fmc-error-msg">{{ errorMessage }}</div>
+
+  <div *ngIf="!isLoading && complaints.length === 0 && !errorMessage" class="empty-state">
+    No open complaints match the current filter.
+  </div>
+
+  <!-- Complaint Cards -->
+  <div class="complaints-list" *ngIf="!isLoading">
+    <div *ngFor="let c of complaints">
+
+      <!-- Complaint Card -->
+      <div [class]="'fmc-card crit-' + c.criticality + ' complaint-row'">
+        <div class="row-main" (click)="viewDetail(c.complaintId)">
+          <div class="row-top">
+            <span class="row-id">#{{ c.complaintId }}</span>
+            <app-status-badge [status]="c.status"></app-status-badge>
+          </div>
+          <h4 class="row-title">{{ c.title }}</h4>
+          <p class="row-desc">{{ c.description | slice:0:120 }}{{ c.description.length > 120 ? '...' : '' }}</p>
+          <div class="row-meta">
+          <span class="meta-chip" *ngIf="c.locality?.localityName">📍 {{ c.locality!.localityName }}</span>
+          <span class="meta-chip" *ngIf="c.category?.categoryName">🏷️ {{ c.category!.categoryName }}</span>
+          <span class="meta-chip">⚡ {{ c.criticality }}</span>
+          <span class="meta-chip">📅 {{ c.submittedAt | date: 'dd MMM yyyy' }}</span>
+        </div>
+        </div>
+
+        <div class="row-action">
+          <button class="btn-primary request-btn"
+                  (click)="openRequestForm(c.complaintId)"
+                  *ngIf="activeRequestComplaintId !== c.complaintId">
+            + Request Participation
+          </button>
+        </div>
+
+        <!-- Inline Request Form -->
+        <div class="request-form" *ngIf="activeRequestComplaintId === c.complaintId">
+          <div class="fmc-form-group">
+            <label class="fmc-label">Request Note <span class="optional">(optional)</span></label>
+            <textarea [(ngModel)]="requestNote"
+                      class="fmc-input request-note"
+                      placeholder="Describe why your organisation wants to participate...">
+            </textarea>
+          </div>
+          <div class="fmc-error-msg" *ngIf="requestError">{{ requestError }}</div>
+          <div class="request-form-actions">
+            <button class="btn-secondary" (click)="cancelRequest()">Cancel</button>
+            <button class="btn-primary" (click)="submitRequest(c.complaintId)" [disabled]="requestLoading">
+              {{ requestLoading ? 'Submitting...' : 'Submit Request' }}
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+</div>

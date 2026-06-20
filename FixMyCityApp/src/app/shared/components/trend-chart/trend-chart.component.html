@@ -1,0 +1,68 @@
+<!-- src/app/shared/components/trend-chart/trend-chart.component.html
+     Phase 8 (§9) — small SVG trend chart. No JS libraries. -->
+
+<div class="tc-host" #host>
+
+  <div class="tc-header">
+    <div>
+      <h4 class="tc-title">{{ title }}</h4>
+      <p class="tc-subtitle text-muted small mb-0" *ngIf="data?.length">
+        Last {{ data.length }} day(s) — peak {{ maxValue }} per day
+        <span *ngIf="resolvedRate > 0">, {{ resolvedRate }}% resolved</span>
+      </p>
+    </div>
+    <div class="tc-legend" *ngIf="data?.length">
+      <span class="tc-legend-item"><span class="tc-dot tc-dot--total"></span> Total</span>
+      <span class="tc-legend-item"><span class="tc-dot tc-dot--resolved"></span> Resolved</span>
+    </div>
+  </div>
+
+  <div *ngIf="!data || data.length === 0" class="text-muted text-center my-4">
+    No data to chart.
+  </div>
+
+  <svg *ngIf="data?.length"
+       class="tc-svg"
+       [attr.viewBox]="'0 0 ' + width + ' ' + height"
+       preserveAspectRatio="none"
+       role="img"
+       aria-label="Trend chart">
+
+    <!-- Y-axis gridlines + labels -->
+    <g class="tc-grid">
+      <line *ngFor="let y of yLabels"
+            [attr.x1]="32" [attr.x2]="width - 8"
+            [attr.y1]="y.y" [attr.y2]="y.y" />
+      <text *ngFor="let y of yLabels"
+            [attr.x]="28" [attr.y]="y.y + 4"
+            text-anchor="end"
+            class="tc-label">{{ y.text }}</text>
+    </g>
+
+    <!-- X-axis labels -->
+    <g class="tc-axis">
+      <text *ngFor="let l of axisLabels"
+            [attr.x]="l.x" [attr.y]="height - 4"
+            text-anchor="middle"
+            class="tc-label">{{ l.text }}</text>
+    </g>
+
+    <!-- Vertical guides (light bars) -->
+    <g class="tc-bars">
+      <rect *ngFor="let b of bars"
+            [attr.x]="b.x" [attr.y]="b.y"
+            width="3" [attr.height]="b.h"
+            rx="1.5" />
+    </g>
+
+    <!-- Line: total -->
+    <path *ngIf="totalPath"
+          [attr.d]="totalPath"
+          class="tc-line tc-line--total" />
+
+    <!-- Line: resolved -->
+    <path *ngIf="resolvedPath"
+          [attr.d]="resolvedPath"
+          class="tc-line tc-line--resolved" />
+  </svg>
+</div>

@@ -1,0 +1,178 @@
+/* src/app/auth/register-citizen/register-citizen.component.css */
+
+.register-wrapper {
+  min-height: 100vh;
+  display: block;
+  background: linear-gradient(135deg, var(--fmc-bg) 0%, #e2e8f0 100%);
+  padding: 6vh 24px 48px;
+}
+
+.register-card {
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 40px 48px 36px;
+  border-radius: 20px;
+  box-shadow: var(--fmc-shadow-md);
+  border: 1px solid var(--fmc-border);
+}
+
+@media (max-width: 600px) {
+  .register-card {
+    padding: 28px 22px 28px;
+    border-radius: 16px;
+  }
+}
+
+.register-header {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+  .register-header h2 {
+    font-size: 22px;
+    color: var(--fmc-primary);
+    margin: 0 0 6px;
+    font-weight: 700;
+  }
+
+  .register-header h3 {
+    font-size: 17px;
+    color: var(--fmc-text);
+    font-weight: 500;
+    margin: 0 0 8px;
+  }
+
+  .register-subtitle {
+    font-size: 13px;
+    color: var(--fmc-text-muted);
+    margin: 0;
+  }
+
+/* Two-column grid for desktop, collapses to one on mobile. The shared
+   .fmc-grid-2 class gives the basic columns; we tune the gap and rhythm here. */
+:host ::ng-deep .fmc-grid-2 {
+  row-gap: 16px;
+  column-gap: 20px;
+  margin-bottom: 8px;
+}
+
+:host ::ng-deep .fmc-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+:host ::ng-deep .fmc-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--fmc-text);
+}
+
+:host ::ng-deep .fmc-error-msg {
+  font-size: 12px;
+  color: var(--fmc-danger, #dc2626);
+  line-height: 1.3;
+}
+
+.api-error {
+  margin: 16px 0 0;
+  padding: 10px 12px;
+  background: var(--fmc-danger-light);
+  border: 1px solid #fca5a5;
+  border-radius: 8px;
+  color: #b91c1c;
+  font-size: 13px;
+}
+
+.success-msg {
+  margin: 16px 0 0;
+  padding: 10px 12px;
+  background: var(--fmc-success-light);
+  border: 1px solid #86efac;
+  border-radius: 8px;
+  color: #166534;
+  font-size: 13px;
+}
+
+.form-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+  .form-actions .btn-secondary,
+  .form-actions .btn-primary {
+    flex: 1;
+    padding: 11px 16px;
+    font-size: 14px;
+  }
+
+/* "or" divider between password signup and SSO */
+.register-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 24px 0 16px;
+  color: var(--fmc-text-muted);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+  .register-divider::before,
+  .register-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--fmc-border);
+  }
+
+.btn-sso {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 11px 16px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+  .btn-sso .sso-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #fff;
+    color: #ea4335;
+    font-weight: 700;
+    font-family: 'Product Sans', 'Segoe UI', system-ui, sans-serif;
+    border: 1px solid var(--fmc-border);
+  }
+
+.sso-note {
+  margin: 8px 0 0;
+  text-align: center;
+  font-size: 12px;
+  color: var(--fmc-text-muted);
+}
+
+.login-link {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 13px;
+  color: var(--fmc-text-muted);
+}
+
+  .login-link a {
+    color: var(--fmc-primary);
+    font-weight: 500;
+    text-decoration: none;
+  }
+
+  .login-link a:hover {
+    text-decoration: underline;
+  }

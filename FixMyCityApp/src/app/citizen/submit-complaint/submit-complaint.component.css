@@ -1,0 +1,241 @@
+/* src/app/citizen/submit-complaint/submit-complaint.component.css */
+
+.submit-card {
+  max-width: 840px;
+  margin: 0 auto;
+}
+
+.submit-header {
+  margin-bottom: 24px;
+}
+
+.page-title {
+  margin: 0 0 4px;
+  font-size: 20px;
+}
+
+.page-subtitle {
+  margin: 0;
+  font-size: 14px;
+  color: var(--fmc-text-muted);
+}
+
+.span-2 {
+  grid-column: 1 / -1;
+}
+
+.description-area {
+  min-height: 110px;
+  resize: vertical;
+}
+
+.ai-tag {
+  display: inline-block;
+  margin-left: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--fmc-primary);
+  background: #eff6ff;
+  border-radius: 10px;
+  padding: 1px 7px;
+  vertical-align: middle;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.success-msg {
+  font-size: 13px;
+  color: var(--fmc-success);
+  margin-bottom: 12px;
+}
+
+/* ── Description AI quick-actions ─────────────────────────────────────── */
+.description-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 6px;
+  flex-wrap: wrap;
+}
+
+.btn-link {
+  background: none;
+  border: none;
+  color: var(--fmc-primary);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 4px 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.15s;
+}
+
+  .btn-link:hover:not(:disabled) {
+    color: var(--fmc-primary-dark, #1d4ed8);
+    text-decoration: underline;
+  }
+
+  .btn-link:disabled {
+    color: var(--fmc-text-muted);
+    cursor: not-allowed;
+  }
+
+/* ── Photo upload block (Phase 6 — moved to top + drag-drop) ─────────── */
+.photo-upload-block .fmc-label {
+  margin-bottom: 4px;
+}
+
+.optional-tag {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 2px 8px;
+  border-radius: 20px;
+  background: var(--fmc-surface-2);
+  border: 1px solid var(--fmc-border);
+  color: var(--fmc-text-muted);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.ai-hint-mount {
+  margin: 8px 0 16px;
+}
+
+.photo-dropzone {
+  position: relative;
+  margin-top: 4px;
+}
+
+.photo-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.photo-dropzone-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 28px 16px;
+  border: 2px dashed var(--fmc-border);
+  border-radius: var(--fmc-radius-lg);
+  background: var(--fmc-surface-2);
+  color: var(--fmc-text-muted);
+  cursor: pointer;
+  font-size: 14px;
+  text-align: center;
+  transition: border-color 0.15s, background 0.15s, color 0.15s, transform 0.15s;
+}
+
+  .photo-dropzone-label:hover {
+    border-color: var(--fmc-primary);
+    background: var(--fmc-primary-light);
+    color: var(--fmc-primary);
+  }
+
+  .photo-dropzone.is-dragging .photo-dropzone-label {
+    border-color: var(--fmc-primary);
+    background: var(--fmc-primary-light);
+    color: var(--fmc-primary);
+    transform: scale(1.01);
+  }
+
+  .photo-dropzone-icon {
+    font-size: 38px;
+    color: var(--fmc-primary);
+  }
+
+  .photo-dropzone-primary {
+    font-size: 14px;
+    color: var(--fmc-text);
+  }
+
+  .photo-dropzone-cta {
+    color: var(--fmc-primary);
+    font-weight: 600;
+    text-decoration: underline;
+  }
+
+  .photo-dropzone-label small {
+    font-size: 11px;
+    color: var(--fmc-text-muted);
+  }
+
+.photo-preview {
+  display: flex;
+  gap: 16px;
+  padding: 12px;
+  border: 1px solid var(--fmc-border);
+  border-radius: 10px;
+  background: #f8fafc;
+  margin-top: 4px;
+}
+
+  .photo-preview img {
+    width: 96px;
+    height: 96px;
+    object-fit: cover;
+    border-radius: 8px;
+    flex-shrink: 0;
+    border: 1px solid var(--fmc-border);
+  }
+
+  .photo-preview-meta {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+  }
+
+  .photo-preview-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--fmc-text);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .photo-preview-status {
+    font-size: 12px;
+    color: var(--fmc-text-muted);
+    line-height: 1.4;
+  }
+
+@media (max-width: 480px) {
+  .photo-preview {
+    flex-direction: column;
+  }
+  .photo-preview img {
+    width: 100%;
+    height: 180px;
+  }
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+@media (max-width: 640px) {
+  .form-actions {
+    flex-direction: column-reverse;
+  }
+  .form-actions button {
+    width: 100%;
+  }
+}

@@ -1,0 +1,42 @@
+<!-- src/app/shared/components/activity-feed/activity-feed.component.html
+     Phase 8 (§20) — Personal activity timeline. -->
+
+<div class="af-wrap">
+
+  <ng-container *ngIf="loading && rows.length === 0">
+    <app-skeleton-card *ngFor="let _ of [1,2,3,4]"></app-skeleton-card>
+  </ng-container>
+
+  <div class="alert alert-warning" *ngIf="errorMsg">{{ errorMsg }}</div>
+
+  <p *ngIf="!loading && rows.length === 0 && !errorMsg" class="text-muted text-center my-3">
+    No activity yet — submit your first complaint to get started.
+  </p>
+
+  <ul class="af-list" *ngIf="rows.length > 0">
+    <li *ngFor="let r of rows" class="af-item">
+      <span class="af-icon"
+            [ngClass]="{
+              'af-icon--reward':   r.eventType === 'PointsAwarded' || r.eventType === 'CertificateIssued',
+              'af-icon--update':   r.eventType === 'StatusChange',
+              'af-icon--default':  r.eventType !== 'PointsAwarded' && r.eventType !== 'CertificateIssued' && r.eventType !== 'StatusChange'
+            }">
+        <i class="bi" [ngClass]="iconFor(r.eventType)" aria-hidden="true"></i>
+      </span>
+      <div class="af-body">
+        <div class="af-text">{{ r.description }}</div>
+        <div class="af-time text-muted small">
+          {{ r.createdAt | date: 'medium' }}
+        </div>
+      </div>
+    </li>
+  </ul>
+
+  <div class="text-center mt-3" *ngIf="rows.length > 0 && !reachedEnd">
+    <button class="btn btn-outline-primary btn-sm"
+            (click)="loadMore()"
+            [disabled]="loading">
+      {{ loading ? 'Loading…' : 'Load more' }}
+    </button>
+  </div>
+</div>

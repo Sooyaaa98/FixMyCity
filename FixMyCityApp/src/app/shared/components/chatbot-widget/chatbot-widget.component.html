@@ -1,0 +1,94 @@
+<!-- src/app/shared/components/chatbot-widget/chatbot-widget.component.html -->
+
+<!-- Floating trigger button. Phase 6 §18 — adds `.has-unread` so the FAB
+     can pulse a soft ring when there are unread bot messages. -->
+<button
+  class="chatbot-fab"
+  [class.has-unread]="unreadBadge"
+  type="button"
+  (click)="toggle()"
+  [attr.aria-expanded]="isOpen"
+  aria-label="Open chatbot assistant"
+>
+  <i class="bi" [class.bi-chat-dots-fill]="!isOpen" [class.bi-x-lg]="isOpen" aria-hidden="true"></i>
+  <span class="chatbot-fab__badge" *ngIf="unreadBadge" aria-label="New messages"></span>
+</button>
+
+<!-- Chat panel -->
+<div class="chatbot-panel" [class.chatbot-panel--open]="isOpen" role="dialog" aria-label="FixMyCity Assistant">
+
+  <!-- Header -->
+  <div class="chatbot-header">
+    <div class="chatbot-header__info">
+      <div class="chatbot-header__avatar" aria-hidden="true">
+        <i class="bi bi-robot"></i>
+      </div>
+      <div>
+        <div class="chatbot-header__name">FMC Assistant</div>
+        <div class="chatbot-header__status">
+          <span class="chatbot-header__dot" aria-hidden="true"></span>
+          Online
+        </div>
+      </div>
+    </div>
+    <div class="chatbot-header__actions">
+      <button type="button" class="chatbot-header__btn" title="Clear chat" (click)="clearChat()" aria-label="Clear conversation">
+        <i class="bi bi-trash3" aria-hidden="true"></i>
+      </button>
+      <button type="button" class="chatbot-header__btn" (click)="close()" aria-label="Close chat">
+        <i class="bi bi-x-lg" aria-hidden="true"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Messages -->
+  <div class="chatbot-messages" #messagesContainer>
+    <div
+      *ngFor="let msg of messages"
+      class="chatbot-msg"
+      [class.chatbot-msg--user]="msg.role === 'user'"
+      [class.chatbot-msg--bot]="msg.role === 'assistant'"
+    >
+      <!-- Bot messages: render formatted HTML (bold, bullets, line breaks) -->
+      <div *ngIf="msg.role === 'assistant'"
+           class="chatbot-msg__bubble chatbot-msg__bubble--rich"
+           [innerHTML]="formatBotMessage(msg.content)">
+      </div>
+      <!-- User messages: always plain text -->
+      <div *ngIf="msg.role === 'user'"
+           class="chatbot-msg__bubble">
+        {{ msg.content }}
+      </div>
+    </div>
+
+    <!-- Typing indicator -->
+    <div class="chatbot-msg chatbot-msg--bot" *ngIf="isTyping" aria-live="polite" aria-label="Assistant is typing">
+      <div class="chatbot-msg__bubble chatbot-typing">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Input -->
+  <div class="chatbot-input-row">
+    <textarea
+      class="chatbot-input"
+      placeholder="Ask me anything…"
+      rows="1"
+      [formControl]="inputCtrl"
+      (keydown)="onKeydown($event)"
+      aria-label="Type your message"
+      [attr.aria-disabled]="isTyping"
+    ></textarea>
+    <button
+      type="button"
+      class="chatbot-send"
+      (click)="send()"
+      [disabled]="!inputCtrl.value?.trim() || isTyping"
+      aria-label="Send message"
+    >
+      <i class="bi bi-send-fill" aria-hidden="true"></i>
+    </button>
+  </div>
+
+</div>

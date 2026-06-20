@@ -1,0 +1,25 @@
+<!-- src/app/shared/components/toast/toast.component.html
+     Phase 6 — [attr.data-toast-id] so dismiss() can find the DOM node and
+     replay the leave animation before removing the toast from state. -->
+<div class="fmc-toast-container" aria-live="polite" aria-atomic="false">
+  <div
+    *ngFor="let toast of toasts; trackBy: trackById"
+    class="fmc-toast fmc-toast--{{ toast.type }}"
+    [attr.data-toast-id]="toast.id"
+    role="alert"
+    [attr.aria-label]="toast.message"
+  >
+    <span class="fmc-toast__icon">
+      <i [class]="iconFor(toast.type)" aria-hidden="true"></i>
+    </span>
+    <span class="fmc-toast__message">{{ toast.message }}</span>
+    <button
+      class="fmc-toast__close"
+      type="button"
+      aria-label="Dismiss notification"
+      (click)="dismiss(toast.id)"
+    >
+      <i class="bi bi-x-lg" aria-hidden="true"></i>
+    </button>
+  </div>
+</div>

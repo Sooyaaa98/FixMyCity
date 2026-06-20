@@ -1,0 +1,166 @@
+<!-- src/app/solver/complaint-detail/solver-complaint-detail.component.html -->
+
+<div class="fmc-page">
+
+  <button class="btn-secondary back-btn" (click)="goBack()">
+    <i class="bi bi-arrow-left" aria-hidden="true"></i> Back
+  </button>
+
+  <app-loading-spinner *ngIf="isLoading" message="Loading complaint…"></app-loading-spinner>
+  <div class="fmc-error-msg" *ngIf="errorMessage && !isLoading">{{ errorMessage }}</div>
+
+  <ng-container *ngIf="complaint && !isLoading">
+
+    <!-- ── Main Detail ─────────────────────────────────────────────────────── -->
+    <div [class]="'fmc-card crit-' + complaint.criticality + ' detail-card'">
+      <div class="detail-top">
+        <div>
+          <span class="detail-id">#{{ complaint.complaintId }}</span>
+          <h2 class="detail-title">{{ complaint.title }}</h2>
+        </div>
+        <app-status-badge [status]="complaint.status"></app-status-badge>
+      </div>
+
+      <p class="detail-desc">{{ complaint.description }}</p>
+
+      <div class="fmc-grid-2 detail-meta">
+        <div class="meta-block">
+          <span class="meta-label">Category</span>
+          <span class="meta-value">{{ complaint.category?.categoryName || '—' }}</span>
+        </div>
+        <div class="meta-block">
+          <span class="meta-label">Locality</span>
+          <span class="meta-value">{{ complaint.locality?.localityName || '—' }}</span>
+        </div>
+        <div class="meta-block">
+          <span class="meta-label">Address</span>
+          <span class="meta-value">{{ complaint.address }}</span>
+        </div>
+        <div class="meta-block">
+          <span class="meta-label">Criticality</span>
+          <span class="meta-value">{{ complaint.criticality }}</span>
+        </div>
+        <div class="meta-block">
+          <span class="meta-label">Submitted</span>
+          <span class="meta-value">{{ complaint.submittedAt | date: 'dd MMM yyyy' }}</span>
+        </div>
+        <div class="meta-block" *ngIf="complaint.estimatedResDate">
+          <span class="meta-label">Est. Resolution</span>
+          <span class="meta-value">{{ complaint.estimatedResDate | date: 'dd MMM yyyy' }}</span>
+        </div>
+        <div class="meta-block">
+          <span class="meta-label">Community Funding</span>
+          <span class="meta-value funding-amount">₹{{ fundingTotal | number: '1.2-2' }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── AI Scores Panel ─────────────────────────────────────────────────── -->
+    <div class="fmc-card ai-scores-card" *ngIf="mlScores">
+      <div class="ai-scores-header">
+        <i class="bi bi-magic" aria-hidden="true"></i>
+        <h4>AI Scores</h4>
+        <span class="ai-model-badge">{{ mlScores.modelVersion || mlScores.predictionModelVersion || "AI" }}</span>
+      </div>
+
+      <div class="fmc-grid-3 scores-grid">
+        <div class="score-block">
+          <span class="score-label">Priority Score</span>
+          <div class="score-bar-wrap">
+            <div class="score-bar" [style.width.%]="mlScores.priorityScore ?? 0"
+                 [class]="priorityClass"></div>
+          </div>
+          <span class="score-value" [class]="priorityClass">
+            {{ mlScores.priorityScore != null ? (mlScores.priorityScore | number: '1.0-0') + '%' : '—' }}
+            ({{ priorityLabel }})
+          </span>
+        </div>
+
+        <div class="score-block">
+          <span class="score-label">Resolution Probability</span>
+          <div class="score-bar-wrap">
+            <div class="score-bar score-bar--blue"
+                 [style.width.%]="(mlScores.resolutionProbability ?? 0) * 100"></div>
+          </div>
+          <span class="score-value score-value--blue">
+            {{ mlScores.resolutionProbability != null ? ((mlScores.resolutionProbability * 100) | number: '1.0-0') + '%' : '—' }}
+          </span>
+        </div>
+
+        <div class="score-block">
+          <span class="score-label">Predicted Resolution</span>
+          <span class="score-value score-value--green">
+            {{ mlScores.predictedResolutionDate ? (mlScores.predictedResolutionDate | date: 'dd MMM yyyy') : '—' }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="fmc-card ai-scores-card ai-no-scores"
+         *ngIf="!mlScores">
+      <i class="bi bi-magic" aria-hidden="true"></i>
+      <span>AI scores not yet available for this complaint.</span>
+    </div>
+
+    <!-- ── AI Tags ─────────────────────────────────────────────────────────── -->
+    <div class="fmc-card action-card" *ngIf="tags.length > 0">
+      <h4>🏷️ AI Tags</h4>
+      <div class="tag-chips">
+        <span *ngFor="let tag of tags" class="tag-chip">
+          {{ tag.tag }}
+          <span class="tag-score" *ngIf="tag.score != null">{{ (tag.score * 100 | number: '1.0-0') }}%</span>
+        </span>
+      </div>
+    </div>
+
+    <!-- ── Update Status ───────────────────────────────────────────────────── -->
+    <div class="fmc-card action-card">
+      <h4>🔄 Update Status</h4>
+      <form [formGroup]="statusForm" (ngSubmit)="updateStatus()">
+        <div class="fmc-grid-2">
+          <div class="fmc-form-group">
+            <label class="fmc-label required" for="newStatus">New Status</label>
+            <select id="newStatus" formControlName="newStatus" class="fmc-input">
+              <option value="">-- Select Status --</option>
+              <option *ngFor="let s of statusOptions" [value]="s">{{ s }}</option>
+            </select>
+          </div>
+          <div class="fmc-form-group">
+            <label class="fmc-label" for="resolutionFilePath">Resolution File Path</label>
+            <input id="resolutionFilePath" type="text" formControlName="resolutionFilePath"
+                   class="fmc-input" placeholder="uploads/resolution-img.jpg" />
+          </div>
+          <div class="fmc-form-group span-2">
+            <label class="fmc-label" for="remark">Remark</label>
+            <textarea id="remark" formControlName="remark" class="fmc-input" rows="3"
+                      placeholder="Add a note about this status change…"></textarea>
+          </div>
+        </div>
+        <button type="submit" class="btn-primary" [disabled]="statusForm.invalid">
+          Update Status
+        </button>
+      </form>
+    </div>
+
+    <!-- ── Set Estimated Date ──────────────────────────────────────────────── -->
+    <div class="fmc-card action-card">
+      <h4>📅 Set Estimated Resolution Date</h4>
+      <form [formGroup]="dateForm" (ngSubmit)="setEstimatedDate()" class="date-form">
+        <div class="fmc-form-group">
+          <label class="fmc-label required" for="estDate">Estimated Date</label>
+          <input id="estDate" type="date" formControlName="estDate" class="fmc-input" />
+        </div>
+        <button type="submit" class="btn-secondary" [disabled]="dateForm.invalid">
+          Save Date
+        </button>
+      </form>
+    </div>
+
+    <!-- ── Timeline ───────────────────────────────────────────────────────── -->
+    <div class="fmc-card">
+      <h4>📋 Activity Timeline</h4>
+      <app-timeline [entries]="timeline"></app-timeline>
+    </div>
+
+  </ng-container>
+</div>
