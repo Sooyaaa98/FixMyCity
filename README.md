@@ -265,7 +265,7 @@ Built during the **Infosys Software Engineering Internship** (Jan–May 2026, My
       </a>
     </td>
     <td align="center">
-      <a href="https://www.linkedin.com/in/supriya-katiyar07">
+      <a href="https://github.com/Sooyaaa98">
         <img src="https://ui-avatars.com/api/?name=Supriya+Katiyar&size=80&background=CC2927&color=fff&rounded=true" width="80px" alt="Supriya Katiyar"/><br/>
         <sub><b>Supriya Katiyar</b></sub>
       </a><br/>
